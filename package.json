@@ -4,7 +4,8 @@
   "description": "Repositorio del proyecto de BackEnd Comisión A 2026 2do Cuatrimestre",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA/issues"
   },
-  "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme"
+  "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }
