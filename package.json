@@ -1,0 +1,21 @@
+{
+  "name": "proyectobackend2026coma",
+  "version": "1.0.0",
+  "description": "Repositorio del proyecto de BackEnd Comisión A 2026 2do Cuatrimestre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebastian1601/ProyectoBackEnd2026ComA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA/issues"
+  },
+  "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme"
+}
