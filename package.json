@@ -21,5 +21,8 @@
   "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme",
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
