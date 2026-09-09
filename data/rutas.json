@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "nombre": "Ruta Norte - Zona Corporativa",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Polo Corporativo, Vicente López",
+    "duracionEstimada": 45,
+    "distanciaEstimada": 18,
+    "idChoferAsignado": 1
+  },
+  {
+    "id": 2,
+    "nombre": "Ruta Oeste - Parque Industrial",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Parque Industrial, San Justo",
+    "duracionEstimada": 60,
+    "distanciaEstimada": 27,
+    "idChoferAsignado": 5
+  },
+  {
+    "id": 3,
+    "nombre": "Ruta Sur - Comedores Corporativos",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Zona Sur, Avellaneda",
+    "duracionEstimada": 50,
+    "distanciaEstimada": 22,
+    "idChoferAsignado": 9
+  },
+  {
+    "id": 4,
+    "nombre": "Ruta Centro - Microcentro",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Microcentro, CABA",
+    "duracionEstimada": 40,
+    "distanciaEstimada": 15,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 5,
+    "nombre": "Ruta Norte Extendida - Zona Francesa",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "San Isidro Centro",
+    "duracionEstimada": 35,
+    "distanciaEstimada": 12,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 6,
+    "nombre": "Ruta Palermo - Comedores Tech",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Palermo, CABA",
+    "duracionEstimada": 30,
+    "distanciaEstimada": 14,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 7,
+    "nombre": "Ruta Puerto Madero - Torres Corporativas",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Puerto Madero, CABA",
+    "duracionEstimada": 40,
+    "distanciaEstimada": 19,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 8,
+    "nombre": "Ruta La Matanza - Polo Gastronómico",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "La Matanza",
+    "duracionEstimada": 70,
+    "distanciaEstimada": 32,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 9,
+    "nombre": "Ruta Tigre - Delta Corporativo",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Tigre Centro",
+    "duracionEstimada": 55,
+    "distanciaEstimada": 25,
+    "idChoferAsignado": null
+  },
+  {
+    "id": 10,
+    "nombre": "Ruta Quilmes - Comedores Industriales",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Quilmes",
+    "duracionEstimada": 65,
+    "distanciaEstimada": 29,
+    "idChoferAsignado": null
+  }
+]

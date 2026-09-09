@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "nombre": "Martín",
+    "apellido": "Gómez",
+    "dni": "30111222",
+    "numeroRegistro": "REG-1001",
+    "telefono": "1122334455",
+    "idVehiculoAsignado": 1,
+    "idRutaActual": 1,
+    "estado": "Ocupado",
+    "fechaIngreso": "2022-03-15"
+  },
+  {
+    "id": 2,
+    "nombre": "Lucía",
+    "apellido": "Fernández",
+    "dni": "29888777",
+    "numeroRegistro": "REG-1002",
+    "telefono": "1133445566",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2021-07-01"
+  },
+  {
+    "id": 3,
+    "nombre": "Diego",
+    "apellido": "Suárez",
+    "dni": "31222333",
+    "numeroRegistro": "REG-1003",
+    "telefono": "1144556677",
+    "idVehiculoAsignado": 2,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2023-01-10"
+  },
+  {
+    "id": 4,
+    "nombre": "Romina",
+    "apellido": "Acosta",
+    "dni": "28999666",
+    "numeroRegistro": "REG-1004",
+    "telefono": "1155667788",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Inactivo",
+    "fechaIngreso": "2020-11-20"
+  },
+  {
+    "id": 5,
+    "nombre": "Facundo",
+    "apellido": "Ibáñez",
+    "dni": "32444555",
+    "numeroRegistro": "REG-1005",
+    "telefono": "1166778899",
+    "idVehiculoAsignado": 3,
+    "idRutaActual": 2,
+    "estado": "Ocupado",
+    "fechaIngreso": "2022-09-05"
+  },
+  {
+    "id": 6,
+    "nombre": "Carla",
+    "apellido": "Ríos",
+    "dni": "27666888",
+    "numeroRegistro": "REG-1006",
+    "telefono": "1177889900",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2021-02-14"
+  },
+  {
+    "id": 7,
+    "nombre": "Nicolás",
+    "apellido": "Herrera",
+    "dni": "33111444",
+    "numeroRegistro": "REG-1007",
+    "telefono": "1188990011",
+    "idVehiculoAsignado": 4,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2023-05-22"
+  },
+  {
+    "id": 8,
+    "nombre": "Yamila",
+    "apellido": "Torres",
+    "dni": "29333222",
+    "numeroRegistro": "REG-1008",
+    "telefono": "1199001122",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Inactivo",
+    "fechaIngreso": "2019-08-30"
+  },
+  {
+    "id": 9,
+    "nombre": "Emiliano",
+    "apellido": "Castro",
+    "dni": "31555777",
+    "numeroRegistro": "REG-1009",
+    "telefono": "1100112233",
+    "idVehiculoAsignado": 5,
+    "idRutaActual": 3,
+    "estado": "Ocupado",
+    "fechaIngreso": "2022-12-01"
+  },
+  {
+    "id": 10,
+    "nombre": "Agustina",
+    "apellido": "Molina",
+    "dni": "30777999",
+    "numeroRegistro": "REG-1010",
+    "telefono": "1111223344",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2023-03-18"
+  }
+]

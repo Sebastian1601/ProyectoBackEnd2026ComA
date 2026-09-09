@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "patente": "AB123CD",
+    "marca": "Iveco",
+    "modelo": "Daily Frigorífico",
+    "capacidad": 1200,
+    "estado": "Asignado",
+    "idChoferAsignado": 1
+  },
+  {
+    "id": 2,
+    "patente": "AC456EF",
+    "marca": "Mercedes-Benz",
+    "modelo": "Sprinter Refrigerado",
+    "capacidad": 900,
+    "estado": "Asignado",
+    "idChoferAsignado": 3
+  },
+  {
+    "id": 3,
+    "patente": "AD789GH",
+    "marca": "Fiat",
+    "modelo": "Ducato Cargo Frío",
+    "capacidad": 750,
+    "estado": "Asignado",
+    "idChoferAsignado": 5
+  },
+  {
+    "id": 4,
+    "patente": "AE012IJ",
+    "marca": "Renault",
+    "modelo": "Master Isotermo",
+    "capacidad": 850,
+    "estado": "Asignado",
+    "idChoferAsignado": 7
+  },
+  {
+    "id": 5,
+    "patente": "AF345KL",
+    "marca": "Iveco",
+    "modelo": "Daily Frigorífico",
+    "capacidad": 1200,
+    "estado": "Asignado",
+    "idChoferAsignado": 9
+  },
+  {
+    "id": 6,
+    "patente": "AG678MN",
+    "marca": "Volkswagen",
+    "modelo": "Delivery Refrigerado",
+    "capacidad": 1000,
+    "estado": "Disponible",
+    "idChoferAsignado": null
+  },
+  {
+    "id": 7,
+    "patente": "AH901OP",
+    "marca": "Mercedes-Benz",
+    "modelo": "Sprinter Refrigerado",
+    "capacidad": 900,
+    "estado": "Disponible",
+    "idChoferAsignado": null
+  },
+  {
+    "id": 8,
+    "patente": "AI234QR",
+    "marca": "Fiat",
+    "modelo": "Ducato Cargo Frío",
+    "capacidad": 750,
+    "estado": "En Mantenimiento",
+    "idChoferAsignado": null
+  },
+  {
+    "id": 9,
+    "patente": "AJ567ST",
+    "marca": "Renault",
+    "modelo": "Master Isotermo",
+    "capacidad": 850,
+    "estado": "Fuera de Servicio",
+    "idChoferAsignado": null
+  },
+  {
+    "id": 10,
+    "patente": "AK890UV",
+    "marca": "Iveco",
+    "modelo": "Daily Frigorífico",
+    "capacidad": 1200,
+    "estado": "Disponible",
+    "idChoferAsignado": null
+  }
+]

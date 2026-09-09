@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "idRuta": 1,
+    "idChofer": 1,
+    "idCliente": 2,
+    "fechaEntrega": "2026-09-08",
+    "descripcion": "50 viandas corporativas menú ejecutivo",
+    "estado": "En Proceso"
+  },
+  {
+    "id": 2,
+    "idRuta": 2,
+    "idChofer": 5,
+    "idCliente": 4,
+    "fechaEntrega": "2026-09-08",
+    "descripcion": "Insumos gastronómicos refrigerados - lote semanal",
+    "estado": "En Proceso"
+  },
+  {
+    "id": 3,
+    "idRuta": 3,
+    "idChofer": 9,
+    "idCliente": 6,
+    "fechaEntrega": "2026-09-08",
+    "descripcion": "80 viandas corporativas menú vegetariano",
+    "estado": "En Proceso"
+  },
+  {
+    "id": 4,
+    "idRuta": 1,
+    "idChofer": 1,
+    "idCliente": 1,
+    "fechaEntrega": "2026-09-07",
+    "descripcion": "30 viandas menú ejecutivo",
+    "estado": "Completada"
+  },
+  {
+    "id": 5,
+    "idRuta": 4,
+    "idChofer": null,
+    "idCliente": 3,
+    "fechaEntrega": "2026-09-09",
+    "descripcion": "Pedido especial catering evento corporativo",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 6,
+    "idRuta": 2,
+    "idChofer": 5,
+    "idCliente": 8,
+    "fechaEntrega": "2026-09-06",
+    "descripcion": "Insumos refrigerados para comedor fabril",
+    "estado": "Completada"
+  },
+  {
+    "id": 7,
+    "idRuta": null,
+    "idChofer": null,
+    "idCliente": 9,
+    "fechaEntrega": "2026-09-05",
+    "descripcion": "Entrega cancelada por cierre de local",
+    "estado": "Cancelada"
+  },
+  {
+    "id": 8,
+    "idRuta": 3,
+    "idChofer": 9,
+    "idCliente": 6,
+    "fechaEntrega": "2026-09-04",
+    "descripcion": "60 viandas menú vegetariano",
+    "estado": "Completada"
+  },
+  {
+    "id": 9,
+    "idRuta": 10,
+    "idChofer": null,
+    "idCliente": 10,
+    "fechaEntrega": "2026-09-09",
+    "descripcion": "Pedido semanal comedor industrial Quilmes",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 10,
+    "idRuta": 1,
+    "idChofer": 1,
+    "idCliente": 2,
+    "fechaEntrega": "2026-09-01",
+    "descripcion": "45 viandas corporativas menú ejecutivo",
+    "estado": "Completada"
+  }
+]

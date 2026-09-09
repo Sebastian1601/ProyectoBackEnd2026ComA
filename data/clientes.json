@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nombre": "Restaurante Don Fernando",
+    "telefono": "1145671234",
+    "direccion": "Av. Corrientes 2450, CABA"
+  },
+  {
+    "id": 2,
+    "nombre": "Comedor Corporativo TecnoSoft SA",
+    "telefono": "1145672345",
+    "direccion": "Av. del Libertador 6350, Vicente López"
+  },
+  {
+    "id": 3,
+    "nombre": "Bistró La Terraza",
+    "telefono": "1145673456",
+    "direccion": "Av. Santa Fe 3120, CABA"
+  },
+  {
+    "id": 4,
+    "nombre": "Comedor Industrias Martín SRL",
+    "telefono": "1145674567",
+    "direccion": "Ruta 4 Km 12, San Justo"
+  },
+  {
+    "id": 5,
+    "nombre": "Café Central Puerto Madero",
+    "telefono": "1145675678",
+    "direccion": "Juana Manso 1550, CABA"
+  },
+  {
+    "id": 6,
+    "nombre": "Comedor Corporativo Grupo Delta",
+    "telefono": "1145676789",
+    "direccion": "Av. Leandro N. Alem 928, CABA"
+  },
+  {
+    "id": 7,
+    "nombre": "Restaurante El Buen Sabor",
+    "telefono": "1145677890",
+    "direccion": "Av. Rivadavia 8900, CABA"
+  },
+  {
+    "id": 8,
+    "nombre": "Comedor Fábrica San Isidro",
+    "telefono": "1145678901",
+    "direccion": "Panamericana Km 28, San Isidro"
+  },
+  {
+    "id": 9,
+    "nombre": "Parrilla Los Troncos",
+    "telefono": "1145679012",
+    "direccion": "Av. Cabildo 3210, CABA"
+  },
+  {
+    "id": 10,
+    "nombre": "Comedor Corporativo Quilmes Norte",
+    "telefono": "1145670123",
+    "direccion": "Av. Calchaquí 4500, Quilmes"
+  }
+]
