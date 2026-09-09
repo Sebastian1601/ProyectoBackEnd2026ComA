@@ -1,5 +1,5 @@
 class Ruta {
-    constructor(id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado) {
+    constructor({id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado}) {
         this.id = id;
         this.nombre = nombre;
         this.origen = origen;

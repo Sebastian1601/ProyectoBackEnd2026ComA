@@ -1,5 +1,5 @@
 class Vehiculo {
-    constructor(id, patente, marca, modelo, capacidad, estado, idChoferAsignado) {
+    constructor({id, patente, marca, modelo, capacidad, estado, idChoferAsignado}) {
         this.id = id;
         this.patente = patente;
         this.marca = marca;

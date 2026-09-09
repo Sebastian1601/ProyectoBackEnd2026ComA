@@ -1,5 +1,5 @@
 class Chofer {
-    constructor(id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso){
+    constructor({id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso}){
         this.id=id;
         this.nombre=nombre;
         this.apellido=apellido;
@@ -26,6 +26,20 @@ class Chofer {
             return {success: true, message: 'Vehículo asignado correctamente.'};
         }
     }
+
+    liberarVehiculo() {
+        if (!this.idVehiculoAsignado) {
+            return {success: false, message: 'El chofer no tiene un vehículo asignado y no puede ser liberado.'};
+        }
+        if (this.estado === 'Ocupado') {
+            return {success: false, message: 'El chofer está en una ruta y no puede liberar su vehículo asignado.'};
+        }
+        else {
+            this.idVehiculoAsignado = null;
+            return {success: true, message: 'Vehículo liberado correctamente.'};
+        }
+    }
+
 
     asignarRuta(idRuta) {
         if (this.estado !== 'Disponible') {

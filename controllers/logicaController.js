@@ -70,6 +70,7 @@ const obtenerVehiculoPorId = (req, res) => {
     
     res.json(vehiculo);
 };
+
 const obtenerRutaPorId = (req, res) => {
     const rutas = leerRutas();
     const id = parseInt(req.params.id);
@@ -83,6 +84,7 @@ const obtenerRutaPorId = (req, res) => {
     
     res.json(ruta);
 };
+
 const obtenerChoferPorId = (req, res) => {
     const choferes = leerChoferes();
     const id = parseInt(req.params.id);
@@ -96,6 +98,7 @@ const obtenerChoferPorId = (req, res) => {
     
     res.json(chofer);
 };
+
 
 // Crear nuevo elemento -> Chequeo si existe antes de crearlo así no repetimos IDs/patentes 
 // o nos pega el error después de la creación
@@ -303,3 +306,93 @@ const borrarChofer = (req, res) => {
         mensaje: "Chofer eliminado correctamente"
     });
 };
+
+
+// Asignaciones y lógicas entre clases
+const asignarVehiculoAChofer = (req, res) => {
+    const choferes = leerChoferes();
+    const vehiculos = leerVehiculos();
+    const idChofer = parseInt(req.params.idChofer);
+    const idVehiculo = parseInt(req.params.idVehiculo);
+
+    // Necesito los índices para instanciarlos después y usar los métodos internos de las clases
+    const choferIndex = choferes.findIndex(c => c.id === idChofer);
+    if (choferIndex === -1) {
+        return res.status(404).json({ mensaje: "Chofer no encontrado" });
+    }
+    
+    const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
+    if (vehiculoIndex === -1) {
+        return res.status(404).json({ mensaje: "Vehículo no encontrado" });
+    }
+
+    // Instancio los objetos para poder usar los métodos de las clases
+    const ChoferObj = new Chofer(choferes[choferIndex]);
+    const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
+
+    // Intento asignar el vehículo al chofer
+    const resultadoAsignacionChofer = ChoferObj.asignarVehiculo(idVehiculo);
+    if (!resultadoAsignacionChofer.success) {
+        return res.status(400).json({ mensaje: resultadoAsignacionChofer.message }); // Devuelve el mensaje de error del método de la clase
+    }
+
+    const resultadoAsignacionVehiculo = VehiculoObj.asignarChofer(idChofer);
+    if (!resultadoAsignacionVehiculo.success) {
+        return res.status(400).json({ mensaje: resultadoAsignacionVehiculo.message }); // Idem arriba
+    }
+
+    // Si todo salió bien, actualizo los datos en los arrays y guardo
+    choferes[choferIndex] = {...ChoferObj}; // Actualizo el objeto con los cambios realizados por el método de la clase y los "pego" al array en el índice correspondiente
+    vehiculos[vehiculoIndex] = {...VehiculoObj};
+    guardarChoferes(choferes);
+    guardarVehiculos(vehiculos);
+
+    res.json({
+        mensaje: "Vehículo asignado correctamente al chofer",
+        chofer: choferes[choferIndex],
+        vehiculo: vehiculos[vehiculoIndex]
+    });
+}
+
+
+const liberarVehiculoDeChofer = (req, res) => {
+    const choferes = leerChoferes();
+    const vehiculos = leerVehiculos();
+    const idChofer = parseInt(req.params.idChofer);
+    const idVehiculo = parseInt(req.params.idVehiculo);
+
+    const choferIndex = choferes.findIndex(c => c.id === idChofer);
+    if (choferIndex === -1) {
+        return res.status(404).json({ mensaje: "Chofer no encontrado" });
+    }
+    
+    const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
+    if (vehiculoIndex === -1) {
+        return res.status(404).json({ mensaje: "Vehículo no encontrado" });
+    }
+    
+    const ChoferObj = new Chofer(choferes[choferIndex]);
+    const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
+
+    const resultadoLiberacionChofer = ChoferObj.liberarVehiculo();
+    if (!resultadoLiberacionChofer.success) {
+        return res.status(400).json({ mensaje: resultadoLiberacionChofer.message });
+    }
+
+    const resultadoLiberacionVehiculo = VehiculoObj.liberarChofer();
+    if (!resultadoLiberacionVehiculo.success) {
+        return res.status(400).json({ mensaje: resultadoLiberacionVehiculo.message });
+    }
+
+    // Si todo salió bien, actualizo los datos en los arrays y guardo
+    choferes[choferIndex] = {...ChoferObj};
+    vehiculos[vehiculoIndex] = {...VehiculoObj};
+    guardarChoferes(choferes);
+    guardarVehiculos(vehiculos);
+
+    res.json({
+        mensaje: "Vehículo liberado correctamente del chofer",
+        chofer: choferes[choferIndex],
+        vehiculo: vehiculos[vehiculoIndex]
+    });
+}
