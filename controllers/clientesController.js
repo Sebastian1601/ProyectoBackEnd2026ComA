@@ -24,7 +24,7 @@ const obtenerClientePorId = (req, res) => {
     const id = parseInt(req.params.id);
     const cliente = clientes.find(c => c.id === id);
 
-    if (!cliente) {
+    if (clienteIndex === -1) {
         return res.status(404).json({
             mensaje: "Cliente no encontrado"
         });
@@ -35,8 +35,8 @@ const obtenerClientePorId = (req, res) => {
 
 const crearCliente = (req, res) => {
     const clientes = leerClientes();
-    const { nombre, telefono, direccion } = req.body;
-    const nuevoCliente = { id: clientes.length + 1, nombre, telefono, direccion };
+    const { id, nombre, telefono, direccion } = req.body;
+    const nuevoCliente = { id, nombre, telefono, direccion };
     clientes.push(nuevoCliente);
     guardarClientes(clientes);
     res.status(201).json({
@@ -50,7 +50,7 @@ const actualizarCliente = (req, res) => {
     const id = parseInt(req.params.id);
     const clienteIndex = clientes.findIndex(c => c.id === id);
 
-    if (!clienteIndex) {
+    if (clienteIndex === -1) {
         return res.status(404).json({
             mensaje: "Cliente no encontrado"
         });
@@ -72,7 +72,7 @@ const borrarCliente = (req, res) => {
     const id = parseInt(req.params.id);
     const clienteIndex = clientes.findIndex(c => c.id === id);
 
-    if (!clienteIndex) {
+    if (clienteIndex === -1) {
         return res.status(404).json({
             mensaje: "Cliente no encontrado"
         });

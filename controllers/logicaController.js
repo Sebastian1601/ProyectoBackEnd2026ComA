@@ -184,7 +184,7 @@ const actualizarVehiculo = (req, res) => {
     const id = parseInt(req.params.id);
     const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
 
-    if (!vehiculoIndex) {
+    if (vehiculoIndex === -1) {
         return res.status(404).json({
             mensaje: "Vehículo no encontrado"
         });
@@ -206,7 +206,7 @@ const actualizarRuta = (req, res) => {
     const id = parseInt(req.params.id);
     const rutaIndex = rutas.findIndex(r => r.id === id);
 
-    if (!rutaIndex) {
+    if (rutaIndex === -1) {
         return res.status(404).json({
             mensaje: "Ruta no encontrada"
         });
@@ -228,7 +228,7 @@ const actualizarChofer = (req, res) => {
     const id = parseInt(req.params.id);
     const choferIndex = choferes.findIndex(c => c.id === id);
 
-    if (!choferIndex) {
+    if (choferIndex === -1) {
         return res.status(404).json({
             mensaje: "Chofer no encontrado"
         });
@@ -252,7 +252,7 @@ const borrarVehiculo = (req, res) => {
     const id = parseInt(req.params.id);
     const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
 
-    if (!vehiculoIndex) {
+    if (vehiculoIndex === -1) {
         return res.status(404).json({
             mensaje: "Vehículo no encontrado"
         });
@@ -271,7 +271,7 @@ const borrarRuta = (req, res) => {
     const id = parseInt(req.params.id);
     const rutaIndex = rutas.findIndex(r => r.id === id);
 
-    if (!rutaIndex) {
+    if (rutaIndex === -1) {
         return res.status(404).json({
             mensaje: "Ruta no encontrada"
         });
@@ -290,7 +290,7 @@ const borrarChofer = (req, res) => {
     const id = parseInt(req.params.id);
     const choferIndex = choferes.findIndex(c => c.id === id);
 
-    if (!choferIndex) {
+    if (choferIndex === -1) {
         return res.status(404).json({
             mensaje: "Chofer no encontrado"
         });
