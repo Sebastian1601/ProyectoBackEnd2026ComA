@@ -308,7 +308,7 @@ const borrarChofer = (req, res) => {
 };
 
 
-// Asignaciones y lógicas entre clases
+// Asignaciones y lógicas entre chofer y vehículo
 const asignarVehiculoAChofer = (req, res) => {
     const choferes = leerChoferes();
     const vehiculos = leerVehiculos();
@@ -352,7 +352,7 @@ const asignarVehiculoAChofer = (req, res) => {
         chofer: choferes[choferIndex],
         vehiculo: vehiculos[vehiculoIndex]
     });
-}
+};
 
 
 const liberarVehiculoDeChofer = (req, res) => {
@@ -395,4 +395,73 @@ const liberarVehiculoDeChofer = (req, res) => {
         chofer: choferes[choferIndex],
         vehiculo: vehiculos[vehiculoIndex]
     });
-}
+};
+
+
+// Asignaciones y lógicas entre chofer y ruta (sigamos los mismos patrones que en la asignación de vehículo a chofer)
+const asignarRutaAChofer = (req, res) => {
+    const choferes = leerChoferes();
+    const rutas = leerRutas();
+    const idChofer = parseInt(req.params.idChofer);
+    const idRuta = parseInt(req.params.idRuta);
+
+    const choferIndex = choferes.findIndex(c => c.id === idChofer);
+    if (choferIndex === -1) {
+        return res.status(404).json({ mensaje: "Chofer no encontrado" });
+    }
+    const rutaIndex = rutas.findIndex(r => r.id === idRuta);
+    if (rutaIndex === -1) {
+        return res.status(404).json({ mensaje: "Ruta no encontrada" });
+    }
+
+    const ChoferObj = new Chofer(choferes[choferIndex]);
+    const RutaObj = new Ruta(rutas[rutaIndex]);
+
+    const resultadoAsignacionChofer = ChoferObj.asignarRuta(idRuta);
+    if (!resultadoAsignacionChofer.success) {
+        return res.status(400).json({ mensaje: resultadoAsignacionChofer.message });
+    }
+    const resultadoAsignacionRuta = RutaObj.asignarChofer(idChofer);
+    if (!resultadoAsignacionRuta.success) {
+        return res.status(400).json({ mensaje: resultadoAsignacionRuta.message });
+    }
+
+    choferes[choferIndex] = {...ChoferObj};
+    rutas[rutaIndex] = {...RutaObj};
+    guardarChoferes(choferes);
+    guardarRutas(rutas);
+};
+
+const finalizarRutaDeChofer = (req, res) => {
+    const choferes = leerChoferes();
+    const rutas = leerRutas();
+    const idChofer = parseInt(req.params.idChofer);
+    const idRuta = parseInt(req.params.idRuta);
+
+    const choferIndex = choferes.findIndex(c => c.id === idChofer);
+    if (choferIndex === -1) {
+        return res.status(404).json({ mensaje: "Chofer no encontrado" });
+    }
+    const rutaIndex = rutas.findIndex(r => r.id === idRuta);
+    if (rutaIndex === -1) {
+        return res.status(404).json({ mensaje: "Ruta no encontrada" });
+    }
+
+    const ChoferObj = new Chofer(choferes[choferIndex]);
+    const RutaObj = new Ruta(rutas[rutaIndex]);
+
+    const resultadoFinalizacionChofer = ChoferObj.finalizarRuta();
+    if (!resultadoFinalizacionChofer.success) {
+        return res.status(400).json({ mensaje: resultadoFinalizacionChofer.message });
+    }
+    const resultadoLiberacionRuta = RutaObj.liberarChofer();
+    if (!resultadoLiberacionRuta.success) {
+        return res.status(400).json({ mensaje: resultadoLiberacionRuta.message });
+    }
+
+    choferes[choferIndex] = {...ChoferObj};
+    rutas[rutaIndex] = {...RutaObj};
+    guardarChoferes(choferes);
+    guardarRutas(rutas);
+};
+
