@@ -1,4 +1,4 @@
-class Entrega {
+export class Entrega {
     constructor({id, idRuta, idChofer, idCliente, fechaEntrega, descripcion, estado}) {
         this.id = id;
         this.idRuta = idRuta;

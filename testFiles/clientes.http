@@ -1,0 +1,14 @@
+GET http://localhost:3000/clientes
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/clientes/7
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/clientes/15
+Content-Type: application/json
+
+###

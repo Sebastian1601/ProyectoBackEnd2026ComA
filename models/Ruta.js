@@ -1,4 +1,4 @@
-class Ruta {
+export class Ruta {
     constructor({id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado}) {
         this.id = id;
         this.nombre = nombre;

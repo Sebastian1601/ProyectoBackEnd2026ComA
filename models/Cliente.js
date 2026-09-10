@@ -6,3 +6,5 @@ class Cliente {
         this.direccion = direccion;
     }
 }
+
+module.exports = { Cliente };

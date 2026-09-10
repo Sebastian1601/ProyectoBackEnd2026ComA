@@ -1,4 +1,4 @@
-class Chofer {
+export class Chofer {
     constructor({id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso}){
         this.id=id;
         this.nombre=nombre;
