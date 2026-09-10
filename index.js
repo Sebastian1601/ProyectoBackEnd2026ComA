@@ -1,24 +1,11 @@
 const express = require("express");
-const { ClienteController } = require("./controllers/clientesController.js");
-const { Cliente } = require("./models/Cliente.js");
+const routeClientes = require("./routes/routeclientes.js");
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.json({
-        status: "ok",
-        message: "Petición ok."
-    });
-});
-
-app.get("/clientes", (req, res) => {
-    ClienteController.obtenerClientes(req, res);
-});
-
-app.get("/clientes/:id", (req, res)=> ClienteController.obtenerClientePorId(req, res));
-
+app.use('/clientes', routeClientes);
 
 const PORT = process.env.port || 3000;
 app.listen(PORT, () => {
