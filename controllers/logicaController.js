@@ -430,6 +430,12 @@ const asignarRutaAChofer = (req, res) => {
     rutas[rutaIndex] = {...RutaObj};
     guardarChoferes(choferes);
     guardarRutas(rutas);
+
+    res.json({
+        mensaje: "Ruta asignada correctamente al chofer",
+        chofer: choferes[choferIndex],
+        ruta: rutas[rutaIndex]
+    });
 };
 
 const finalizarRutaDeChofer = (req, res) => {
@@ -463,5 +469,11 @@ const finalizarRutaDeChofer = (req, res) => {
     rutas[rutaIndex] = {...RutaObj};
     guardarChoferes(choferes);
     guardarRutas(rutas);
+
+    res.json({
+        mensaje: "Ruta finalizada correctamente por el chofer",
+        chofer: choferes[choferIndex],
+        ruta: rutas[rutaIndex]
+    });
 };
 
