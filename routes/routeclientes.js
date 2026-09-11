@@ -7,10 +7,11 @@ router.get("/", ClienteController.obtenerClientes);
 
 router.get("/:id", ClienteController.obtenerClientePorId);
 
-router.post("/", ClienteController.guardarClientes);
+router.post("/", ClienteController.crearCliente);
 
-router.put("/", ClienteController.actualizarCliente);
+router.put("/:id", ClienteController.actualizarCliente);
 
+router.delete("/:id", ClienteController.borrarCliente);
 
 module.exports = router;
 

@@ -8,6 +8,7 @@ app.use(express.json());
 app.use('/clientes', routeClientes);
 
 const PORT = process.env.port || 3000;
+
 app.listen(PORT, () => {
     console.log(`server running on http://localhost:${PORT}`);
 });

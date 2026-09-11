@@ -1,14 +1,50 @@
-GET http://localhost:3000/clientes
+@urlDefecto = http://localhost:3000
+
+//obtener todos los clientes
+GET {{urlDefecto}}/clientes
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/clientes/7
+//obtener un cliente por id
+GET {{urlDefecto}}/clientes/7
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/clientes/15
+//intentar obtener un cliente no válido
+GET {{urlDefecto}}/clientes/15
 Content-Type: application/json
 
 ###
+
+//crear nuevo cliente
+POST {{urlDefecto}}/clientes/
+Content-Type: application/json
+
+{
+    "nombre":"Argentina comidas unidas Srl",
+    "telefono":"11 6598 1142",
+    "direccion":"Juan Cruz 139"
+}
+
+###
+
+//modificar datos de un cliente por id
+//aqui se puede agregar nombre, telefono o direccion
+//para modificar los parámetros que se pasan en el body
+//de la request
+PUT {{urlDefecto}}/clientes/12
+Content-Type: application/json
+
+{
+    "nombre": "nombre Modificado"
+}
+
+###
+
+//eliminar un cliente n este caso el id 12
+DELETE {{urlDefecto}}/12
+Content-Type: application/json
+
+

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const Cliente = require('../models/Cliente');
+const { Cliente } = require('../models/Cliente');
 
 const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
@@ -31,24 +31,33 @@ class ClienteController {
         res.json(cliente);
     };
 
-    static guardarClientes = (clientes) => {
+    static #guardarClientes = (clientes) => {
         fs.writeFileSync(rutaArchivoClientes, JSON.stringify(clientes, null, 2));
-        res.status(200);
-        res.send({ status: ok, message: "Cliente agregado con éxito." });
     };
 
 
 
-    static #crearCliente = (req, res) => {
+    static crearCliente = (req, res) => {
         const clientes = this.#leerClientes();
         let id = 1;
-        if(clientes.length > 0) id = clientes[length - 1].id;
-        id++;
+        if (clientes.length > 0) {
+            id = clientes[clientes.length - 1].id;
+            id++;
+        };
 
         const { nombre, telefono, direccion } = req.body;
-        const nuevoCliente = new Cliente(id, nombre, telefono, direccion);
+
+        const nuevoCliente = new Cliente({
+            id,
+            nombre,
+            telefono,
+            direccion
+        });
+
         clientes.push(nuevoCliente);
-        guardarClientes(clientes);
+
+        this.#guardarClientes(clientes);
+
         res.status(201).json({
             mensaje: "Cliente creado correctamente",
             cliente: nuevoCliente
@@ -56,20 +65,24 @@ class ClienteController {
     };
 
     static actualizarCliente = (req, res) => {
-        const clientes = leerClientes();
+        const clientes = this.#leerClientes();
+
         const id = parseInt(req.params.id);
         const clienteIndex = clientes.findIndex(c => c.id === id);
+        const clienteAModificar = clientes[clienteIndex];
 
-        if (clienteIndex === -1) {
+        if (clienteIndex === undefined) {
             return res.status(404).json({
                 mensaje: "Cliente no encontrado"
             });
-        }
+        };
+        const datos = req.body;
 
-        const { nombre, telefono, direccion } = req.body;
-        clientes[clienteIndex] = { ...clientes[clienteIndex], nombre, telefono, direccion };
+        for (const [prop, valor] of Object.entries(datos)) {
+            clienteAModificar[prop] = valor;
+        };
 
-        guardarClientes(clientes);
+        this.#guardarClientes(clientes);
 
         res.json({
             mensaje: "Cliente actualizado correctamente",
@@ -78,7 +91,7 @@ class ClienteController {
     };
 
     static borrarCliente = (req, res) => {
-        const clientes = leerClientes();
+        const clientes = this.#leerClientes();
         const id = parseInt(req.params.id);
         const clienteIndex = clientes.findIndex(c => c.id === id);
 
@@ -88,6 +101,7 @@ class ClienteController {
             });
         }
 
+        
         clientes.splice(clienteIndex, 1);
         guardarClientes(clientes);
 

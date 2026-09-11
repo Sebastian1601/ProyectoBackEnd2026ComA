@@ -58,5 +58,23 @@
     "nombre": "Comedor Corporativo Quilmes Norte",
     "telefono": "1145670123",
     "direccion": "Av. Calchaquí 4500, Quilmes"
+  },
+  {
+    "id": 11,
+    "nombre": "Cooperativa de Servicios Publicos Telefónicos",
+    "telefono": "2320 713879",
+    "direccion": "Bernardino Rivadavia 780"
+  },
+  {
+    "id": 12,
+    "nombre": "nombre Modificado",
+    "telefono": "11 6598 1020",
+    "direccion": "Corrientes 1352"
+  },
+  {
+    "id": 13,
+    "nombre": "Argentina comidas unidas Srl",
+    "telefono": "11 6598 1142",
+    "direccion": "Juan Cruz 139"
   }
 ]
