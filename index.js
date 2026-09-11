@@ -1,11 +1,12 @@
 const express = require("express");
-const routeClientes = require("./routes/routeclientes.js");
+const { router } = require("./routes/routerMain.js");
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/clientes', routeClientes);
+app.use('/', router);
+
 
 const PORT = process.env.port || 3000;
 
