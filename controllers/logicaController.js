@@ -7,14 +7,18 @@ const Vehiculo = require('../models/Vehiculo');
 const Ruta = require('../models/Ruta');
 const Chofer = require('../models/Chofer');
 
+function devolverRuta(nombreArchivo){
+    return path.join(__dirname, "..", "data", nombreArchivo);
+}
 // unificando lectura
 //se crea clase para que si se agregan datos, simplemente se define en la propiedad la ruta del archivo, y luego se llama a los métodos 
 //del archivo que se desea leer 
 class RepositorioJson {
     constructor(){
-        this.clientes = path.join(__dirname, "..","data", "clientes.json");
-        this.vehiculos = path.join(__dirname, "..","data", "vehiculos.json");
-        this.choferes = path.join(__dirname, "..", "data", "choferes.json");
+        this.clientes = devolverRuta("clientes.json");
+        this.vehiculos = devolverRuta("vehiculos.json");
+        this.choferes = devolverRuta("choferes.json");
+        this.pedidos = devolverRuta("pedidos.json");
     }
 
     leerArchivo(nombre){

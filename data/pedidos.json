@@ -1,0 +1,380 @@
+[
+  {
+    "id": 1,
+    "cliente": "Juan Pérez",
+    "fecha": "2024-01-15",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 101,
+        "descripcion": "Teclado mecánico",
+        "costo": 45000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 102,
+        "descripcion": "Mouse inalámbrico",
+        "costo": 15000,
+        "cantidadAdquirida": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "cliente": "María Gómez",
+    "fecha": "2024-02-03",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 103,
+        "descripcion": "Monitor 24 pulgadas",
+        "costo": 120000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "cliente": "Carlos Rodríguez",
+    "fecha": "2024-02-10",
+    "estado": "en proceso",
+    "productos": [
+      {
+        "id": 104,
+        "descripcion": "Auriculares Bluetooth",
+        "costo": 30000,
+        "cantidadAdquirida": 3
+      },
+      {
+        "id": 105,
+        "descripcion": "Cargador USB-C",
+        "costo": 8000,
+        "cantidadAdquirida": 5
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "cliente": "Ana López",
+    "fecha": "2024-02-18",
+    "estado": "cancelada",
+    "productos": [
+      {
+        "id": 106,
+        "descripcion": "Silla ergonómica",
+        "costo": 95000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "cliente": "Pedro Martínez",
+    "fecha": "2024-03-01",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 107,
+        "descripcion": "Notebook 15.6",
+        "costo": 850000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 108,
+        "descripcion": "Mochila para notebook",
+        "costo": 25000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "cliente": "Laura Fernández",
+    "fecha": "2024-03-05",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 109,
+        "descripcion": "Impresora multifunción",
+        "costo": 180000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "cliente": "Diego Sánchez",
+    "fecha": "2024-03-12",
+    "estado": "en proceso",
+    "productos": [
+      {
+        "id": 110,
+        "descripcion": "Webcam HD",
+        "costo": 40000,
+        "cantidadAdquirida": 2
+      },
+      {
+        "id": 111,
+        "descripcion": "Micrófono USB",
+        "costo": 55000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 112,
+        "descripcion": "Soporte para monitor",
+        "costo": 12000,
+        "cantidadAdquirida": 2
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "cliente": "Sofía Torres",
+    "fecha": "2024-03-20",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 113,
+        "descripcion": "Disco SSD 1TB",
+        "costo": 65000,
+        "cantidadAdquirida": 2
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "cliente": "Martín Díaz",
+    "fecha": "2024-04-02",
+    "estado": "cancelada",
+    "productos": [
+      {
+        "id": 114,
+        "descripcion": "Router WiFi 6",
+        "costo": 70000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 115,
+        "descripcion": "Cable de red Cat6",
+        "costo": 5000,
+        "cantidadAdquirida": 3
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "cliente": "Valentina Ruiz",
+    "fecha": "2024-04-08",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 116,
+        "descripcion": "Tablet 10 pulgadas",
+        "costo": 220000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "cliente": "Federico Castro",
+    "fecha": "2024-04-15",
+    "estado": "en proceso",
+    "productos": [
+      {
+        "id": 117,
+        "descripcion": "Parlante Bluetooth",
+        "costo": 35000,
+        "cantidadAdquirida": 2
+      },
+      {
+        "id": 118,
+        "descripcion": "Power bank 20000mAh",
+        "costo": 28000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "cliente": "Camila Herrera",
+    "fecha": "2024-04-22",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 119,
+        "descripcion": "Silla gamer",
+        "costo": 150000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 120,
+        "descripcion": "Alfombrilla XXL",
+        "costo": 18000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "cliente": "Nicolás Morales",
+    "fecha": "2024-05-01",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 121,
+        "descripcion": "Placa de video usada",
+        "costo": 300000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "cliente": "Julieta Romero",
+    "fecha": "2024-05-09",
+    "estado": "cancelada",
+    "productos": [
+      {
+        "id": 122,
+        "descripcion": "Memoria RAM 16GB",
+        "costo": 60000,
+        "cantidadAdquirida": 2
+      },
+      {
+        "id": 123,
+        "descripcion": "Cooler para gabinete",
+        "costo": 15000,
+        "cantidadAdquirida": 3
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "cliente": "Tomás Silva",
+    "fecha": "2024-05-17",
+    "estado": "en proceso",
+    "productos": [
+      {
+        "id": 124,
+        "descripcion": "Gabinete ATX",
+        "costo": 90000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "cliente": "Agustina Vega",
+    "fecha": "2024-05-25",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 125,
+        "descripcion": "Fuente de poder 650W",
+        "costo": 75000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 126,
+        "descripcion": "Kit de cables sleeved",
+        "costo": 20000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "cliente": "Lucas Ortiz",
+    "fecha": "2024-06-02",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 127,
+        "descripcion": "Motherboard AM4",
+        "costo": 130000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "cliente": "Florencia Núñez",
+    "fecha": "2024-06-10",
+    "estado": "en proceso",
+    "productos": [
+      {
+        "id": 128,
+        "descripcion": "Teclado mecánico RGB",
+        "costo": 55000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 129,
+        "descripcion": "Mousepad gamer",
+        "costo": 10000,
+        "cantidadAdquirida": 2
+      },
+      {
+        "id": 130,
+        "descripcion": "Auriculares gamer",
+        "costo": 48000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "cliente": "Ignacio Molina",
+    "fecha": "2024-06-18",
+    "estado": "cancelada",
+    "productos": [
+      {
+        "id": 131,
+        "descripcion": "Monitor curvo 27 pulgadas",
+        "costo": 210000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "cliente": "Rocío Acosta",
+    "fecha": "2024-06-25",
+    "estado": "completada",
+    "productos": [
+      {
+        "id": 132,
+        "descripcion": "Notebook gamer 16GB RAM",
+        "costo": 1200000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 133,
+        "descripcion": "Silla gamer reclinable",
+        "costo": 160000,
+        "cantidadAdquirida": 1
+      },
+      {
+        "id": 134,
+        "descripcion": "Escritorio para PC",
+        "costo": 85000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "cliente": "Jhon Salchi Chon S.A.",
+    "fecha": "2026-06-17",
+    "estado": "pendiente",
+    "productos": [
+      {
+        "id": 102,
+        "descripcion": "Salchicon primavera",
+        "costo": 8000,
+        "cantidadAdquirida": 1
+      }
+    ]
+  }
+]

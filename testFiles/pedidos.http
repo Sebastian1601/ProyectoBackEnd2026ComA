@@ -1,0 +1,32 @@
+@urlDefecto = http://localhost:3000
+
+//-----------------------------------
+//-----------------------------------
+
+//solicitud de toda la lista de pedidos
+GET {{urlDefecto}}/pedidos
+Content-Type: application/json
+
+###
+//obtener un pedido por id
+GET {{urlDefecto}}/pedidos/10
+Content-Type: application/json
+
+###
+GET {{urlDefecto}}/pedidos/560
+Content-Type: application/json
+
+###
+POST {{urlDefecto}}/pedidos
+Content-Type: application/json
+
+{
+    "cliente":"Jhon Salchi Chon S.A.",
+    "fecha":"2026-06-17",
+    "productos":[{
+        "id": 102,
+        "descripcion": "Salchicon primavera",
+        "costo": 8000,
+        "cantidadAdquirida": 1
+      }]
+}

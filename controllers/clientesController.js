@@ -1,8 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-
-const { RepositorioJson } = require("./logicaController");
-const { Cliente } = require('../models/Cliente');
+const { RepositorioJson } = require("./logicaController.js");
+const { Cliente } = require('../models/Cliente.js');
 
 //const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
