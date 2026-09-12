@@ -1,26 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
+const { RepositorioJson } = require("./logicaController");
 const { Cliente } = require('../models/Cliente');
 
-const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
+//const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
 class ClienteController {
-    //funciona  
-    static #leerClientes = () => {
-        const data = fs.readFileSync(rutaArchivoClientes, 'utf-8');
-        return JSON.parse(data);
-    };
 
     static obtenerClientes = (req, res) => {
-        const clientes = this.#leerClientes();
-        res.json(clientes);
+        const repoJson = new RepositorioJson();
+        const clientesRecuperados = repoJson.leerArchivo("clientes");
+        res.json(clientesRecuperados);
     };
 
     static obtenerClientePorId = (req, res) => {
-        const clientes = this.#leerClientes();
+        const repoJson = new RepositorioJson();
+        const clientesRecuperados = repoJson.leerArchivo("clientes");
         const id = parseInt(req.params.id);
-        const cliente = clientes.find(c => c.id === id);
+        const cliente = clientesRecuperados.find(c => c.id === id);
 
         if (cliente === undefined) {
             return res.status(404).json({
@@ -31,17 +29,20 @@ class ClienteController {
         res.json(cliente);
     };
 
-    static #guardarClientes = (clientes) => {
-        fs.writeFileSync(rutaArchivoClientes, JSON.stringify(clientes, null, 2));
-    };
+    // static #guardarClientes = (clientes) => {
+    //     fs.writeFileSync(rutaArchivoClientes, JSON.stringify(clientes, null, 2));
+    // };
 
 
 
     static crearCliente = (req, res) => {
-        const clientes = this.#leerClientes();
+        const repoJson = new RepositorioJson();
+        const clientesRecuperados = repoJson.leerArchivo("clientes");
+        const cantClientes = clientesRecuperados.length;
+
         let id = 1;
-        if (clientes.length > 0) {
-            id = clientes[clientes.length - 1].id;
+        if (cantClientes > 0) {
+            id = clientesRecuperados[cantClientes - 1].id;
             id++;
         };
 
@@ -54,9 +55,9 @@ class ClienteController {
             direccion
         });
 
-        clientes.push(nuevoCliente);
+        clientesRecuperados.push(nuevoCliente);
 
-        this.#guardarClientes(clientes);
+        repoJson.guardarArchivo("clientes", clientesRecuperados);
 
         res.status(201).json({
             mensaje: "Cliente creado correctamente",
@@ -65,11 +66,12 @@ class ClienteController {
     };
 
     static actualizarCliente = (req, res) => {
-        const clientes = this.#leerClientes();
-
+        // const clientes = this.#leerClientes();
+        const repoJson = new RepositorioJson();
+        const clientesRecuperados = repoJson.leerArchivo("clientes");
         const id = parseInt(req.params.id);
-        const clienteIndex = clientes.findIndex(c => c.id === id);
-        const clienteAModificar = clientes[clienteIndex];
+        const clienteIndex = clientesRecuperados.findIndex(c => c.id === id);
+        const clienteAModificar = clientesRecuperados[clienteIndex];
 
         if (clienteIndex === undefined) {
             return res.status(404).json({
@@ -82,16 +84,18 @@ class ClienteController {
             clienteAModificar[prop] = valor;
         };
 
-        this.#guardarClientes(clientes);
-
+        // this.#guardarClientes(clientes);
+        repoJson.guardarArchivo("clientes", clientesRecuperados);
         res.json({
             mensaje: "Cliente actualizado correctamente",
-            cliente: clientes[clienteIndex]
+            cliente: clientesRecuperados[clienteIndex]
         });
     };
 
     static borrarCliente = (req, res) => {
-        const clientes = this.#leerClientes();
+        const repoJson = new RepositorioJson();
+        const clientes = repoJson.leerArchivo("clientes");
+        
         const id = parseInt(req.params.id);
         const clienteIndex = clientes.findIndex(c => c.id === id);
 
@@ -100,10 +104,8 @@ class ClienteController {
                 mensaje: "Cliente no encontrado"
             });
         }
-
-        
         clientes.splice(clienteIndex, 1);
-        guardarClientes(clientes);
+        repoJson.guardarArchivo("clientes", clientes);
 
         res.json({
             mensaje: "Cliente eliminado correctamente"

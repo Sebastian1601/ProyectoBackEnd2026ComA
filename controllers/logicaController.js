@@ -7,54 +7,72 @@ const Vehiculo = require('../models/Vehiculo');
 const Ruta = require('../models/Ruta');
 const Chofer = require('../models/Chofer');
 
+// unificando lectura
+//se crea clase para que si se agregan datos, simplemente se define en la propiedad la ruta del archivo, y luego se llama a los métodos 
+//del archivo que se desea leer 
+class RepositorioJson {
+    constructor(){
+        this.clientes = path.join(__dirname, "..","data", "clientes.json");
+        this.vehiculos = path.join(__dirname, "..","data", "vehiculos.json");
+        this.choferes = path.join(__dirname, "..", "data", "choferes.json");
+    }
 
-// Importar archivos JSON
-const rutaArchivoVehiculos = path.join(__dirname, '../data/vehiculos.json');
-const rutaArchivoRutas = path.join(__dirname, '../data/rutas.json');
-const rutaArchivoChoferes = path.join(__dirname, '../data/choferes.json');
+    leerArchivo(nombre){
+        const data = fs.readFileSync(this[nombre], 'utf-8');
+        const parsedData = JSON.parse(data);
+        return parsedData;
+    }
+
+    guardarArchivo(nombre, data){
+        const stringData = JSON.stringify(data, null, 2);
+        fs.writeFileSync(this[nombre], stringData);
+    }
+}
+
+// // Obtener datos de JSONs
+// const obtenerVehiculos = (req, res) => {
+//     const vehiculos = leerVehiculos();
+//     res.json(vehiculos);
+// };
+// const obtenerRutas = (req, res) => {
+//     const rutas = leerRutas();
+//     res.json(rutas);
+// };
+// const obtenerChoferes = (req, res) => {
+//     const choferes = leerChoferes();
+//     res.json(choferes);
+// };
+
+// // Importar archivos JSON
+// const rutaArchivoVehiculos = path.join(__dirname, '../data/vehiculos.json');
+// const rutaArchivoRutas = path.join(__dirname, '../data/rutas.json');
+// const rutaArchivoChoferes = path.join(__dirname, '../data/choferes.json');
 
 
-// Lectura de archivos JSON
-const leerVehiculos = () => {
-    const data = fs.readFileSync(rutaArchivoVehiculos, 'utf-8');
-    return JSON.parse(data);
-};
-const leerRutas = () => {
-    const data = fs.readFileSync(rutaArchivoRutas, 'utf-8');
-    return JSON.parse(data);
-};
-const leerChoferes = () => {
-    const data = fs.readFileSync(rutaArchivoChoferes, 'utf-8');
-    return JSON.parse(data);
-};
-
-
+// // Lectura de archivos JSON
+// const leerVehiculos = () => {
+//     const data = fs.readFileSync(rutaArchivoVehiculos, 'utf-8');
+//     return JSON.parse(data);
+// };
+// const leerRutas = () => {
+//     const data = fs.readFileSync(rutaArchivoRutas, 'utf-8');
+//     return JSON.parse(data);
+// };
+// const leerChoferes = () => {
+//     const data = fs.readFileSync(rutaArchivoChoferes, 'utf-8');
+//     return JSON.parse(data);
+// };
 // Guardado de archivos JSON
-const guardarVehiculos = (vehiculos) => {
-    fs.writeFileSync(rutaArchivoVehiculos, JSON.stringify(vehiculos, null, 2));
-};
-const guardarRutas = (rutas) => {
-    fs.writeFileSync(rutaArchivoRutas, JSON.stringify(rutas, null, 2));
-};
-const guardarChoferes = (choferes) => {
-    fs.writeFileSync(rutaArchivoChoferes, JSON.stringify(choferes, null, 2));
-};
 
-
-// Obtener datos de JSONs
-const obtenerVehiculos = (req, res) => {
-    const vehiculos = leerVehiculos();
-    res.json(vehiculos);
-};
-const obtenerRutas = (req, res) => {
-    const rutas = leerRutas();
-    res.json(rutas);
-};
-const obtenerChoferes = (req, res) => {
-    const choferes = leerChoferes();
-    res.json(choferes);
-};
-
+// const guardarVehiculos = (vehiculos) => {
+//     fs.writeFileSync(rutaArchivoVehiculos, JSON.stringify(vehiculos, null, 2));
+// };
+// const guardarRutas = (rutas) => {
+//     fs.writeFileSync(rutaArchivoRutas, JSON.stringify(rutas, null, 2));
+// };
+// const guardarChoferes = (choferes) => {
+//     fs.writeFileSync(rutaArchivoChoferes, JSON.stringify(choferes, null, 2));
+// };
 
 // Obtener por ID
 const obtenerVehiculoPorId = (req, res) => {
@@ -477,3 +495,7 @@ const finalizarRutaDeChofer = (req, res) => {
     });
 };
 
+
+module.exports = {
+    RepositorioJson
+}

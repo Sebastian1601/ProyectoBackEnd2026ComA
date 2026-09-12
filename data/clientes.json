@@ -67,14 +67,44 @@
   },
   {
     "id": 12,
-    "nombre": "nombre Modificado",
+    "nombre": "nombre Modificado 2",
     "telefono": "11 6598 1020",
-    "direccion": "Corrientes 1352"
+    "direccion": "calle Falsa 123"
   },
   {
     "id": 13,
     "nombre": "Argentina comidas unidas Srl",
     "telefono": "11 6598 1142",
     "direccion": "Juan Cruz 139"
+  },
+  {
+    "id": 14,
+    "nombre": "Argentina comidas unidas Srl",
+    "telefono": "11 6598 1142",
+    "direccion": "Juan Cruz 139"
+  },
+  {
+    "id": 15,
+    "nombre": "un nuevo cliente",
+    "telefono": "113205648",
+    "direccion": "juan cruz varela 14"
+  },
+  {
+    "id": 16,
+    "nombre": "un nuevo cliente",
+    "telefono": "113205648",
+    "direccion": "juan cruz varela 14"
+  },
+  {
+    "id": 17,
+    "nombre": "y uno mas",
+    "telefono": "11 3205 0648",
+    "direccion": "juan cruz varela 14"
+  },
+  {
+    "id": 18,
+    "nombre": "y uno mas",
+    "telefono": "11 3205 0648",
+    "direccion": "juan cruz varela 14"
   }
 ]

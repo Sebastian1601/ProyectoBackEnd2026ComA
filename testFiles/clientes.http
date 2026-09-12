@@ -1,5 +1,7 @@
 @urlDefecto = http://localhost:3000
 
+//--------------------------------------------
+
 //obtener todos los clientes
 GET {{urlDefecto}}/clientes
 Content-Type: application/json
@@ -23,10 +25,23 @@ POST {{urlDefecto}}/clientes/
 Content-Type: application/json
 
 {
-    "nombre":"Argentina comidas unidas Srl",
-    "telefono":"11 6598 1142",
-    "direccion":"Juan Cruz 139"
+    "nombre":"y uno mas",
+    "telefono":"11 3205 0648",
+    "direccion":"juan cruz varela 14"
 }
+
+###
+
+//crear nuevo cliente con string invalida
+POST {{urlDefecto}}/clientes/
+Content-Type: application/json
+
+{
+    "nombre":"cn",
+    "telefono":"8",
+    "direccion":"a14"
+}
+
 
 ###
 
@@ -38,7 +53,8 @@ PUT {{urlDefecto}}/clientes/12
 Content-Type: application/json
 
 {
-    "nombre": "nombre Modificado"
+    "nombre": "nombre Modificado 2",
+    "direccion":"calle Falsa 123"
 }
 
 ###

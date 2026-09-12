@@ -1,4 +1,4 @@
-export class Ruta {
+class Ruta {
     constructor({id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado}) {
         this.id = id;
         this.nombre = nombre;
@@ -28,4 +28,8 @@ export class Ruta {
             return {success: true, message: 'Chofer liberado correctamente de la ruta.'};
         }
     }
+}
+
+module.exports = {
+    Ruta
 }
