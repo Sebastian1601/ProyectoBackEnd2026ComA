@@ -18,6 +18,7 @@ class RepositorioJson {
         this.clientes = devolverRuta("clientes.json");
         this.vehiculos = devolverRuta("vehiculos.json");
         this.choferes = devolverRuta("choferes.json");
+        this.rutas = devolverRuta("rutas.json");
         this.pedidos = devolverRuta("pedidos.json");
     }
 
@@ -78,428 +79,472 @@ class RepositorioJson {
 //     fs.writeFileSync(rutaArchivoChoferes, JSON.stringify(choferes, null, 2));
 // };
 
-// Obtener por ID
-const obtenerVehiculoPorId = (req, res) => {
-    const vehiculos = leerVehiculos();
-    const id = parseInt(req.params.id);
-    const vehiculo = vehiculos.find(v => v.id === id);
-    
-    if (!vehiculo) {
-        return res.status(404).json({
-            mensaje: "Vehículo no encontrado"
+
+
+class VehiculoController{
+    static obtenerVehiculos = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        res.json(vehiculos);
+        };
+
+    static obtenerVehiculoPorId = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const id = parseInt(req.params.id);
+        const vehiculo = vehiculos.find(v => v.id === id);
+        
+        if (!vehiculo) {
+            return res.status(404).json({
+                mensaje: "Vehículo no encontrado"
+            });
+        }
+        
+        res.json(vehiculo);
+        };
+
+    static crearVehiculo = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const { id, patente, marca, modelo, capacidad, estado, idChoferAsignado } = req.body;
+
+        const vehiculoExistente = vehiculos.find(v => v.id === id);
+        const patenteExistente = vehiculos.find(v => v.patente === patente);
+
+        if (vehiculoExistente) {
+            return res.status(400).json({
+                mensaje: "Vehículo ya existe con ese ID"
+            });
+        }
+        if (patenteExistente) {
+            return res.status(400).json({
+                mensaje: "Vehículo ya existe con esa patente"
+            });
+        }
+
+        const nuevoVehiculo = { id, patente, marca, modelo, capacidad, estado, idChoferAsignado };
+        vehiculos.push(nuevoVehiculo);
+        repoJson.guardarArchivo("vehiculos", vehiculos);
+
+        res.status(201).json({
+            mensaje: "Vehículo creado correctamente",
+            vehiculo: nuevoVehiculo
         });
-    }
-    
-    res.json(vehiculo);
+    };
+
+    static actualizarVehiculo = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const id = parseInt(req.params.id);
+        const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
+
+        if (vehiculoIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Vehículo no encontrado"
+            });
+        }
+
+        const { patente, marca, modelo, capacidad, estado, idChoferAsignado } = req.body;
+        vehiculos[vehiculoIndex] = { ...vehiculos[vehiculoIndex], patente, marca, modelo, capacidad, estado, idChoferAsignado };
+
+        repoJson.guardarArchivo("vehiculos", vehiculos);
+
+        res.json({
+            mensaje: "Vehículo actualizado correctamente",
+            vehiculo: vehiculos[vehiculoIndex]
+        });
+    };
+
+    static borrarVehiculo = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const id = parseInt(req.params.id);
+        const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
+
+        if (vehiculoIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Vehículo no encontrado"
+            });
+        }
+
+        vehiculos.splice(vehiculoIndex, 1);
+        repoJson.guardarArchivo("vehiculos", vehiculos);
+
+        res.json({
+            mensaje: "Vehículo eliminado correctamente"
+        });
+    };
+
 };
 
-const obtenerRutaPorId = (req, res) => {
-    const rutas = leerRutas();
-    const id = parseInt(req.params.id);
-    const ruta = rutas.find(r => r.id === id);
-    
-    if (!ruta) {
-        return res.status(404).json({
-            mensaje: "Ruta no encontrada"
+class RutaController {
+    static obtenerRutas = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const rutas = repoJson.leerArchivo("rutas");
+        res.json(rutas);
+    };
+
+    static obtenerRutaPorId = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const rutas = repoJson.leerArchivo("rutas");
+        const id = parseInt(req.params.id);
+        const ruta = rutas.find(r => r.id === id);
+        
+        if (!ruta) {
+            return res.status(404).json({
+                mensaje: "Ruta no encontrada"
+            });
+        }
+        
+        res.json(ruta);
+    };
+
+    static crearRuta = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const rutas = repoJson.leerArchivo("rutas");
+        const { id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado } = req.body;
+
+        const rutaExistente = rutas.find(r => r.id === id);
+
+        if (rutaExistente) {
+            return res.status(400).json({
+                mensaje: "Ruta ya existe con ese ID"
+            });
+        }
+
+        const nuevaRuta = { id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado };
+        rutas.push(nuevaRuta);
+        repoJson.guardarArchivo("rutas", rutas);
+
+        res.status(201).json({
+            mensaje: "Ruta creada correctamente",
+            ruta: nuevaRuta
         });
-    }
-    
-    res.json(ruta);
-};
+    };
 
-const obtenerChoferPorId = (req, res) => {
-    const choferes = leerChoferes();
-    const id = parseInt(req.params.id);
-    const chofer = choferes.find(c => c.id === id);
-    
-    if (!chofer) {
-        return res.status(404).json({
-            mensaje: "Chofer no encontrado"
+    static actualizarRuta = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const rutas = repoJson.leerArchivo("rutas");
+        const id = parseInt(req.params.id);
+        const rutaIndex = rutas.findIndex(r => r.id === id);
+
+        if (rutaIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Ruta no encontrada"
+            });
+        }
+
+        const { nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado } = req.body;
+        rutas[rutaIndex] = { ...rutas[rutaIndex], nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado };
+
+        repoJson.guardarArchivo("rutas", rutas);
+
+        res.json({
+            mensaje: "Ruta actualizada correctamente",
+            ruta: rutas[rutaIndex]
         });
-    }
-    
-    res.json(chofer);
-};
+    };
 
+    static borrarRuta = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const rutas = repoJson.leerArchivo("rutas");
+        const id = parseInt(req.params.id);
+        const rutaIndex = rutas.findIndex(r => r.id === id);
 
-// Crear nuevo elemento -> Chequeo si existe antes de crearlo así no repetimos IDs/patentes 
-// o nos pega el error después de la creación
-const crearVehiculo = (req, res) => {
-    const vehiculos = leerVehiculos();
-    const { id, patente, marca, modelo, capacidad, estado, idChoferAsignado } = req.body;
+        if (rutaIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Ruta no encontrada"
+            });
+        }
 
-    const vehiculoExistente = vehiculos.find(v => v.id === id);
-    const patenteExistente = vehiculos.find(v => v.patente === patente);
+        rutas.splice(rutaIndex, 1);
+        repoJson.guardarArchivo("rutas", rutas);
 
-    if (vehiculoExistente) {
-        return res.status(400).json({
-            mensaje: "Vehículo ya existe con ese ID"
+        res.json({
+            mensaje: "Ruta eliminada correctamente"
         });
-    }
-    if (patenteExistente) {
-        return res.status(400).json({
-            mensaje: "Vehículo ya existe con esa patente"
-        });
-    }
+    };
 
-    const nuevoVehiculo = { id, patente, marca, modelo, capacidad, estado, idChoferAsignado };
-    vehiculos.push(nuevoVehiculo);
-    guardarVehiculos(vehiculos);
-
-    res.status(201).json({
-        mensaje: "Vehículo creado correctamente",
-        vehiculo: nuevoVehiculo
-    });
-};
-
-const crearRuta = (req, res) => {
-    const rutas = leerRutas();
-    const { id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado } = req.body;
-
-    const rutaExistente = rutas.find(r => r.id === id);
-
-    if (rutaExistente) {
-        return res.status(400).json({
-            mensaje: "Ruta ya existe con ese ID"
-        });
-    }
-
-    const nuevaRuta = { id, nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado };
-    rutas.push(nuevaRuta);
-    guardarRutas(rutas);
-
-    res.status(201).json({
-        mensaje: "Ruta creada correctamente",
-        ruta: nuevaRuta
-    });
-};
-
-const crearChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;   
-    
-    const choferExistente = choferes.find(c => c.id === id);
-    const dniExistente = choferes.find(c => c.dni === dni);
-
-    if (choferExistente) {
-        return res.status(400).json({
-            mensaje: "Chofer ya existe con ese ID"
-        });
-    }
-    if (dniExistente) {
-        return res.status(400).json({
-            mensaje: "Chofer ya existe con ese DNI"
-        });
-    }
-
-    const nuevoChofer = { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso };
-    choferes.push(nuevoChofer);
-    guardarChoferes(choferes);
-
-    res.status(201).json({
-        mensaje: "Chofer creado correctamente",
-        chofer: nuevoChofer
-    });
-};
-
-
-// Actualizar elemento por ID
-const actualizarVehiculo = (req, res) => {
-    const vehiculos = leerVehiculos();
-    const id = parseInt(req.params.id);
-    const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
-
-    if (vehiculoIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Vehículo no encontrado"
-        });
-    }
-
-    const { patente, marca, modelo, capacidad, estado, idChoferAsignado } = req.body;
-    vehiculos[vehiculoIndex] = { ...vehiculos[vehiculoIndex], patente, marca, modelo, capacidad, estado, idChoferAsignado };
-
-    guardarVehiculos(vehiculos);
-
-    res.json({
-        mensaje: "Vehículo actualizado correctamente",
-        vehiculo: vehiculos[vehiculoIndex]
-    });
-};
-
-const actualizarRuta = (req, res) => {
-    const rutas = leerRutas();
-    const id = parseInt(req.params.id);
-    const rutaIndex = rutas.findIndex(r => r.id === id);
-
-    if (rutaIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Ruta no encontrada"
-        });
-    }
-
-    const { nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado } = req.body;
-    rutas[rutaIndex] = { ...rutas[rutaIndex], nombre, origen, destino, duracionEstimada, distanciaEstimada, idChoferAsignado };
-
-    guardarRutas(rutas);
-
-    res.json({
-        mensaje: "Ruta actualizada correctamente",
-        ruta: rutas[rutaIndex]
-    });
-};
-
-const actualizarChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const id = parseInt(req.params.id);
-    const choferIndex = choferes.findIndex(c => c.id === id);
-
-    if (choferIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Chofer no encontrado"
-        });
-    }
-
-    const { nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;
-    choferes[choferIndex] = { ...choferes[choferIndex], nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso };
-
-    guardarChoferes(choferes);
-
-    res.json({
-        mensaje: "Chofer actualizado correctamente",
-        chofer: choferes[choferIndex]
-    });
 };
 
 
-// Borrado de elemento por ID
-const borrarVehiculo = (req, res) => {
-    const vehiculos = leerVehiculos();
-    const id = parseInt(req.params.id);
-    const vehiculoIndex = vehiculos.findIndex(v => v.id === id);
+class ChoferController {
+    static obtenerChoferes = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        res.json(choferes);
+    };
 
-    if (vehiculoIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Vehículo no encontrado"
+    static obtenerChoferPorId = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const id = parseInt(req.params.id);
+        const chofer = choferes.find(c => c.id === id);
+        
+        if (!chofer) {
+            return res.status(404).json({
+                mensaje: "Chofer no encontrado"
+            });
+        }
+        
+        res.json(chofer);
+    };
+
+    static crearChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;   
+        
+        const choferExistente = choferes.find(c => c.id === id);
+        const dniExistente = choferes.find(c => c.dni === dni);
+
+        if (choferExistente) {
+            return res.status(400).json({
+                mensaje: "Chofer ya existe con ese ID"
+            });
+        }
+        if (dniExistente) {
+            return res.status(400).json({
+                mensaje: "Chofer ya existe con ese DNI"
+            });
+        }
+
+        const nuevoChofer = { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso };
+        choferes.push(nuevoChofer);
+        repoJson.guardarArchivo("choferes", choferes);
+
+        res.status(201).json({
+            mensaje: "Chofer creado correctamente",
+            chofer: nuevoChofer
         });
-    }
+    };
 
-    vehiculos.splice(vehiculoIndex, 1);
-    guardarVehiculos(vehiculos);
+    static actualizarChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const id = parseInt(req.params.id);
+        const choferIndex = choferes.findIndex(c => c.id === id);
 
-    res.json({
-        mensaje: "Vehículo eliminado correctamente"
-    });
+        if (choferIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Chofer no encontrado"
+            });
+        }
+
+        const { nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;
+        choferes[choferIndex] = { ...choferes[choferIndex], nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso };
+
+        repoJson.guardarArchivo("choferes", choferes);
+
+        res.json({
+            mensaje: "Chofer actualizado correctamente",
+            chofer: choferes[choferIndex]
+        });
+    };
+
+    static borrarChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const id = parseInt(req.params.id);
+        const choferIndex = choferes.findIndex(c => c.id === id);
+
+        if (choferIndex === -1) {
+            return res.status(404).json({
+                mensaje: "Chofer no encontrado"
+            });
+        }
+
+        choferes.splice(choferIndex, 1);
+        repoJson.guardarArchivo("choferes", choferes);
+
+        res.json({
+            mensaje: "Chofer eliminado correctamente"
+        });
+    };
 };
 
-const borrarRuta = (req, res) => {
-    const rutas = leerRutas();
-    const id = parseInt(req.params.id);
-    const rutaIndex = rutas.findIndex(r => r.id === id);
-
-    if (rutaIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Ruta no encontrada"
-        });
-    }
-
-    rutas.splice(rutaIndex, 1);
-    guardarRutas(rutas);
-
-    res.json({
-        mensaje: "Ruta eliminada correctamente"
-    });
-};
-
-const borrarChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const id = parseInt(req.params.id);
-    const choferIndex = choferes.findIndex(c => c.id === id);
-
-    if (choferIndex === -1) {
-        return res.status(404).json({
-            mensaje: "Chofer no encontrado"
-        });
-    }
-
-    choferes.splice(choferIndex, 1);
-    guardarChoferes(choferes);
-
-    res.json({
-        mensaje: "Chofer eliminado correctamente"
-    });
-};
 
 
+class AsignacionesController {
 // Asignaciones y lógicas entre chofer y vehículo
-const asignarVehiculoAChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const vehiculos = leerVehiculos();
-    const idChofer = parseInt(req.params.idChofer);
-    const idVehiculo = parseInt(req.params.idVehiculo);
+    static asignarVehiculoAChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const idChofer = parseInt(req.params.idChofer);
+        const idVehiculo = parseInt(req.params.idVehiculo);
 
-    // Necesito los índices para instanciarlos después y usar los métodos internos de las clases
-    const choferIndex = choferes.findIndex(c => c.id === idChofer);
-    if (choferIndex === -1) {
-        return res.status(404).json({ mensaje: "Chofer no encontrado" });
-    }
-    
-    const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
-    if (vehiculoIndex === -1) {
-        return res.status(404).json({ mensaje: "Vehículo no encontrado" });
-    }
+        // Necesito los índices para instanciarlos después y usar los métodos internos de las clases
+        const choferIndex = choferes.findIndex(c => c.id === idChofer);
+        if (choferIndex === -1) {
+            return res.status(404).json({ mensaje: "Chofer no encontrado" });
+        }
+        
+        const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
+        if (vehiculoIndex === -1) {
+            return res.status(404).json({ mensaje: "Vehículo no encontrado" });
+        }
 
-    // Instancio los objetos para poder usar los métodos de las clases
-    const ChoferObj = new Chofer(choferes[choferIndex]);
-    const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
+        // Instancio los objetos para poder usar los métodos de las clases
+        const ChoferObj = new Chofer(choferes[choferIndex]);
+        const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
 
-    // Intento asignar el vehículo al chofer
-    const resultadoAsignacionChofer = ChoferObj.asignarVehiculo(idVehiculo);
-    if (!resultadoAsignacionChofer.success) {
-        return res.status(400).json({ mensaje: resultadoAsignacionChofer.message }); // Devuelve el mensaje de error del método de la clase
-    }
+        // Intento asignar el vehículo al chofer
+        const resultadoAsignacionChofer = ChoferObj.asignarVehiculo(idVehiculo);
+        if (!resultadoAsignacionChofer.success) {
+            return res.status(400).json({ mensaje: resultadoAsignacionChofer.message }); // Devuelve el mensaje de error del método de la clase
+        }
 
-    const resultadoAsignacionVehiculo = VehiculoObj.asignarChofer(idChofer);
-    if (!resultadoAsignacionVehiculo.success) {
-        return res.status(400).json({ mensaje: resultadoAsignacionVehiculo.message }); // Idem arriba
-    }
+        const resultadoAsignacionVehiculo = VehiculoObj.asignarChofer(idChofer);
+        if (!resultadoAsignacionVehiculo.success) {
+            return res.status(400).json({ mensaje: resultadoAsignacionVehiculo.message }); // Idem arriba
+        }
 
-    // Si todo salió bien, actualizo los datos en los arrays y guardo
-    choferes[choferIndex] = {...ChoferObj}; // Actualizo el objeto con los cambios realizados por el método de la clase y los "pego" al array en el índice correspondiente
-    vehiculos[vehiculoIndex] = {...VehiculoObj};
-    guardarChoferes(choferes);
-    guardarVehiculos(vehiculos);
+        // Si todo salió bien, actualizo los datos en los arrays y guardo
+        choferes[choferIndex] = {...ChoferObj}; // Actualizo el objeto con los cambios realizados por el método de la clase y los "pego" al array en el índice correspondiente
+        vehiculos[vehiculoIndex] = {...VehiculoObj};
+        repoJson.guardarArchivo("choferes", choferes);
+        repoJson.guardarArchivo("vehiculos", vehiculos);
 
-    res.json({
-        mensaje: "Vehículo asignado correctamente al chofer",
-        chofer: choferes[choferIndex],
-        vehiculo: vehiculos[vehiculoIndex]
-    });
-};
+        res.json({
+            mensaje: "Vehículo asignado correctamente al chofer",
+            chofer: choferes[choferIndex],
+            vehiculo: vehiculos[vehiculoIndex]
+        });
+    };
 
 
-const liberarVehiculoDeChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const vehiculos = leerVehiculos();
-    const idChofer = parseInt(req.params.idChofer);
-    const idVehiculo = parseInt(req.params.idVehiculo);
+    static liberarVehiculoDeChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const vehiculos = repoJson.leerArchivo("vehiculos");
+        const idChofer = parseInt(req.params.idChofer);
+        const idVehiculo = parseInt(req.params.idVehiculo);
 
-    const choferIndex = choferes.findIndex(c => c.id === idChofer);
-    if (choferIndex === -1) {
-        return res.status(404).json({ mensaje: "Chofer no encontrado" });
-    }
-    
-    const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
-    if (vehiculoIndex === -1) {
-        return res.status(404).json({ mensaje: "Vehículo no encontrado" });
-    }
-    
-    const ChoferObj = new Chofer(choferes[choferIndex]);
-    const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
+        const choferIndex = choferes.findIndex(c => c.id === idChofer);
+        if (choferIndex === -1) {
+            return res.status(404).json({ mensaje: "Chofer no encontrado" });
+        }
+        
+        const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
+        if (vehiculoIndex === -1) {
+            return res.status(404).json({ mensaje: "Vehículo no encontrado" });
+        }
+        
+        const ChoferObj = new Chofer(choferes[choferIndex]);
+        const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
 
-    const resultadoLiberacionChofer = ChoferObj.liberarVehiculo();
-    if (!resultadoLiberacionChofer.success) {
-        return res.status(400).json({ mensaje: resultadoLiberacionChofer.message });
-    }
+        const resultadoLiberacionChofer = ChoferObj.liberarVehiculo();
+        if (!resultadoLiberacionChofer.success) {
+            return res.status(400).json({ mensaje: resultadoLiberacionChofer.message });
+        }
 
-    const resultadoLiberacionVehiculo = VehiculoObj.liberarChofer();
-    if (!resultadoLiberacionVehiculo.success) {
-        return res.status(400).json({ mensaje: resultadoLiberacionVehiculo.message });
-    }
+        const resultadoLiberacionVehiculo = VehiculoObj.liberarChofer();
+        if (!resultadoLiberacionVehiculo.success) {
+            return res.status(400).json({ mensaje: resultadoLiberacionVehiculo.message });
+        }
 
-    // Si todo salió bien, actualizo los datos en los arrays y guardo
-    choferes[choferIndex] = {...ChoferObj};
-    vehiculos[vehiculoIndex] = {...VehiculoObj};
-    guardarChoferes(choferes);
-    guardarVehiculos(vehiculos);
+        // Si todo salió bien, actualizo los datos en los arrays y guardo
+        choferes[choferIndex] = {...ChoferObj};
+        vehiculos[vehiculoIndex] = {...VehiculoObj};
+        repoJson.guardarArchivo("choferes", choferes);
+        repoJson.guardarArchivo("vehiculos", vehiculos);
 
-    res.json({
-        mensaje: "Vehículo liberado correctamente del chofer",
-        chofer: choferes[choferIndex],
-        vehiculo: vehiculos[vehiculoIndex]
-    });
-};
-
+        res.json({
+            mensaje: "Vehículo liberado correctamente del chofer",
+            chofer: choferes[choferIndex],
+            vehiculo: vehiculos[vehiculoIndex]
+        });
+    };
 
 // Asignaciones y lógicas entre chofer y ruta (sigamos los mismos patrones que en la asignación de vehículo a chofer)
-const asignarRutaAChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const rutas = leerRutas();
-    const idChofer = parseInt(req.params.idChofer);
-    const idRuta = parseInt(req.params.idRuta);
+    static asignarRutaAChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const rutas = repoJson.leerArchivo("rutas");
+        const idChofer = parseInt(req.params.idChofer);
+        const idRuta = parseInt(req.params.idRuta);
 
-    const choferIndex = choferes.findIndex(c => c.id === idChofer);
-    if (choferIndex === -1) {
-        return res.status(404).json({ mensaje: "Chofer no encontrado" });
-    }
-    const rutaIndex = rutas.findIndex(r => r.id === idRuta);
-    if (rutaIndex === -1) {
-        return res.status(404).json({ mensaje: "Ruta no encontrada" });
-    }
+        const choferIndex = choferes.findIndex(c => c.id === idChofer);
+        if (choferIndex === -1) {
+            return res.status(404).json({ mensaje: "Chofer no encontrado" });
+        }
+        const rutaIndex = rutas.findIndex(r => r.id === idRuta);
+        if (rutaIndex === -1) {
+            return res.status(404).json({ mensaje: "Ruta no encontrada" });
+        }
 
-    const ChoferObj = new Chofer(choferes[choferIndex]);
-    const RutaObj = new Ruta(rutas[rutaIndex]);
+        const ChoferObj = new Chofer(choferes[choferIndex]);
+        const RutaObj = new Ruta(rutas[rutaIndex]);
 
-    const resultadoAsignacionChofer = ChoferObj.asignarRuta(idRuta);
-    if (!resultadoAsignacionChofer.success) {
-        return res.status(400).json({ mensaje: resultadoAsignacionChofer.message });
-    }
-    const resultadoAsignacionRuta = RutaObj.asignarChofer(idChofer);
-    if (!resultadoAsignacionRuta.success) {
-        return res.status(400).json({ mensaje: resultadoAsignacionRuta.message });
-    }
+        const resultadoAsignacionChofer = ChoferObj.asignarRuta(idRuta);
+        if (!resultadoAsignacionChofer.success) {
+            return res.status(400).json({ mensaje: resultadoAsignacionChofer.message });
+        }
+        const resultadoAsignacionRuta = RutaObj.asignarChofer(idChofer);
+        if (!resultadoAsignacionRuta.success) {
+            return res.status(400).json({ mensaje: resultadoAsignacionRuta.message });
+        }
 
-    choferes[choferIndex] = {...ChoferObj};
-    rutas[rutaIndex] = {...RutaObj};
-    guardarChoferes(choferes);
-    guardarRutas(rutas);
+        choferes[choferIndex] = {...ChoferObj};
+        rutas[rutaIndex] = {...RutaObj};
+        repoJson.guardarArchivo("choferes", choferes);
+        repoJson.guardarArchivo("rutas", rutas);
 
-    res.json({
-        mensaje: "Ruta asignada correctamente al chofer",
-        chofer: choferes[choferIndex],
-        ruta: rutas[rutaIndex]
-    });
-};
+        res.json({
+            mensaje: "Ruta asignada correctamente al chofer",
+            chofer: choferes[choferIndex],
+            ruta: rutas[rutaIndex]
+        });
+    };
 
-const finalizarRutaDeChofer = (req, res) => {
-    const choferes = leerChoferes();
-    const rutas = leerRutas();
-    const idChofer = parseInt(req.params.idChofer);
-    const idRuta = parseInt(req.params.idRuta);
+    static finalizarRutaDeChofer = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        const rutas = repoJson.leerArchivo("rutas");
+        const idChofer = parseInt(req.params.idChofer);
+        const idRuta = parseInt(req.params.idRuta);
 
-    const choferIndex = choferes.findIndex(c => c.id === idChofer);
-    if (choferIndex === -1) {
-        return res.status(404).json({ mensaje: "Chofer no encontrado" });
-    }
-    const rutaIndex = rutas.findIndex(r => r.id === idRuta);
-    if (rutaIndex === -1) {
-        return res.status(404).json({ mensaje: "Ruta no encontrada" });
-    }
+        const choferIndex = choferes.findIndex(c => c.id === idChofer);
+        if (choferIndex === -1) {
+            return res.status(404).json({ mensaje: "Chofer no encontrado" });
+        }
+        const rutaIndex = rutas.findIndex(r => r.id === idRuta);
+        if (rutaIndex === -1) {
+            return res.status(404).json({ mensaje: "Ruta no encontrada" });
+        }
 
-    const ChoferObj = new Chofer(choferes[choferIndex]);
-    const RutaObj = new Ruta(rutas[rutaIndex]);
+        const ChoferObj = new Chofer(choferes[choferIndex]);
+        const RutaObj = new Ruta(rutas[rutaIndex]);
 
-    const resultadoFinalizacionChofer = ChoferObj.finalizarRuta();
-    if (!resultadoFinalizacionChofer.success) {
-        return res.status(400).json({ mensaje: resultadoFinalizacionChofer.message });
-    }
-    const resultadoLiberacionRuta = RutaObj.liberarChofer();
-    if (!resultadoLiberacionRuta.success) {
-        return res.status(400).json({ mensaje: resultadoLiberacionRuta.message });
-    }
+        const resultadoFinalizacionChofer = ChoferObj.finalizarRuta();
+        if (!resultadoFinalizacionChofer.success) {
+            return res.status(400).json({ mensaje: resultadoFinalizacionChofer.message });
+        }
+        const resultadoLiberacionRuta = RutaObj.liberarChofer();
+        if (!resultadoLiberacionRuta.success) {
+            return res.status(400).json({ mensaje: resultadoLiberacionRuta.message });
+        }
 
-    choferes[choferIndex] = {...ChoferObj};
-    rutas[rutaIndex] = {...RutaObj};
-    guardarChoferes(choferes);
-    guardarRutas(rutas);
+        choferes[choferIndex] = {...ChoferObj};
+        rutas[rutaIndex] = {...RutaObj};
+        repoJson.guardarArchivo("choferes", choferes);
+        repoJson.guardarArchivo("rutas", rutas);
 
-    res.json({
-        mensaje: "Ruta finalizada correctamente por el chofer",
-        chofer: choferes[choferIndex],
-        ruta: rutas[rutaIndex]
-    });
-};
+        res.json({
+            mensaje: "Ruta finalizada correctamente por el chofer",
+            chofer: choferes[choferIndex],
+            ruta: rutas[rutaIndex]
+        });
+    };
+}
+
 
 
 module.exports = {
-    RepositorioJson
+    RepositorioJson,
+    VehiculoController,
+    RutaController,
+    ChoferController,
+    AsignacionesController
 }
