@@ -11,7 +11,7 @@ class ValidationError extends Error{
     constructor(mensaje, campo = null){
         super(mensaje)
         this.name = 'ValidationError',
-        this.statusCode = 500,
+        this.statusCode = 400,
         this.campo = campo
     }
 }
