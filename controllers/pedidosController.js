@@ -53,7 +53,7 @@ class PedidosController {
         const repoJson = new RepositorioJson();
         const listaPedidos = repoJson.leerArchivo("pedidos");
         const idPedido = listaPedidos.findIndex(pedido => pedido.id === idABuscar);
-        if (idPedido === undefined) throw new ValidationError("algún dato es inválido...");
+        if (idPedido === -1) throw new ValidationError("El pedido no existe.");
         const pedidoEstructurado = new Pedido(listaPedidos[idPedido]);
 
         const datos = req.body;//aqui deben llegar los datos normalizados a modificar gracias a un middleware en la request(verifica que a lo mucho, cada campo que viene del front, tiene las propiedades correctas)
