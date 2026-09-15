@@ -13,6 +13,10 @@ router.use("/vehiculos", routerVehiculos);
 router.use("/rutas", routerRutas);
 router.use("/choferes", routerChoferes);
 
+router.get("/", (req, res)=>{
+    res.render("index");
+});
+
 router.use("", (req, res)=>{
     res.send("<h1> 404. Página web no encontrada</H1>");
 });

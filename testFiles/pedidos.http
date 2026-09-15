@@ -17,16 +17,49 @@ GET {{urlDefecto}}/pedidos/560
 Content-Type: application/json
 
 ###
+//creación de un pedido nuevo
 POST {{urlDefecto}}/pedidos
 Content-Type: application/json
 
 {
-    "cliente":"Jhon Salchi Chon S.A.",
-    "fecha":"2026-06-17",
+    "cliente":"Cena Rusa S.r.l.",
+    "fecha":"2026-09-04",
     "productos":[{
-        "id": 102,
-        "descripcion": "Salchicon primavera",
-        "costo": 8000,
-        "cantidadAdquirida": 1
+        "id": 301,
+        "descripcion": "Sanghuches de miga triples variados x12",
+        "costo": 18000,
+        "cantidadAdquirida": 3
       }]
+}
+
+###
+//modificacion total de un pedido
+PUT {{urlDefecto}}/pedidos/22
+Content-Type: application/json
+
+{
+    "fecha":"2026-09-05",
+    "productos":[{
+        "id":310,
+        "descripcion":"Sanguches vegetarianos base queso x16",
+        "costo":160000,
+        "cantidadAdquirida":1
+    }]
+}
+
+###
+//modificacion parcial de un pedido
+PUT {{urlDefecto}}/pedidos/5
+Content-Type: application/json
+
+{
+   "estado":"cancelada"
+}
+
+###
+PUT {{urlDefecto}}/pedidos/5
+Content-Type: application/json
+
+{
+   "estado":"al toke roque"
 }

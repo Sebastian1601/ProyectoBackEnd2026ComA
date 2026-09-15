@@ -33,18 +33,13 @@ class PedidosController {
             id++;
         };
         const { cliente, fecha, productos } = req.body;
-        console.log("request body:", req.body);
-        console.log("variables por separado", id, cliente, fecha, productos);
         const nuevoPedido = new Pedido({
             id,
             cliente,
             fecha,
             productos
-    });
-        console.log("nueva instancia de pedido", nuevoPedido);
-
+        });
         listaPedidos.push(nuevoPedido);
-
         repoJson.guardarArchivo("pedidos", listaPedidos);
 
         res.status(201).json({
@@ -53,6 +48,27 @@ class PedidosController {
         });
     };
 
+    static modificarPedido = (req, res) => {
+        const idABuscar = parseInt(req.params.id);
+        const repoJson = new RepositorioJson();
+        const listaPedidos = repoJson.leerArchivo("pedidos");
+        const idPedido = listaPedidos.findIndex(pedido => pedido.id === idABuscar);
+        if (idPedido === undefined) throw new ValidationError("algún dato es inválido...");
+        const pedidoEstructurado = new Pedido(listaPedidos[idPedido]);
+
+        const datos = req.body;//aqui deben llegar los datos normalizados a modificar gracias a un middleware en la request(verifica que a lo mucho, cada campo que viene del front, tiene las propiedades correctas)
+        for (const [prop, valor] of Object.entries(datos)) {
+            pedidoEstructurado[prop] = valor;
+        }
+        listaPedidos[idPedido] = {
+            ...pedidoEstructurado
+        }
+        repoJson.guardarArchivo("pedidos", listaPedidos);
+        res.json({
+            mensaje: "Pedido modificado correctamente.",
+            pedido: pedidoEstructurado
+        });
+    };
 }
 
 module.exports = {

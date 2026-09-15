@@ -11,11 +11,6 @@ app.set("views", "./views");
 // Middleware para recibir JSON
 app.use(express.json());
 
-// Página principal realizada con Pug
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
 // Rutas de la API
 app.use("/", router);
 

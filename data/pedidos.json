@@ -70,22 +70,16 @@
   {
     "id": 5,
     "cliente": "Pedro Martínez",
-    "fecha": "2024-03-01",
-    "estado": "completada",
+    "fecha": "2026-06-22",
     "productos": [
       {
-        "id": 107,
-        "descripcion": "Notebook 15.6",
-        "costo": 850000,
-        "cantidadAdquirida": 1
-      },
-      {
-        "id": 108,
-        "descripcion": "Mochila para notebook",
-        "costo": 25000,
-        "cantidadAdquirida": 1
+        "id": 105,
+        "descripcion": "Caja gris camuflada",
+        "costo": 1500,
+        "cantidadAdquirida": 10
       }
-    ]
+    ],
+    "_estado": "cancelada"
   },
   {
     "id": 6,
@@ -376,5 +370,19 @@
         "cantidadAdquirida": 1
       }
     ]
+  },
+  {
+    "id": 22,
+    "cliente": "Cena Rusa S.r.l.",
+    "fecha": "2026-09-05",
+    "productos": [
+      {
+        "id": 310,
+        "descripcion": "Sanguches vegetarianos base queso x16",
+        "costo": 160000,
+        "cantidadAdquirida": 1
+      }
+    ],
+    "_estado": "pendiente"
   }
 ]
