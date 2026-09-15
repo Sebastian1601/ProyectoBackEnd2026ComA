@@ -1,0 +1,86 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title FreshRoute B2B
+    style.
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f2f7f6;
+      }
+
+      header {
+        background-color: #287c74;
+        color: white;
+        text-align: center;
+        padding: 35px;
+      }
+
+      .contenedor {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+
+      .tarjetas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 25px;
+      }
+
+      .tarjeta {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 240px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      .tarjeta h3 {
+        color: #287c74;
+      }
+
+      footer {
+        background-color: #287c74;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        margin-top: 40px;
+      }
+
+  body
+    header
+      h1 FreshRoute B2B
+      p Sistema de Gestión Logística
+
+    main.contenedor
+      h2 Bienvenidos
+
+      p Aplicación desarrollada para la gestión de clientes, pedidos, vehículos, choferes y rutas de FreshRoute B2B.
+
+      .tarjetas
+        .tarjeta
+          h3 Clientes
+          p Administración de los clientes registrados.
+
+        .tarjeta
+          h3 Pedidos
+          p Registro y seguimiento de pedidos.
+
+        .tarjeta
+          h3 Vehículos
+          p Gestión de los vehículos disponibles.
+
+        .tarjeta
+          h3 Choferes
+          p Administración y asignación de choferes.
+
+        .tarjeta
+          h3 Rutas
+          p Organización de rutas y entregas.
+
+    footer
+      p Desarrollo Web Backend - Primera Entrega 2026
