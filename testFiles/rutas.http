@@ -1,0 +1,72 @@
+@urlDefecto = http://localhost:3000
+
+//--------------------------------------------
+
+// Obtener todas las rutas
+GET {{urlDefecto}}/rutas
+Content-Type: application/json
+
+###
+
+// Obtener una ruta por id
+GET {{urlDefecto}}/rutas/4
+Content-Type: application/json
+
+###
+
+//intentar obtener una ruta que no existe
+GET {{urlDefecto}}/rutas/999
+Content-Type: application/json
+
+###
+
+// Crear una nueva ruta
+POST {{urlDefecto}}/rutas
+Content-Type: application/json
+
+{
+    "id": 11,
+    "nombre": "Ruta Belgrano - Zona Norte",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Belgrano, CABA",
+    "duracionEstimada": 35,
+    "distanciaEstimada": 16,
+    "idChoferAsignado": null
+}
+
+###
+
+// Intentar crear una ruta con un id que ya existe (tiene que fallar)
+POST {{urlDefecto}}/rutas
+Content-Type: application/json
+
+{
+    "id": 1,
+    "nombre": "Ruta Duplicada",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "CABA",
+    "duracionEstimada": 30,
+    "distanciaEstimada": 10,
+    "idChoferAsignado": null
+}
+
+###
+
+// Modificar datos de una ruta por id
+PUT {{urlDefecto}}/rutas/11
+Content-Type: application/json
+
+{
+    "nombre": "Ruta Belgrano - Zona Norte (actualizada)",
+    "origen": "Depósito Central, Villa Martelli",
+    "destino": "Belgrano, CABA",
+    "duracionEstimada": 40,
+    "distanciaEstimada": 16,
+    "idChoferAsignado": null
+}
+
+###
+
+// Eliminar una ruta por id
+DELETE {{urlDefecto}}/rutas/11
+Content-Type: application/json

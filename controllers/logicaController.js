@@ -3,9 +3,9 @@ const path = require('path');
 
 // Todo lo que se repite tiene el mismo formato así debugueamos más fácil
 // Importar modelos
-const Vehiculo = require('../models/Vehiculo');
-const Ruta = require('../models/Ruta');
-const Chofer = require('../models/Chofer');
+const {Vehiculo} = require('../models/Vehiculo');
+const {Ruta} = require('../models/Ruta');
+const {Chofer} = require('../models/Chofer');
 
 function devolverRuta(nombreArchivo){
     return path.join(__dirname, "..", "data", nombreArchivo);

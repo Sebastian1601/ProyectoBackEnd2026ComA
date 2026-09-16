@@ -1,0 +1,135 @@
+@urlDefecto = http://localhost:3000
+
+//--------------------------------------------
+
+// Obtener todos los choferes
+GET {{urlDefecto}}/choferes
+Content-Type: application/json
+
+###
+
+// Obtener un chofer por id
+GET {{urlDefecto}}/choferes/6
+Content-Type: application/json
+
+###
+
+// Intentar obtener un chofer que no existe
+GET {{urlDefecto}}/choferes/999
+Content-Type: application/json
+
+###
+
+// Crear un nuevo chofer
+POST {{urlDefecto}}/choferes
+Content-Type: application/json
+
+{
+    "id": 11,
+    "nombre": "Valentina",
+    "apellido": "Paz",
+    "dni": "34111555",
+    "numeroRegistro": "REG-1011",
+    "telefono": "1122009988",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2024-01-15"
+}
+
+###
+
+// Intentar crear un chofer con un DNI que ya existe (tiene que fallar)
+POST {{urlDefecto}}/choferes
+Content-Type: application/json
+
+{
+    "id": 12,
+    "nombre": "Otro",
+    "apellido": "Chofer",
+    "dni": "34111555",
+    "numeroRegistro": "REG-1012",
+    "telefono": "1122009999",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2024-01-16"
+}
+
+###
+
+// Modificar datos de un chofer por id
+PUT {{urlDefecto}}/choferes/11
+Content-Type: application/json
+
+{
+    "nombre": "Valentina",
+    "apellido": "Paz",
+    "dni": "34111555",
+    "numeroRegistro": "REG-1011",
+    "telefono": "1122009988",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Inactivo",
+    "fechaIngreso": "2024-01-15"
+}
+
+###
+
+// Eliminar un chofer por id
+DELETE {{urlDefecto}}/choferes/11
+Content-Type: application/json
+
+###
+//--------------------------------------------
+// Asignaciones cruzadas Chofer <-> Vehículo <-> Ruta
+// Usamos al chofer 6 (Disponible, sin vehículo ni ruta)
+// y al vehículo 6 y la ruta 4 (ambos libres en data/)
+//--------------------------------------------
+
+// Asignar el vehículo 6 al chofer 6 (caso de éxito)
+POST {{urlDefecto}}/choferes/6/asignar-vehiculo/6
+Content-Type: application/json
+
+###
+
+// Asignar la ruta 4 al chofer 6, ya con vehículo asignado (caso de éxito)
+//el chofer debe pasar a estado "Ocupado"
+POST {{urlDefecto}}/choferes/6/asignar-ruta/4
+Content-Type: application/json
+
+###
+
+// Intentar liberar el vehículo mientras el chofer está en ruta (debe fallar)
+POST {{urlDefecto}}/choferes/6/liberar-vehiculo/6
+Content-Type: application/json
+
+###
+
+//intentar asignar un vehículo a un chofer que ya está ocupado en ruta (debe fallar)
+POST {{urlDefecto}}/choferes/1/asignar-vehiculo/7
+Content-Type: application/json
+
+###
+
+// Intentar asignar un vehículo a un chofer que ya tiene uno asignado (debe fallar)
+POST {{urlDefecto}}/choferes/3/asignar-vehiculo/7
+Content-Type: application/json
+
+###
+
+// Finalizar la ruta del chofer 6 (caso de éxito, vuelve a estado "Disponible")
+POST {{urlDefecto}}/choferes/6/finalizar-ruta/4
+Content-Type: application/json
+
+###
+
+// Liberar el vehículo del chofer 6 (caso de éxito)
+POST {{urlDefecto}}/choferes/6/liberar-vehiculo/6
+Content-Type: application/json
+
+###
+
+// Intentar finalizar una ruta que el chofer ya no tiene activa (tiene que fallar)
+POST {{urlDefecto}}/choferes/6/finalizar-ruta/4
+Content-Type: application/json

@@ -1,0 +1,72 @@
+@urlDefecto = http://localhost:3000
+
+//--------------------------------------------
+
+// Obtener todos los vehículos
+GET {{urlDefecto}}/vehiculos
+Content-Type: application/json
+
+###
+
+// Obtener un vehículo por id
+GET {{urlDefecto}}/vehiculos/6
+Content-Type: application/json
+
+###
+
+// Intentar obtener un vehículo que no existe
+GET {{urlDefecto}}/vehiculos/999
+Content-Type: application/json
+
+###
+
+// Crear un nuevo vehículo
+POST {{urlDefecto}}/vehiculos
+Content-Type: application/json
+
+{
+    "id": 11,
+    "patente": "AL111ZZ",
+    "marca": "Ford",
+    "modelo": "Transit Refrigerado",
+    "capacidad": 950,
+    "estado": "Disponible",
+    "idChoferAsignado": null
+}
+
+###
+
+// Intentar crear un vehículo con una patente que ya existe (debe fallar)
+POST {{urlDefecto}}/vehiculos
+Content-Type: application/json
+
+{
+    "id": 12,
+    "patente": "AB123CD",
+    "marca": "Ford",
+    "modelo": "Transit Refrigerado",
+    "capacidad": 950,
+    "estado": "Disponible",
+    "idChoferAsignado": null
+}
+
+###
+
+// Modificar datos de un vehículo por id
+PUT {{urlDefecto}}/vehiculos/11
+Content-Type: application/json
+
+{
+    "patente": "AL111ZZ",
+    "marca": "Ford",
+    "modelo": "Transit Refrigerado",
+    "capacidad": 1000,
+    "estado": "En Mantenimiento",
+    "idChoferAsignado": null
+}
+
+###
+
+// Eliminar un vehículo por id
+DELETE {{urlDefecto}}/vehiculos/11
+Content-Type: application/json
