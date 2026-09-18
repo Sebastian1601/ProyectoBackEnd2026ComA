@@ -60,7 +60,7 @@ Content-Type: application/json
 ###
 
 //eliminar un cliente n este caso el id 12
-DELETE {{urlDefecto}}/12
+DELETE {{urlDefecto}}/clientes/12
 Content-Type: application/json
 
 
