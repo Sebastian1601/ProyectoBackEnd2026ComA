@@ -50,8 +50,8 @@
     "marca": "Volkswagen",
     "modelo": "Delivery Refrigerado",
     "capacidad": 1000,
-    "estado": "Disponible",
-    "idChoferAsignado": null
+    "estado": "Asignado",
+    "idChoferAsignado": 6
   },
   {
     "id": 7,

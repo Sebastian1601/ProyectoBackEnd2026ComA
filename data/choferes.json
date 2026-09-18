@@ -66,9 +66,9 @@
     "dni": "27666888",
     "numeroRegistro": "REG-1006",
     "telefono": "1177889900",
-    "idVehiculoAsignado": null,
-    "idRutaActual": null,
-    "estado": "Disponible",
+    "idVehiculoAsignado": 6,
+    "idRutaActual": 4,
+    "estado": "Ocupado",
     "fechaIngreso": "2021-02-14"
   },
   {
