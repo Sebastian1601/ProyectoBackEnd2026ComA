@@ -1,0 +1,13 @@
+button 
+  a(href="/") Volver
+
+table
+  tr
+    th Nombre
+    th Estado
+    th Vehículo asignado
+  each chofer in choferes
+    tr
+      td= chofer.nombre + ' ' + chofer.apellido
+      td= chofer.estado
+      td= chofer.idVehiculoAsignado || 'Sin asignar'

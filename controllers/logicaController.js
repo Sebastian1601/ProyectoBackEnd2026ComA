@@ -290,6 +290,12 @@ class ChoferController {
         res.json(chofer);
     };
 
+    static verChoferes = (req, res) => {
+        const repoJson = new RepositorioJson();
+        const choferes = repoJson.leerArchivo("choferes");
+        res.render('choferes', { choferes });
+    }
+
     static crearChofer = (req, res) => {
         const repoJson = new RepositorioJson();
         const choferes = repoJson.leerArchivo("choferes");

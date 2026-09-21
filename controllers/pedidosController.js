@@ -1,5 +1,6 @@
 const { RepositorioJson } = require("./logicaController.js");
 const { Pedido } = require('../models/Pedidos.js');
+const { ValidationError } = require('../ErrorControl/Errores.js');
 
 class PedidosController {
 

@@ -4,6 +4,8 @@ const { ChoferController, AsignacionesController } = require("../controllers/log
 const router = express.Router();
  
 router.get("/", ChoferController.obtenerChoferes);
+
+router.get("/ver-choferes", ChoferController.verChoferes);
  
 router.get("/:id", ChoferController.obtenerChoferPorId);
  
