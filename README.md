@@ -7,7 +7,7 @@ de la empresa de distribución de pedidos "Fresh Route"
 
 ### Características
 - Persistencia de datos: archivos .Json
-- Validación de datos: verificación manual.
+- Validación de datos: verificación manual
 
 ### Requisitos previos
 
