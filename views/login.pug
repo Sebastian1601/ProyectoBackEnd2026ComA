@@ -1,0 +1,132 @@
+//- login.pug
+//- Vista de login básica para Node.js (Express + Pug).
+//- Renderizar con: res.render('login')
+//- El form no hace submit tradicional: el JS del final intercepta
+//- el evento y hace el fetch contra tu endpoint propio.
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title FreshRoute B2B Login
+
+    style.
+      body{
+        font-family: sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #f4f4f4;
+      }
+      .login-box{
+        width: 280px;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .login-box h1{
+        font-size: 1.3rem;
+        margin: 0 0 1.2rem;
+      }
+      .field{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 1rem;
+      }
+      .field input{
+        padding: 0.6rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      button{
+        width: 100%;
+        padding: 0.7rem;
+        border: none;
+        border-radius: 4px;
+        background: #222;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      button:disabled{
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      #login-error{
+        color: #c0392b;
+        font-size: 0.85rem;
+        margin-top: 0.8rem;
+        min-height: 1em;
+      }
+
+  body
+    .login-box
+      h1 Iniciar sesión
+
+      form#login-form
+        .field
+          label(for="username") Usuario
+          input#username(type="text" name="username" autocomplete="username" required)
+
+        .field
+          label(for="password") Contraseña
+          input#password(type="password" name="password" autocomplete="current-password" required)
+
+        button(type="submit") Ingresar
+
+        p#login-error
+
+    script.
+      // Cambiá esta URL por la de tu endpoint real.
+      const LOGIN_ENDPOINT = '/apiV1/auth';
+
+      const form = document.getElementById('login-form');
+      const errorBox = document.getElementById('login-error');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBox.textContent = '';
+
+        const user = document.getElementById('username').value;
+        const contra = document.getElementById('password').value;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Ingresando...';
+
+        try {
+          const res = await fetch(LOGIN_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include', // enviá/recibí cookies de sesión si tu backend las usa
+            body: JSON.stringify({ user, contra })
+          });
+
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error('Usuario o contraseña incorrectos');
+          }
+
+          const data = await res.json();
+
+          // Ajustá esto según lo que devuelva tu endpoint:
+          // - si usás cookies de sesión, probablemente solo necesites redirigir
+          // - si devuelve un token, guardalo antes de redirigir
+          if (data.token) {
+            localStorage.setItem('token', data.token);
+          }
+
+          window.location.href = '/index';
+
+        } catch (err) {
+          errorBox.textContent = err.message;
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Ingresar';
+        }
+      });

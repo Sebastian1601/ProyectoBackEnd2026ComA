@@ -118,5 +118,17 @@
     "idRutaActual": null,
     "estado": "Disponible",
     "fechaIngreso": "2023-03-18"
+  },
+  {
+    "id": 12,
+    "nombre": "Otro",
+    "apellido": "Chofer",
+    "dni": "34111555",
+    "numeroRegistro": "REG-1012",
+    "telefono": "1122009999",
+    "idVehiculoAsignado": null,
+    "idRutaActual": null,
+    "estado": "Disponible",
+    "fechaIngreso": "2024-01-16"
   }
 ]

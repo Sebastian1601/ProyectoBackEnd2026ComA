@@ -1,5 +1,6 @@
 const express = require("express");
-const { router } = require("./routes/routerMain.js");
+const { router:routerV1 } = require("./routes/routerMainV1.js");
+const routerTemplate = require("./routes/routerTemplate.js");
 const { manejadorDeErrores } = require("./ErrorControl/Errores.js");
 
 const app = express();
@@ -12,7 +13,8 @@ app.set("views", "./views");
 app.use(express.json());
 
 // Rutas de la API
-app.use("/", router);
+app.use("/apiV1", routerV1);
+app.use("/", routerTemplate);
 
 // Manejo de errores
 app.use(manejadorDeErrores);

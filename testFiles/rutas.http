@@ -1,4 +1,4 @@
-@urlDefecto = http://localhost:3000
+@urlDefecto = http://localhost:3000/apiV1
 
 //--------------------------------------------
 

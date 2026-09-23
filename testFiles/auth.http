@@ -1,0 +1,22 @@
+@urlDefecto = http://localhost:3000/api
+
+//--------------------------------------------
+
+//usuario correcto
+GET {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+    "user":"admin",
+    "contra":"123"
+}
+
+###
+//usuario incorrecto
+GET {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+    "user":"a12312dmin",
+    "contra":"12566d3"
+}

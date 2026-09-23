@@ -1,4 +1,5 @@
 const express = require("express");
+const routerAuth = require("./routerAuth.js");
 const routerClientes = require("./routerClientes.js");
 const routerPedidos = require("./routerPedidos.js");
 const routerVehiculos = require("./routerVehiculos.js");
@@ -7,18 +8,11 @@ const routerChoferes = require("./routerChoferes.js");
 
 const router = express.Router();
 
+router.use("/auth", routerAuth);
 router.use("/clientes", routerClientes);
 router.use("/pedidos", routerPedidos);
 router.use("/vehiculos", routerVehiculos);
 router.use("/rutas", routerRutas);
 router.use("/choferes", routerChoferes);
-
-router.get("/", (req, res)=>{
-    res.render("index");
-});
-
-router.use("", (req, res)=>{
-    res.send("<h1> 404. Página web no encontrada</H1>");
-});
 
 module.exports = { router };
