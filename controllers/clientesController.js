@@ -1,6 +1,9 @@
 //aca hay que importar los schemas para crear clientes y eso
 //const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
+//importo el modelo cliente de mongoose
+import Cliente from './models/Cliente.js';
+
 export class ClienteController {
 
     static obtenerClientes = (req, res) => {
@@ -30,7 +33,7 @@ export class ClienteController {
 
 
 
-    static crearCliente = (req, res) => {
+    static crearCliente = async (req, res) => {
         const repoJson = new RepositorioJson();
         const clientesRecuperados = repoJson.leerArchivo("clientes");
         const cantClientes = clientesRecuperados.length;
@@ -44,15 +47,12 @@ export class ClienteController {
         const { nombre, telefono, direccion } = req.body;
 
         const nuevoCliente = new Cliente({
-            id,
-            nombre,
-            telefono,
-            direccion
+            nombre: nombre,
+            telefono: telefono,
+            direccion: direccion
         });
 
-        clientesRecuperados.push(nuevoCliente);
-
-        repoJson.guardarArchivo("clientes", clientesRecuperados);
+        await nuevoCliente.save();
 
         res.status(201).json({
             mensaje: "Cliente creado correctamente",
@@ -90,7 +90,7 @@ export class ClienteController {
     static borrarCliente = (req, res) => {
         const repoJson = new RepositorioJson();
         const clientes = repoJson.leerArchivo("clientes");
-        
+
         const id = parseInt(req.params.id);
         const clienteIndex = clientes.findIndex(c => c.id === id);
 

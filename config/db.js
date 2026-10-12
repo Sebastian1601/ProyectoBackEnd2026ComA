@@ -23,10 +23,10 @@ import mongoose from 'mongoose';
 const { MONGO_URI } = process.env;
 if (!MONGO_URI) throw new Error("Falta configurar mongo_uri en el entorno");
 
-export const conectarDB = async ()=>{
+export const conectarDB = async () => {
   console.log(MONGO_URI);
   try {
-    await mongoose.connect(`${MONGO_URI}`);
+    await mongoose.connect(`${MONGO_URI}`, { db: "FreshRouteB2B" });
     console.log("Conectado a MongoDB Atlas(cloud)");
   } catch (error) {
     console.error("Hubo un error al conectar a MongoDB Atlas", error.message);

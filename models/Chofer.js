@@ -1,3 +1,113 @@
+import mongoose from 'mongoose';
+
+const choferSchema = mongoose.Schema({
+    nombre: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    apellido: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    dni: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    numeroRegistro: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    telefono: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    idVehiculoAsignado: {
+        type: Mixed,
+        required: true,
+        trim: true
+    },
+    idRutaActual: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    estado: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    fechaIngreso: {
+        type: String,
+        required: true,
+        trim: true
+    },
+})
+
+choferSchema.methods.asignarVehiculo = function (idVehiculo) {
+    if (this.estado !== 'Disponible') {
+        return { success: false, message: 'El chofer no está disponible y no puede ser asignado a un vehículo.' };
+    }
+    else if (this.idVehiculoAsignado) {
+        return { success: false, message: 'El chofer ya tiene un vehículo asignado.' };
+    }
+    else {
+        this.idVehiculoAsignado = idVehiculo;
+        return { success: true, message: 'Vehículo asignado correctamente.' };
+    }
+}
+
+choferSchema.methods.asignarRuta = function (idRuta) {
+    if (this.estado !== 'Disponible') {
+        return { success: false, message: 'El chofer no está disponible y no puede ser asignado a una ruta.' };
+    }
+    else if (this.idRutaActual) {
+        return { success: false, message: 'El chofer ya tiene una ruta asignada.' };
+    }
+    else if (!this.idVehiculoAsignado) {
+        return { success: false, message: 'El chofer no tiene un vehículo asignado y no puede ser asignado a una ruta.' };
+    }
+    else {
+        this.idRutaActual = idRuta;
+        this.estado = 'Ocupado'; // Cambiamos el estado del chofer a Ocupado al asignarle una ruta
+        return { success: true, message: 'Ruta asignada correctamente.' };
+    }
+}
+
+choferSchema.methods.liberarVehiculo = function () {
+    if (!this.idVehiculoAsignado) {
+        return { success: false, message: 'El chofer no tiene un vehículo asignado y no puede ser liberado.' };
+    }
+    if (this.estado === 'Ocupado') {
+        return { success: false, message: 'El chofer está en una ruta y no puede liberar su vehículo asignado.' };
+    }
+    else {
+        this.idVehiculoAsignado = null;
+        return { success: true, message: 'Vehículo liberado correctamente.' };
+    }
+}
+
+choferSchema.methods.inalizarRuta = function () {
+    if (this.estado !== 'Ocupado') {
+        return { success: false, message: 'El chofer no está en una ruta y no puede finalizarla.' };
+    }
+    else {
+        this.idRutaActual = null;
+        this.estado = 'Disponible'; // Cambiamos el estado del chofer a Disponible al finalizar la ruta
+        return { success: true, message: 'Ruta finalizada correctamente.' };
+    }
+}
+
+choferSchema.methods.estadoChofer = function () {
+    return this.estado;
+}
+
+
+/*
 export class Chofer {
     constructor({ id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso }) {
         this.id = id;
@@ -73,4 +183,4 @@ export class Chofer {
         return this.estado;
     }
 
-}
+}*/
