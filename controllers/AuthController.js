@@ -3,8 +3,8 @@
 class Autenticacion {
 
     static validarUsuario(req, res) {
-        const { usuario, contra } = req.body;
-        if (usuario !== "admin" && contra !== "123") {
+        const { user, contra } = req.body;
+        if (user !== "admin" || contra !== "123") {
             return res.status(401).json({
                 message: "Credenciales incorrectas"
             });
