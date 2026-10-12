@@ -1,7 +1,7 @@
-const express = require("express");
-const { VehiculoController } = require("../controllers/logicaController.js");
+import { Router } from "express";
+import { VehiculoController } from "../controllers/logicaController.js";
  
-const router = express.Router();
+const router = Router();
  
 router.get("/", VehiculoController.obtenerVehiculos);
  
@@ -13,4 +13,4 @@ router.put("/:id", VehiculoController.actualizarVehiculo);
  
 router.delete("/:id", VehiculoController.borrarVehiculo);
  
-module.exports = router;
+export default router;

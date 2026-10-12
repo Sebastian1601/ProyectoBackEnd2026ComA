@@ -1,5 +1,5 @@
-class Vehiculo {
-    constructor({id, patente, marca, modelo, capacidad, estado, idChoferAsignado}) {
+export class Vehiculo {
+    constructor({ id, patente, marca, modelo, capacidad, estado, idChoferAsignado }) {
         this.id = id;
         this.patente = patente;
         this.marca = marca;
@@ -11,32 +11,28 @@ class Vehiculo {
 
     asignarChofer(idChofer) {
         if (this.estado !== 'Disponible') {
-            return {success: false, message: 'El vehículo no está disponible y no puede ser asignado a un chofer.'};
+            return { success: false, message: 'El vehículo no está disponible y no puede ser asignado a un chofer.' };
 
         }
         else if (this.idChoferAsignado || this.estado === 'Asignado') {
-            return {success: false, message: 'El vehículo ya tiene un chofer asignado.'};
+            return { success: false, message: 'El vehículo ya tiene un chofer asignado.' };
         }
         else {
             this.idChoferAsignado = idChofer;
             this.estado = 'Asignado'; // Cambio el estado del vehículo a Asignado al asignarle un chofer
-            return {success: true, message: 'Chofer asignado correctamente.'};
+            return { success: true, message: 'Chofer asignado correctamente.' };
         }
     }
 
     liberarChofer() {
         if (!this.idChoferAsignado || this.estado !== 'Asignado') {
-            return {success: false, message: 'El vehículo no tiene un chofer asignado y no puede ser liberado.'};
+            return { success: false, message: 'El vehículo no tiene un chofer asignado y no puede ser liberado.' };
         }
         else {
             this.idChoferAsignado = null;
             this.estado = 'Disponible'; // Quito chofer y libero el estado
-            return {success: true, message: 'Chofer liberado correctamente.'};
+            return { success: true, message: 'Chofer liberado correctamente.' };
         }
     }
 
-}
-
-module.exports = {
-    Vehiculo
 }

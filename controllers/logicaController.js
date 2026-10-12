@@ -1,20 +1,25 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+
+const DIR = dirname(fileURLToPath(import.meta.url));
 
 // Todo lo que se repite tiene el mismo formato así debugueamos más fácil
 // Importar modelos
-const {Vehiculo} = require('../models/Vehiculo');
-const {Ruta} = require('../models/Ruta');
-const {Chofer} = require('../models/Chofer');
+import { Vehiculo } from '../models/Vehiculo.js';
+import { Ruta } from '../models/Ruta.js';
+import { Chofer } from '../models/Chofer.js';
 
-function devolverRuta(nombreArchivo){
-    return path.join(__dirname, "..", "data", nombreArchivo);
+function devolverRuta(nombreArchivo) {
+    return path.join(DIR, "..", "data", nombreArchivo);
 }
 // unificando lectura
 //se crea clase para que si se agregan datos, simplemente se define en la propiedad la ruta del archivo, y luego se llama a los métodos 
 //del archivo que se desea leer 
-class RepositorioJson {
-    constructor(){
+export class RepositorioJson {
+    constructor() {
         this.clientes = devolverRuta("clientes.json");
         this.vehiculos = devolverRuta("vehiculos.json");
         this.choferes = devolverRuta("choferes.json");
@@ -22,13 +27,13 @@ class RepositorioJson {
         this.pedidos = devolverRuta("pedidos.json");
     }
 
-    leerArchivo(nombre){
+    leerArchivo(nombre) {
         const data = fs.readFileSync(this[nombre], 'utf-8');
         const parsedData = JSON.parse(data);
         return parsedData;
     }
 
-    guardarArchivo(nombre, data){
+    guardarArchivo(nombre, data) {
         const stringData = JSON.stringify(data, null, 2);
         fs.writeFileSync(this[nombre], stringData);
     }
@@ -81,27 +86,27 @@ class RepositorioJson {
 
 
 
-class VehiculoController{
+export class VehiculoController {
     static obtenerVehiculos = (req, res) => {
         const repoJson = new RepositorioJson();
         const vehiculos = repoJson.leerArchivo("vehiculos");
         res.json(vehiculos);
-        };
+    };
 
     static obtenerVehiculoPorId = (req, res) => {
         const repoJson = new RepositorioJson();
         const vehiculos = repoJson.leerArchivo("vehiculos");
         const id = parseInt(req.params.id);
         const vehiculo = vehiculos.find(v => v.id === id);
-        
+
         if (!vehiculo) {
             return res.status(404).json({
                 mensaje: "Vehículo no encontrado"
             });
         }
-        
+
         res.json(vehiculo);
-        };
+    };
 
     static crearVehiculo = (req, res) => {
         const repoJson = new RepositorioJson();
@@ -177,7 +182,7 @@ class VehiculoController{
 
 };
 
-class RutaController {
+export class RutaController {
     static obtenerRutas = (req, res) => {
         const repoJson = new RepositorioJson();
         const rutas = repoJson.leerArchivo("rutas");
@@ -189,13 +194,13 @@ class RutaController {
         const rutas = repoJson.leerArchivo("rutas");
         const id = parseInt(req.params.id);
         const ruta = rutas.find(r => r.id === id);
-        
+
         if (!ruta) {
             return res.status(404).json({
                 mensaje: "Ruta no encontrada"
             });
         }
-        
+
         res.json(ruta);
     };
 
@@ -268,7 +273,7 @@ class RutaController {
 };
 
 
-class ChoferController {
+export class ChoferController {
     static obtenerChoferes = (req, res) => {
         const repoJson = new RepositorioJson();
         const choferes = repoJson.leerArchivo("choferes");
@@ -280,13 +285,13 @@ class ChoferController {
         const choferes = repoJson.leerArchivo("choferes");
         const id = parseInt(req.params.id);
         const chofer = choferes.find(c => c.id === id);
-        
+
         if (!chofer) {
             return res.status(404).json({
                 mensaje: "Chofer no encontrado"
             });
         }
-        
+
         res.json(chofer);
     };
 
@@ -299,8 +304,8 @@ class ChoferController {
     static crearChofer = (req, res) => {
         const repoJson = new RepositorioJson();
         const choferes = repoJson.leerArchivo("choferes");
-        const { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;   
-        
+        const { id, nombre, apellido, dni, numeroRegistro, telefono, idVehiculoAsignado, idRutaActual, estado, fechaIngreso } = req.body;
+
         const choferExistente = choferes.find(c => c.id === id);
         const dniExistente = choferes.find(c => c.dni === dni);
 
@@ -371,8 +376,8 @@ class ChoferController {
 
 
 
-class AsignacionesController {
-// Asignaciones y lógicas entre chofer y vehículo
+export class AsignacionesController {
+    // Asignaciones y lógicas entre chofer y vehículo
     static asignarVehiculoAChofer = (req, res) => {
         const repoJson = new RepositorioJson();
         const choferes = repoJson.leerArchivo("choferes");
@@ -385,7 +390,7 @@ class AsignacionesController {
         if (choferIndex === -1) {
             return res.status(404).json({ mensaje: "Chofer no encontrado" });
         }
-        
+
         const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
         if (vehiculoIndex === -1) {
             return res.status(404).json({ mensaje: "Vehículo no encontrado" });
@@ -407,8 +412,8 @@ class AsignacionesController {
         }
 
         // Si todo salió bien, actualizo los datos en los arrays y guardo
-        choferes[choferIndex] = {...ChoferObj}; // Actualizo el objeto con los cambios realizados por el método de la clase y los "pego" al array en el índice correspondiente
-        vehiculos[vehiculoIndex] = {...VehiculoObj};
+        choferes[choferIndex] = { ...ChoferObj }; // Actualizo el objeto con los cambios realizados por el método de la clase y los "pego" al array en el índice correspondiente
+        vehiculos[vehiculoIndex] = { ...VehiculoObj };
         repoJson.guardarArchivo("choferes", choferes);
         repoJson.guardarArchivo("vehiculos", vehiculos);
 
@@ -431,12 +436,12 @@ class AsignacionesController {
         if (choferIndex === -1) {
             return res.status(404).json({ mensaje: "Chofer no encontrado" });
         }
-        
+
         const vehiculoIndex = vehiculos.findIndex(v => v.id === idVehiculo);
         if (vehiculoIndex === -1) {
             return res.status(404).json({ mensaje: "Vehículo no encontrado" });
         }
-        
+
         const ChoferObj = new Chofer(choferes[choferIndex]);
         const VehiculoObj = new Vehiculo(vehiculos[vehiculoIndex]);
 
@@ -451,8 +456,8 @@ class AsignacionesController {
         }
 
         // Si todo salió bien, actualizo los datos en los arrays y guardo
-        choferes[choferIndex] = {...ChoferObj};
-        vehiculos[vehiculoIndex] = {...VehiculoObj};
+        choferes[choferIndex] = { ...ChoferObj };
+        vehiculos[vehiculoIndex] = { ...VehiculoObj };
         repoJson.guardarArchivo("choferes", choferes);
         repoJson.guardarArchivo("vehiculos", vehiculos);
 
@@ -463,7 +468,7 @@ class AsignacionesController {
         });
     };
 
-// Asignaciones y lógicas entre chofer y ruta (sigamos los mismos patrones que en la asignación de vehículo a chofer)
+    // Asignaciones y lógicas entre chofer y ruta (sigamos los mismos patrones que en la asignación de vehículo a chofer)
     static asignarRutaAChofer = (req, res) => {
         const repoJson = new RepositorioJson();
         const choferes = repoJson.leerArchivo("choferes");
@@ -492,8 +497,8 @@ class AsignacionesController {
             return res.status(400).json({ mensaje: resultadoAsignacionRuta.message });
         }
 
-        choferes[choferIndex] = {...ChoferObj};
-        rutas[rutaIndex] = {...RutaObj};
+        choferes[choferIndex] = { ...ChoferObj };
+        rutas[rutaIndex] = { ...RutaObj };
         repoJson.guardarArchivo("choferes", choferes);
         repoJson.guardarArchivo("rutas", rutas);
 
@@ -532,8 +537,8 @@ class AsignacionesController {
             return res.status(400).json({ mensaje: resultadoLiberacionRuta.message });
         }
 
-        choferes[choferIndex] = {...ChoferObj};
-        rutas[rutaIndex] = {...RutaObj};
+        choferes[choferIndex] = { ...ChoferObj };
+        rutas[rutaIndex] = { ...RutaObj };
         repoJson.guardarArchivo("choferes", choferes);
         repoJson.guardarArchivo("rutas", rutas);
 
@@ -546,11 +551,3 @@ class AsignacionesController {
 }
 
 
-
-module.exports = {
-    RepositorioJson,
-    VehiculoController,
-    RutaController,
-    ChoferController,
-    AsignacionesController
-}

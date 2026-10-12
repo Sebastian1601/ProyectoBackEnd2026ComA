@@ -1,9 +1,7 @@
-const { RepositorioJson } = require("./logicaController.js");
-const { Cliente } = require('../models/Cliente.js');
-
+//aca hay que importar los schemas para crear clientes y eso
 //const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
-class ClienteController {
+export class ClienteController {
 
     static obtenerClientes = (req, res) => {
         const repoJson = new RepositorioJson();
@@ -109,8 +107,4 @@ class ClienteController {
         });
     };
 
-}
-
-module.exports = {
-    ClienteController
 }

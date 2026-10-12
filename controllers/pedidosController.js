@@ -1,8 +1,8 @@
-const { RepositorioJson } = require("./logicaController.js");
-const { Pedido } = require('../models/Pedidos.js');
-const { ValidationError } = require('../ErrorControl/Errores.js');
+import { RepositorioJson } from "./logicaController.js";
+import { Pedido } from '../models/Pedidos.js';
+import { ValidationError } from '../ErrorControl/Errores.js';
 
-class PedidosController {
+export class PedidosController {
 
     static obtenerPedidos = (req, res) => {
         const repoJson = new RepositorioJson();
@@ -70,8 +70,4 @@ class PedidosController {
             pedido: pedidoEstructurado
         });
     };
-}
-
-module.exports = {
-    PedidosController
 }

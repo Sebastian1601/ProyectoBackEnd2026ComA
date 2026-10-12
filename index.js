@@ -1,8 +1,11 @@
-const app = require("./config/expressApp.js");
+import app from "./config/expressApp.js";
+import { conectarDB } from "./config/db.js";
 
-const PORT = process.env.PORT || 3000;
+conectarDB();
 
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`server running on http://localhost:${PORT}`);
 });
+
 

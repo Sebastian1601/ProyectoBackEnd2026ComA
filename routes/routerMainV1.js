@@ -1,10 +1,10 @@
-const express = require("express");
-const routerAuth = require("./routerAuth.js");
-const routerClientes = require("./routerClientes.js");
-const routerPedidos = require("./routerPedidos.js");
-const routerVehiculos = require("./routerVehiculos.js");
-const routerRutas = require("./routerRutas.js");
-const routerChoferes = require("./routerChoferes.js");
+import express from "express";
+import routerAuth from "./routerAuth.js";
+import routerClientes from "./routerClientes.js";
+import routerPedidos from "./routerPedidos.js";
+import routerVehiculos from "./routerVehiculos.js";
+import routerRutas from "./routerRutas.js";
+import routerChoferes from "./routerChoferes.js";
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.use("/vehiculos", routerVehiculos);
 router.use("/rutas", routerRutas);
 router.use("/choferes", routerChoferes);
 
-module.exports = { router };
+export default router;

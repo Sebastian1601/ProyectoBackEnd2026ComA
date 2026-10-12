@@ -1,8 +1,8 @@
-const { ValidationError } = require("../ErrorControl/Errores.js");
+import { ValidationError } from "../ErrorControl/Errores.js";
 
-class Pedido {
+export class Pedido {
     static estados_validos = ["pendiente", "en proceso", "completada", "cancelada"]
-    constructor({ id, cliente, fecha, productos, estado = "pendiente"}) {
+    constructor({ id, cliente, fecha, productos, estado = "pendiente" }) {
         this.id = id;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -10,7 +10,7 @@ class Pedido {
         this.estado = estado; //pendiente, En Proceso, Completada, Cancelada
     }
 
-    get estado(){
+    get estado() {
         return this._estado;
     }
     set estado(valor) {
@@ -20,19 +20,16 @@ class Pedido {
         this._estado = valor;
     }
 
-    toJSON(){
+    toJSON() {
         return {
-            id:this.id,
-            cliente:this.cliente,
-            fecha:this.fecha,
-            estado:this._estado,
-            productos:this.productos
+            id: this.id,
+            cliente: this.cliente,
+            fecha: this.fecha,
+            estado: this._estado,
+            productos: this.productos
         }
     }
 };
 
-module.exports = {
-    Pedido
-};
 
 //creo que la clase Entrega, sería la que se crea y queda registrada con los datos del transporte, como se puso en el constructor, que a su vez, en esa instancia, se guardan los datos de los PEDIDOS que llevan esta estructura, porque un transporte puede llevar varios pedidos.

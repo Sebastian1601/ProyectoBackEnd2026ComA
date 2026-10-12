@@ -1,7 +1,5 @@
-
 //aca quiero verificar en la request, si las propiedades del objeto pasado son las 
-
-const { ValidationError } = require("../ErrorControl/Errores");
+import { ValidationError } from "../ErrorControl/Errores.js";
 
 //correspondientes de la clase Pedido.
 const validarDatosPedido = (req, res, next) => {
@@ -28,6 +26,4 @@ const validarDatosPedido = (req, res, next) => {
     next();
 };
 
-module.exports = {
-    validarDatosPedido
-}
+export default validarDatosPedido

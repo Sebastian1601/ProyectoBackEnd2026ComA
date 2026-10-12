@@ -1,7 +1,7 @@
-const express = require("express");
-const { ChoferController, AsignacionesController } = require("../controllers/logicaController.js");
+import { Router } from "express";
+import { ChoferController, AsignacionesController } from "../controllers/logicaController.js";
  
-const router = express.Router();
+const router = Router();
  
 router.get("/", ChoferController.obtenerChoferes);
 
@@ -25,4 +25,4 @@ router.post("/:idChofer/asignar-ruta/:idRuta", AsignacionesController.asignarRut
  
 router.post("/:idChofer/finalizar-ruta/:idRuta", AsignacionesController.finalizarRutaDeChofer);
  
-module.exports = router;
+export default router;

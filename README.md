@@ -33,10 +33,13 @@ npm install
 
 Crear un archivo .env en la raíz del proyecto basándote en el archivo de ejemplo .env_example:
 
+Reemplazar la subcadena `<user:pass>` con los datos de autenticación correspondientes a mongoDB Atlas.
+
 ```bash
 PORT=3000
-JSONFOLDER=./db
+MONGO_URI = mongodb+srv://<user:pass>@mongodbfreecluster01.mjhkdia.mongodb.net/?appName=MongoDBfreeCluster01
 ```
+Las variables de entorno se cargan mediante el script de ejecución con el flag `--env-file=.env`
 
 4. Ejecutar el proyecto
 

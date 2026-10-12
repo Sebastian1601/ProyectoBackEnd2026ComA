@@ -1,6 +1,4 @@
-
-
-class Autenticacion {
+export class Autenticacion {
 
     static validarUsuario(req, res) {
         const { user, contra } = req.body;
@@ -10,10 +8,8 @@ class Autenticacion {
             });
         };
         return res.status(200).json({
-            message:"Usuario Autorizado"
+            message: "Usuario Autorizado"
         });
     }
 }
 
-
-module.exports = Autenticacion; 

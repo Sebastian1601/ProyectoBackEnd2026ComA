@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon --env-file=.env index.js",
+    "start": "node --env-file=.env index.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA/issues"
   },
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "express": "5.2.1",
-    "mongoose": "^9.11.1",
+    "mongoose": "^9.11.2",
     "pug": "3.0.4"
   }
 }

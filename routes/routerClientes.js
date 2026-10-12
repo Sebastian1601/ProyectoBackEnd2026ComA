@@ -1,6 +1,6 @@
-const express = require("express");
-const { ClienteController } = require("../controllers/clientesController.js");
-const { ValidarString } = require("../validation/clientes.js");
+import express from "express";
+import { ClienteController } from "../controllers/clientesController.js";
+import ValidarString from "../validation/clientes.js";
 
 
 const router = express.Router();
@@ -15,5 +15,4 @@ router.put("/:id", ValidarString, ClienteController.actualizarCliente);
 
 router.delete("/:id", ClienteController.borrarCliente);
 
-module.exports = router;
-
+export default router;

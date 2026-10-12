@@ -1,7 +1,7 @@
 //generar la validacion de datos, como nombre, direccion, y demas
-const { ValidationError } = require("../ErrorControl/Errores.js");
+import { ValidationError } from "../ErrorControl/Errores.js";
 
-function ValidarString(req, res, next) {
+export default function ValidarString(req, res, next) {
     let valores = Object.values(req.body);
     console.log(valores);
     for (const value of valores) {
@@ -13,8 +13,4 @@ function ValidarString(req, res, next) {
     };
     
     next();
-}
-
-module.exports = {
-    ValidarString
 }

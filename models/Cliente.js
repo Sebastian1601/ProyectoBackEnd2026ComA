@@ -1,4 +1,4 @@
-class Cliente {
+export class Cliente {
     constructor({id, nombre, telefono, direccion}) { 
         this.id = id;
         this.nombre = nombre;
@@ -6,5 +6,3 @@ class Cliente {
         this.direccion = direccion;
     }
 }
-
-module.exports = { Cliente };
