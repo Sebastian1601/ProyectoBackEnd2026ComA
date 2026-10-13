@@ -24,10 +24,9 @@ const VehiculoSchema = new Schema({
         default: "Disponible",
         enum: ['Disponible', 'Asignado', 'En mantenimiento', 'Fuera de servicio']
     },
-    idchoferAsignado: {
+    idChoferAsignado: {
         type: Schema.Types.ObjectId,
         ref: 'Chofer',
-        unique: true
     }
 });
 

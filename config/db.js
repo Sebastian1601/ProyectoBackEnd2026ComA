@@ -26,18 +26,16 @@ const MONGO_URI = mongoLocalAddress || process.env.MONGO_URI;
 
 if (!MONGO_URI) throw new DBConnectionError("Falta configurar mongo_uri en el entorno");
 
+// Cambié la conexión a Mongo para que haga el async/await pedido para que no arranque el server si no se conecta a la base de datos
+// en vez de tirar un timeout genérico.
 const conectarDB = async () => {
-  mongoose.connect(`${MONGO_URI}`, {
-    dbName: "FreshRoute_B2B"
-  })
-    .then(() => {
-      console.log("Conectado a MongoDB Atlas(cloud)");
-      return mongoose.connection;
-    })
-    .catch(error => {
-      throw new DBConnectionError(error);
-    })
-
+  try {
+    await mongoose.connect(`${MONGO_URI}`, {dbName: "FreshRoute_B2B"});
+    console.log("Conectado a MongoDB");
+    return mongoose.connection;
+  } catch (error) {
+    throw new DBConnectionError(error.message);
+  }
 }
 
 export default conectarDB;
