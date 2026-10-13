@@ -2,7 +2,7 @@
 //const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
 
 //importo el modelo cliente de mongoose
-import Cliente from './models/Cliente.js';
+import Cliente from '../models/Cliente.js';
 
 export class ClienteController {
 

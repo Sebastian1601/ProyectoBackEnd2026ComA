@@ -7,7 +7,7 @@ export function manejadorDeErrores(err, req, res, next) {
     }
     console.error(err);
     res.status(500).json({ error: 'Error interno del servidor' });
-}
+};
 
 
 export class ValidationError extends Error {
@@ -17,4 +17,22 @@ export class ValidationError extends Error {
             this.statusCode = 400,
             this.campo = campo
     }
-}
+};
+
+export class DBConnectionError extends Error {
+    constructor(men, campo = null) {
+        super(men)
+        this.name = 'DBConnectionError',
+        this.statusCode = 503,
+        this.campo = campo
+    }
+};
+
+export class AuthenticationError extends Error {
+    constructor(men, campo = null) {
+        super(men);
+        this.name = 'AuthenticationError',
+        this.satusCode = 1045,
+        this.campo = campo
+    }
+};

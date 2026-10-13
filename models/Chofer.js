@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const choferSchema = mongoose.Schema({
+const choferSchema = Schema({
     nombre: {
         type: String,
         required: true,
@@ -27,22 +27,22 @@ const choferSchema = mongoose.Schema({
         trim: true
     },
     idVehiculoAsignado: {
-        type: Mixed,
-        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'Vehiculo',
         trim: true
     },
     idRutaActual: {
-        type: Number,
-        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'Ruta',
         trim: true
     },
     estado: {
         type: String,
+        enum: ['Disponible', 'Ocupado', 'Inactivo'],
         required: true,
-        trim: true
     },
     fechaIngreso: {
-        type: String,
+        type: Date,
         required: true,
         trim: true
     },
@@ -91,7 +91,7 @@ choferSchema.methods.liberarVehiculo = function () {
     }
 }
 
-choferSchema.methods.inalizarRuta = function () {
+choferSchema.methods.finalizarRuta = function () {
     if (this.estado !== 'Ocupado') {
         return { success: false, message: 'El chofer no está en una ruta y no puede finalizarla.' };
     }
@@ -106,6 +106,7 @@ choferSchema.methods.estadoChofer = function () {
     return this.estado;
 }
 
+export default model('Chofer', choferSchema);
 
 /*
 export class Chofer {

@@ -8,9 +8,9 @@ const DIR = dirname(fileURLToPath(import.meta.url));
 
 // Todo lo que se repite tiene el mismo formato así debugueamos más fácil
 // Importar modelos
-import { Vehiculo } from '../models/Vehiculo.js';
-import { Ruta } from '../models/Ruta.js';
-import { Chofer } from '../models/Chofer.js';
+import Vehiculo from '../models/Vehiculo.js';
+import Ruta from '../models/Ruta.js';
+import Chofer from '../models/Chofer.js';
 
 function devolverRuta(nombreArchivo) {
     return path.join(DIR, "..", "data", nombreArchivo);

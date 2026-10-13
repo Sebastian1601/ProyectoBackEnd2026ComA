@@ -19,19 +19,25 @@ export async function disconnectFromMongoDB() {
 }
 */
 import mongoose from 'mongoose';
+import { DBConnectionError } from '../ErrorControl/Errores.js';
 
-const { MONGO_URI } = process.env;
-if (!MONGO_URI) throw new Error("Falta configurar mongo_uri en el entorno");
+const mongoLocalAddress = "" //si usamos una base local de mongo, ponemos la direcció aca.
+const MONGO_URI = mongoLocalAddress || process.env.MONGO_URI;
 
-export const conectarDB = async () => {
-  console.log(MONGO_URI);
-  try {
-    await mongoose.connect(`${MONGO_URI}`, { db: "FreshRouteB2B" });
-    console.log("Conectado a MongoDB Atlas(cloud)");
-  } catch (error) {
-    console.error("Hubo un error al conectar a MongoDB Atlas", error.message);
-    process.exit(1);
-  }
+if (!MONGO_URI) throw new DBConnectionError("Falta configurar mongo_uri en el entorno");
+
+const conectarDB = async () => {
+  mongoose.connect(`${MONGO_URI}`, {
+    dbName: "FreshRoute_B2B"
+  })
+    .then(() => {
+      console.log("Conectado a MongoDB Atlas(cloud)");
+      return mongoose.connection;
+    })
+    .catch(error => {
+      throw new DBConnectionError(error);
+    })
+
 }
 
-
+export default conectarDB;
