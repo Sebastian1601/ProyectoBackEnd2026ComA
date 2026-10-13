@@ -1,5 +1,5 @@
 import { RepositorioJson } from "./logicaController.js";
-import { Pedido } from '../models/Pedidos.js';
+import Pedido from '../models/Pedidos.js';
 import { ValidationError } from '../ErrorControl/Errores.js';
 
 export class PedidosController {

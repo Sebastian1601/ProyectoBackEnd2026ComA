@@ -6,14 +6,14 @@ async function CrearAdminInicial() {
     const existeAdmin = await Usuario.countDocuments();
 
     if (existeAdmin > 0) {
-        console.log("Ya existe registro inicial de administrador.-");
+        console.log("Ya existe al menos una cuenta de usuario para autenticarse.-");
         return;
     }
 
     const { ADMIN_USER, ADMIN_PASS } = process.env;
 
     if (!ADMIN_USER || !ADMIN_PASS) {
-        throw new AuthenticationError("Faltan credenciales para inicializar usuario Administrador en la base de datos.-");
+        throw new AuthenticationError("Faltan credenciales para inicializar usuario Administrador en la base de datos.-\nCree variables en el archivo .env (ADMIN_USER, ADMIN_PASS) con los valores de usuario admin principal\npara gestionar demás datos en la base.-");
     }
 
     await Usuario.create({

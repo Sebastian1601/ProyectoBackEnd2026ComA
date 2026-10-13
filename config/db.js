@@ -22,13 +22,15 @@ import mongoose from 'mongoose';
 import { DBConnectionError } from '../ErrorControl/Errores.js';
 
 const mongoLocalAddress = "" //si usamos una base local de mongo, ponemos la direcció aca.
-const MONGO_URI = mongoLocalAddress || process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) throw new DBConnectionError("Falta configurar mongo_uri en el entorno");
 
 // Cambié la conexión a Mongo para que haga el async/await pedido para que no arranque el server si no se conecta a la base de datos
 // en vez de tirar un timeout genérico.
 const conectarDB = async () => {
+  console.log("string de conexión mongo:\n", MONGO_URI);
+  console.log("");
   try {
     await mongoose.connect(`${MONGO_URI}`, {dbName: "FreshRoute_B2B"});
     console.log("Conectado a MongoDB");

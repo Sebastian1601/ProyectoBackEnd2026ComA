@@ -4,7 +4,7 @@ import CrearAdminInicial from "./config/bootstrapAdmin.js";
 
 let dbClient;
 
-async function IniciarServer() {
+(async function IniciarServer() {
     try {
         dbClient = await conectarDB();
 
@@ -12,18 +12,24 @@ async function IniciarServer() {
 
         const PORT = process.env.PORT;
 
-        app.listen(PORT, () => {
+        const server = app.listen(PORT, () => {
             console.log(`server running on http://localhost:${PORT}`);
         });
+
+
+        process.on("SIGINT", async () => {
+            server.close(async () => {
+                try {
+                    await dbClient.close();
+                    console.log("conexión con MongoDB cerrada.-");
+                } catch (e) {
+                    console.log("existió un error al intentar cerrar la conexión con MongoDB.-")
+                }
+            });
+        })
+
     } catch (e) {
         console.error("Error al iniciar el servidor.-", e);
         process.exitCode = 1;
     }
-}
-
-IniciarServer();
-
-app.on("close", async () => {
-    // Call this only when your application terminates
-    await dbClient.close();
-})
+})();
