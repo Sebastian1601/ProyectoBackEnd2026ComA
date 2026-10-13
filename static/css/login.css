@@ -1,11 +1,17 @@
       body {
           font-family: sans-serif;
           display: flex;
+          justify-content: space-between;
+          flex-flow: column nowrap;
+          height: 100vh;
+          background: #f8f6f6;
+      }
+
+      main {
+          display: flex;
+          flex-flow:column nowrap;
           align-items: center;
-          justify-content: center;
-          min-height: 100vh;
-          margin: 0;
-          background: #f4f4f4;
+          justify-content:center
       }
 
       .login-box {

@@ -1,20 +1,14 @@
-body {
-    margin: 0;
+body {    
     font-family: Arial, sans-serif;
     background-color: #f2f7f6;
 }
 
-header {
-    background-color: #287c74;
-    color: white;
-    text-align: center;
-    padding: 35px;
-}
-
 .contenedor {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 20px;
+    max-width: 80vw;
+    display:flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    padding: 2rem;
 }
 
 .tarjetas {
@@ -34,12 +28,4 @@ header {
 
 .tarjeta h3 {
     color: #287c74;
-}
-
-footer {
-    background-color: #287c74;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    margin-top: 40px;
 }

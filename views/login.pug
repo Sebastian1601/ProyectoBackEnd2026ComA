@@ -5,26 +5,21 @@
 //- el evento y hace el fetch contra tu endpoint propio.
 doctype html
 html(lang="es")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet" href="./css/login.css")
-    script(defer src="./js/login.js")
-    title FreshRoute B2B Login
+  include ./head
+  script(type="module" src="./js/login.js" defer)
+  link(rel="stylesheet" href="./css/login.css")
   body
-    .login-box
-      h1 Iniciar sesión
-
-      form#login-form
-        .field
-          label(for="username") Usuario
-          input#username(type="text" name="username" autocomplete="username" required)
-
-        .field
-          label(for="password") Contraseña
-          input#password(type="password" name="password" autocomplete="current-password" required)
-
-        button(type="submit") Ingresar
-
-        p#login-error
-      
+    include ./header
+    main
+      .login-box
+        h1 Iniciar sesión
+        form#login-form
+          .field
+            label(for="username") Usuario
+            input#username(type="text" name="username" autocomplete="username" required)
+          .field
+            label(for="password") Contraseña
+            input#password(type="password" name="password" autocomplete="current-password" required)
+          button(type="submit") Ingresar
+          p#login-error
+    include ./footer

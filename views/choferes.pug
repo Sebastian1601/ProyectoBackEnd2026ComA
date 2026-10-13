@@ -1,13 +1,22 @@
-button 
-  a(href="/") Volver
+doctype html 
+html(lang="es")
+  include ./head 
+  link(rel="stylesheet" src="./css/clientes.css")
 
-table
-  tr
-    th Nombre
-    th Estado
-    th Vehículo asignado
-  each chofer in choferes
-    tr
-      td= chofer.nombre + ' ' + chofer.apellido
-      td= chofer.estado
-      td= chofer.idVehiculoAsignado || 'Sin asignar'
+body 
+  include ./header
+    .main-clientes 
+      button 
+        a(href="/") Volver
+
+      table
+        tr
+          th Nombre
+          th Estado
+          th Vehículo asignado
+        each chofer in choferes
+          tr
+            td= chofer.nombre + ' ' + chofer.apellido
+            td= chofer.estado
+            td= chofer.idVehiculoAsignado || 'Sin asignar'
+  include ./footer
