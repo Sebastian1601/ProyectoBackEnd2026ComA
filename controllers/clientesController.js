@@ -6,52 +6,24 @@ import Cliente from '../models/Cliente.js';
 
 export class ClienteController {
 
-    static obtenerClientes = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const clientesRecuperados = repoJson.leerArchivo("clientes");
-        res.json(clientesRecuperados);
+    static obtenerClientes = async (req, res) => {
+        const clientes = await Cliente.find();
+        res.json(clientes);
     };
 
-    static obtenerClientePorId = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const clientesRecuperados = repoJson.leerArchivo("clientes");
-        const id = parseInt(req.params.id);
-        const cliente = clientesRecuperados.find(c => c.id === id);
-
-        if (cliente === undefined) {
-            return res.status(404).json({
-                mensaje: "Cliente no encontrado"
-            });
+    static obtenerClientePorId = async (req, res) => {
+        const cliente = await Cliente.findById(req.params.id);
+        if (!cliente) {
+            return res.status(404).json({mensaje: "Cliente no encontrado"});
         }
-
         res.json(cliente);
     };
 
-    // static #guardarClientes = (clientes) => {
-    //     fs.writeFileSync(rutaArchivoClientes, JSON.stringify(clientes, null, 2));
-    // };
-
-
-
     static crearCliente = async (req, res) => {
-        const repoJson = new RepositorioJson();
-        const clientesRecuperados = repoJson.leerArchivo("clientes");
-        const cantClientes = clientesRecuperados.length;
-
-        let id = 1;
-        if (cantClientes > 0) {
-            id = clientesRecuperados[cantClientes - 1].id;
-            id++;
-        };
-
+        // El ID lo crea Mongo, no lo pasamos por acá
         const { nombre, telefono, direccion } = req.body;
 
-        const nuevoCliente = new Cliente({
-            nombre: nombre,
-            telefono: telefono,
-            direccion: direccion
-        });
-
+        const nuevoCliente = new Cliente({nombre, telefono, direccion});
         await nuevoCliente.save();
 
         res.status(201).json({
@@ -60,51 +32,35 @@ export class ClienteController {
         });
     };
 
-    static actualizarCliente = (req, res) => {
-        // const clientes = this.#leerClientes();
-        const repoJson = new RepositorioJson();
-        const clientesRecuperados = repoJson.leerArchivo("clientes");
-        const id = parseInt(req.params.id);
-        const clienteIndex = clientesRecuperados.findIndex(c => c.id === id);
-        const clienteAModificar = clientesRecuperados[clienteIndex];
+    static actualizarCliente = async (req, res) => {
+        const { nombre, telefono, direccion } = req.body;
+        const clienteActualizado = await Cliente.findByIdAndUpdate(
+            req.params.id, 
+            { nombre, telefono, direccion }, 
+            { 
+                returnDocument: 'after', // Devuelve el documento actualizado
+                runValidators: true // Ejecuta las validaciones del esquema
+            }
+        );
 
-        if (clienteIndex === undefined) {
-            return res.status(404).json({
-                mensaje: "Cliente no encontrado"
-            });
-        };
-        const datos = req.body;
+        if (!clienteActualizado) {
+            return res.status(404).json({mensaje: "Cliente no encontrado"});
+        }
 
-        for (const [prop, valor] of Object.entries(datos)) {
-            clienteAModificar[prop] = valor;
-        };
-
-        // this.#guardarClientes(clientes);
-        repoJson.guardarArchivo("clientes", clientesRecuperados);
         res.json({
             mensaje: "Cliente actualizado correctamente",
-            cliente: clientesRecuperados[clienteIndex]
+            cliente: clienteActualizado
         });
     };
 
-    static borrarCliente = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const clientes = repoJson.leerArchivo("clientes");
-
-        const id = parseInt(req.params.id);
-        const clienteIndex = clientes.findIndex(c => c.id === id);
-
-        if (clienteIndex === -1) {
-            return res.status(404).json({
-                mensaje: "Cliente no encontrado"
-            });
+    static borrarCliente = async (req, res) => {
+        const clienteEliminado = await Cliente.findByIdAndDelete(req.params.id);
+        if (!clienteEliminado) {
+            return res.status(404).json({mensaje: "Cliente no encontrado"});
         }
-        clientes.splice(clienteIndex, 1);
-        repoJson.guardarArchivo("clientes", clientes);
-
+        
         res.json({
             mensaje: "Cliente eliminado correctamente"
         });
     };
-
 }
