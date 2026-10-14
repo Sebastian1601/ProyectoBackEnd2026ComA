@@ -12,6 +12,6 @@ router.post("/", validarDatosPedido, PedidosController.crearPedido);
 
 router.put("/:id", PedidosController.modificarPedido);
 
-// router.delete("/:id", ClienteController.borrarCliente);
+router.delete("/:id", PedidosController.borrarPedido);
 
 export default router;

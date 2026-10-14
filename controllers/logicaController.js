@@ -49,8 +49,8 @@ class VehiculoController {
     };
 
     static obtenerVehiculoPorId = async (req, res) => {
-        const vehiculos = await Vehiculo.findById(req.params.id);
-        if (!vehiculos) {
+        const vehiculo = await Vehiculo.findById(req.params.id);
+        if (!vehiculo) {
             return res.status(404).json({ mensaje: "Vehículo no encontrado" });
         }
 
@@ -96,14 +96,15 @@ class VehiculoController {
     static borrarVehiculo = async (req, res) => {
         const vehiculo = await Vehiculo.findById(req.params.id);
 
+        if (!vehiculo) {
+            return res.status(404).json({ mensaje: "Vehículo no encontrado" });
+        }
+
         if (vehiculo.idChoferAsignado) {
             return res.status(400).json({ mensaje: "No se puede eliminar un vehículo que tiene un chofer asignado" });
         }
 
         await Vehiculo.findByIdAndDelete(req.params.id);
-        if (!vehiculo) {
-            return res.status(404).json({ mensaje: "Vehículo no encontrado" });
-        }
 
         res.json({
             mensaje: "Vehículo eliminado correctamente"
@@ -169,14 +170,14 @@ class RutaController {
     static borrarRuta = async (req, res) => {
         const ruta = await Ruta.findById(req.params.id);
 
-        if (ruta.idChoferAsignado) {
-            return res.status(400).json({ mensaje: "No se puede eliminar una ruta que tiene un chofer asignado" });
-        }
-
         if (!ruta) {
             return res.status(404).json({
                 mensaje: "Ruta no encontrada"
             });
+        }
+
+        if (ruta.idChoferAsignado) {
+            return res.status(400).json({ mensaje: "No se puede eliminar una ruta que tiene un chofer asignado" });
         }
 
         await Ruta.findByIdAndDelete(req.params.id);
@@ -276,7 +277,7 @@ class ChoferController {
 
 
 
-export class AsignacionesController {
+class AsignacionesController {
     // Asignaciones y lógicas entre chofer y vehículo
     static asignarVehiculoAChofer = async (req, res) => {
         // Chequeo de existencia de chofer y vehículo

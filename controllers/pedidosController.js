@@ -1,47 +1,35 @@
-import { RepositorioJson } from "./logicaController.js";
 import Pedido from '../models/Pedidos.js';
-import { ValidationError } from '../ErrorControl/Errores.js';
 
 export class PedidosController {
 
-    static obtenerPedidos = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const pedidosRecuperados = repoJson.leerArchivo("pedidos");
-        res.json(pedidosRecuperados);
-    }
+    static obtenerPedidos = async (req, res) => {
+        const pedidos = await Pedido.find().populate('idCliente');
+        res.json(pedidos);
+    };
 
-    static obtenerPedido = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const pedidosRecuperados = repoJson.leerArchivo("pedidos");
-        const id = parseInt(req.params.id);
-        const pedido = pedidosRecuperados.find(c => c.id === id);
-
-        if (pedido === undefined) {
+    static obtenerPedido = async (req, res) => {
+        const pedido = await Pedido.findById(req.params.id).populate('idCliente');
+        if (!pedido) {
             return res.status(404).json({
-                mensaje: "No existe pedido"
+                mensaje: "Pedido no encontrado"
             });
         }
         res.json(pedido);
-    }
+    };
 
-    static crearPedido = (req, res) => {
-        const repoJson = new RepositorioJson();
-        const listaPedidos = repoJson.leerArchivo("pedidos");
-        const cantPedidos = listaPedidos.length;
-        let id = 1;
-        if (cantPedidos > 0) {
-            id = listaPedidos[cantPedidos - 1].id;
-            id++;
-        };
-        const { cliente, fecha, productos } = req.body;
+    static crearPedido = async (req, res) => {
+        const { idCliente, cliente, fecha, productos, estado } = req.body;
+        const clienteId = idCliente || cliente;
+
         const nuevoPedido = new Pedido({
-            id,
-            cliente,
-            fecha,
-            productos
+            idCliente: clienteId,
+            fecha: fecha || Date.now(),
+            productos,
+            estado: estado || "Pendiente"
         });
-        listaPedidos.push(nuevoPedido);
-        repoJson.guardarArchivo("pedidos", listaPedidos);
+
+        await nuevoPedido.save();
+        await nuevoPedido.populate('idCliente');
 
         res.status(201).json({
             mensaje: "Pedido creado correctamente",
@@ -49,25 +37,46 @@ export class PedidosController {
         });
     };
 
-    static modificarPedido = (req, res) => {
-        const idABuscar = parseInt(req.params.id);
-        const repoJson = new RepositorioJson();
-        const listaPedidos = repoJson.leerArchivo("pedidos");
-        const idPedido = listaPedidos.findIndex(pedido => pedido.id === idABuscar);
-        if (idPedido === -1) throw new ValidationError("El pedido no existe.");
-        const pedidoEstructurado = new Pedido(listaPedidos[idPedido]);
+    static modificarPedido = async (req, res) => {
+        const { idCliente, cliente, fecha, productos, estado } = req.body;
+        const camposActualizar = {};
 
-        const datos = req.body;//aqui deben llegar los datos normalizados a modificar gracias a un middleware en la request(verifica que a lo mucho, cada campo que viene del front, tiene las propiedades correctas)
-        for (const [prop, valor] of Object.entries(datos)) {
-            pedidoEstructurado[prop] = valor;
+        if (idCliente || cliente) camposActualizar.idCliente = idCliente || cliente;
+        if (fecha !== undefined) camposActualizar.fecha = fecha;
+        if (productos !== undefined) camposActualizar.productos = productos;
+        if (estado !== undefined) camposActualizar.estado = estado;
+
+        const pedidoActualizado = await Pedido.findByIdAndUpdate(
+            req.params.id,
+            camposActualizar,
+            {
+                returnDocument: 'after',
+                runValidators: true
+            }
+        ).populate('idCliente');
+
+        if (!pedidoActualizado) {
+            return res.status(404).json({
+                mensaje: "Pedido no encontrado"
+            });
         }
-        listaPedidos[idPedido] = {
-            ...pedidoEstructurado
-        }
-        repoJson.guardarArchivo("pedidos", listaPedidos);
+
         res.json({
-            mensaje: "Pedido modificado correctamente.",
-            pedido: pedidoEstructurado
+            mensaje: "Pedido modificado correctamente",
+            pedido: pedidoActualizado
+        });
+    };
+
+    static borrarPedido = async (req, res) => {
+        const pedidoEliminado = await Pedido.findByIdAndDelete(req.params.id);
+        if (!pedidoEliminado) {
+            return res.status(404).json({
+                mensaje: "Pedido no encontrado"
+            });
+        }
+
+        res.json({
+            mensaje: "Pedido eliminado correctamente"
         });
     };
 }
