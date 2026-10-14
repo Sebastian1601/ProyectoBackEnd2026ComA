@@ -16,7 +16,7 @@ export function manejadorDeErrores(err, req, res, next) {
     }
     // Validamos IDs con formato inválido (CastError) de Mongoose
     if (err instanceof mongoose.Error.CastError) {
-        return res.status(400).json({ error: 'Valor inválido para ${err.path}', campo: err.path });
+        return res.status(400).json({ error: `Valor inválido para ${err.path}`, campo: err.path });
     }
     // Validamos índices duplicados (error de clave única) de Mongo
     if (err.code === 11000) {

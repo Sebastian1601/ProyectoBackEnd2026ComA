@@ -1,5 +1,7 @@
 import { Router } from "express";
 import validarSesion from "../validation/sesionUsuario.js";
+import Chofer from "../models/Chofer.js";
+import Ruta from "../models/Ruta.js";
 
 const router = Router();
 
@@ -26,14 +28,14 @@ router.get("/vehiculos", (req, res) => {
     res.render("vehiculos");
 });
 
-router.get("/choferes", (req, res) => {
-    //aca hay que obtener los choferes y pasarle el resultado al render como objeto
-    res.render("choferes");
+router.get("/choferes", async (req, res) => {
+    const choferes = await Chofer.find().lean();
+    res.render("choferes", { choferes });
 });
 
-router.get("/rutas", (req, res) => {
-    //lo mismo con rutas, obtener, pasar como objeto
-    res.render("rutas");
+router.get("/rutas", async (req, res) => {
+    const rutas = await Ruta.find().lean();
+    res.render("rutas", { rutas });
 });
 
 export default router;

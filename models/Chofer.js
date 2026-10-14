@@ -14,7 +14,8 @@ const choferSchema = Schema({
     dni: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     numeroRegistro: {
         type: String,
