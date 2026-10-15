@@ -1,11 +1,14 @@
-body {    
+body {
     font-family: Arial, sans-serif;
     background-color: #f2f7f6;
+    width: inherit;
+    flex: 1;
+    padding-top: 15vh;
 }
 
 .contenedor {
-    max-width: 80vw;
-    display:flex;
+    max-width: 80%;
+    display: flex;
     flex-direction: column;
     margin: 2rem auto;
     padding: 2rem;

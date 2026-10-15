@@ -1,12 +1,47 @@
 doctype html 
 html 
     include ./head 
-    link(rel="stylesheet" src="./css/clientes.css")
-
+    link(rel="stylesheet" href="./css/clientes.css")
+    script(src="./js/clientes.js" defer)
 body 
     include ./header
     .main-clientes 
-        p hola clientes 
+        p Gestión de clientes
+        .ingreso-clientes 
+            form#formIngresoClientes(action="")
+                .campo 
+                    label(for="nombre" ) Nombre
+                    input(type="text", name="nombre" required, id="nombre")
+                .campo
+                    label(for="telefono" ) Telefono
+                    input(type="text", name="telefono" required, id="telefono")
+                .campo
+                    label(for="direccion" ) Dirección
+                    input(type="text", name="direccion" required, id="direccion")
+                button(type="submit") Agregar Cliente
+        br
 
+        .tabla-container
+            table#tablaClientes
+                caption Lista de clientes
+                thead
+                    tr
+                        th nro
+                        th Nombre
+                        th Telefono
+                        th Dirección
+                tbody
+                - console.log("hola desde pug")
+                - console.log(listado)
+                    each cliente, index in listado
+                        tr
+                            td=index + 1
+                            td=cliente.nombre
+                            td=cliente.telefono
+                            td=cliente.direccion
+                            td
+                                button(data-action="editar" data-id=cliente._id) editar
+                            td
+                                button(data-action="eliminar" data-id=cliente._id) eliminar
 
     include ./footer

@@ -2,6 +2,7 @@ import { Router } from "express";
 import validarSesion from "../validation/sesionUsuario.js";
 import Chofer from "../models/Chofer.js";
 import Ruta from "../models/Ruta.js";
+import { ClienteController } from "../controllers/clientesController.js";
 
 const router = Router();
 
@@ -25,12 +26,25 @@ router.get("/index", (req, res) => {
     res.render("index");
 });
 
-router.get("/clientes", (req, res) => {
-    res.render("clientes");
+router.get("/clientes", async (req, res) => {
+    const listaClientes = await ClienteController.obtenerClientes();
+    console.log(listaClientes, listaClientes.length);
+    res.render("clientes", { listado: listaClientes });
 });
 
 router.get("/pedidos", (req, res) => {
-    res.render("pedidos");
+    const listaPedidos = [{
+        nro: 1,
+        cliente: 570,
+        pedido: [
+            {
+                nroitem: 1,
+                descripcion: "lechuga",
+                cantidad: 5
+            }
+        ]
+    }]
+    res.render("pedidos", { listaPedidos });
 });
 
 router.get("/vehiculos", (req, res) => {

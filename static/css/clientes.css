@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f7f6;
+    width: inherit;
+    flex: 1;
+    padding: 15vh 0;
+
+}
+
+.main-clientes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+
+    p {
+        font-weight: 700;
+        font-size: 2rem;
+    }
+}
+
+.ingreso-clientes #formIngresoClientes {
+    flex: 2;
+    display: block;
+    flex-direction: row;
+    border: 2px solid red;
+    border-radius: 5px;
+    padding: 1rem;
+
+    .campo{
+        width:100%;
+        padding:1rem;
+        background-color: #c1c1c1;
+        border-radius:5px;
+    }
+
+    label{
+        position:relative;
+        display:block;
+        padding:0.2rem;
+        font-size:larger
+    }
+
+    input{
+        display:block;
+        padding:0.2rem;
+        border:none;
+        font-size:larger
+    }
+
+    button {
+        width:5rem;
+        height:1rem;
+        background-color: rgb(14, 74, 114);
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+
+        &:hover {
+            background-color: rgb(140, 62, 241);
+        }
+    }
+}
+
+.tabla-container {
+    display:block;
+    width:100%;
+    padding: 1rem;
+    border: 2px solid orangered
+}
+
