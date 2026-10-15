@@ -28,7 +28,6 @@ router.get("/index", (req, res) => {
 
 router.get("/clientes", async (req, res) => {
     const listaClientes = await ClienteController.obtenerClientes();
-    console.log(listaClientes, listaClientes.length);
     res.render("clientes", { listado: listaClientes });
 });
 

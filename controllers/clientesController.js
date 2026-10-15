@@ -3,15 +3,6 @@
 
 //importo el modelo cliente de mongoose
 import Cliente from '../models/Cliente.js';
-const SOME = (res) => {
-    ok: true;
-    value: res;
-};
-
-const NONE = () => {
-    ok: false;
-    value: null
-};
 
 export class ClienteController {
 
@@ -22,11 +13,13 @@ export class ClienteController {
 
     static obtenerClientePorId = async (req, res) => {
         const ID = req.params.id;
-        const cliente = await Cliente.find({ id: ID.toString() });
+  
+        const cliente = await Cliente.findById(ID);
+
         if (!cliente) {
             return res.status(404).json({ mensaje: "Cliente no encontrado" });
         };
-        return cliente;
+        return res.json(cliente);
     };
 
     static crearCliente = async (req, res) => {
@@ -73,7 +66,7 @@ export class ClienteController {
             return res.status(404).json({ mensaje: "Cliente no encontrado" });
         }
 
-        res.json({
+        res.status(200).json({
             mensaje: "Cliente eliminado correctamente"
         });
     };

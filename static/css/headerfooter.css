@@ -2,7 +2,8 @@
 *::before,
 *::after {
     margin: 0;
-    padding: 0
+    padding: 0;
+    box-sizing:border-box
 }
 
 html {
@@ -14,10 +15,11 @@ footer {
     width: inherit;
     padding: 0.5rem;
     background-color: #287c74;
+    color:#FFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 15vh;
+    height: 13vh;
 }
 
 header {

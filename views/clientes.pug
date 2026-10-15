@@ -1,15 +1,15 @@
-doctype html 
-html 
-    include ./head 
+doctype html
+html
+    include ./head
     link(rel="stylesheet" href="./css/clientes.css")
     script(src="./js/clientes.js" defer)
-body 
+body
     include ./header
-    .main-clientes 
-        p Gestión de clientes
-        .ingreso-clientes 
+    h2 Gestión de clientes
+    .main-clientes
+        .ingreso-clientes
             form#formIngresoClientes(action="")
-                .campo 
+                .campo
                     label(for="nombre" ) Nombre
                     input(type="text", name="nombre" required, id="nombre")
                 .campo
@@ -31,8 +31,6 @@ body
                         th Telefono
                         th Dirección
                 tbody
-                - console.log("hola desde pug")
-                - console.log(listado)
                     each cliente, index in listado
                         tr
                             td=index + 1
