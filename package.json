@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --env-file=.env index.js",
     "start": "node --env-file=.env index.js",
-    "sync": "browser-sync start --proxy 'localhost:3000' --files './static/**/*, ./views/*'"
+    "sync": "browser-sync start --proxy 127.0.0.1:3000 --files \"static/**/*,views/**/*\""
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme",
   "devDependencies": {
+    "browser-sync": "^3.0.4",
     "nodemon": "3.1.14"
   },
   "dependencies": {
