@@ -49,6 +49,18 @@ Modo desarrollo instalando previamente Nodemon
 npm run dev
 ```
 
+Modo para levantar browser-sync para vigilar el server previamente levantado con **dev**
+previamente levantamos `npm run dev` en una consola, y en otra ejecutamos `npm run sync`
+para levantar el servicio browser-sync que vigila cambios en los archivos estáticos y plantillas pug
+para ver cambios casi en tiempo real en el navegador.
+
+```bash
+// 1er consola
+npm run dev
+// 2da consola
+npm run sync
+```
+
 Modo producción
 
 ```bash

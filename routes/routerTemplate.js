@@ -12,6 +12,15 @@ router.get("/", (req, res) => {
     res.render("login");
 });
 
+router.use((req, res, next) => {
+    const origen = req.get('Referer');
+    if (!origen) {
+        console.log("aqui se redirige al login");
+        return res.redirect("/");
+    };
+    next();
+})
+
 router.get("/index", (req, res) => {
     res.render("index");
 });
