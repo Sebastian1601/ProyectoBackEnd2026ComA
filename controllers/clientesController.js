@@ -8,6 +8,9 @@ export class ClienteController {
 
     static obtenerClientes = async (req, res) => {
         const clientes = await Cliente.find().lean();
+        if (res && typeof res.json === 'function') {
+            return res.json(clientes);
+        }
         return clientes;
     };
 
