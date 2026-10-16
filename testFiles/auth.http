@@ -1,22 +1,78 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//--------------------------------------------
+# Utilizar credenciales de un usuario de prueba existente
+@usuarioPrueba = admin
+@clavePrueba = 1234
 
-//usuario correcto
+
+### 1. Autenticacion con usuario y contraseña correctos
+# Se espera 200 OK si las credenciales existen en MongoDB
 POST {{urlDefecto}}/auth
 Content-Type: application/json
 
 {
-    "user":"admin",
-    "contra":"123"
+  "user": "{{usuarioPrueba}}",
+  "contra": "{{clavePrueba}}"
 }
 
-###
-//usuario incorrecto
+
+### 2. Autenticacion con usuario incorrecto
+# Se espera 401 Unauthorized
 POST {{urlDefecto}}/auth
 Content-Type: application/json
 
 {
-    "user":"a12312dmin",
-    "contra":"12566d3"
+  "user": "usuario_inexistente_prueba",
+  "contra": "12566d3"
+}
+
+
+### 3. Autenticacion con contraseña incorrecta
+# Se espera 401 Unauthorized
+POST {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+  "user": "{{usuarioPrueba}}",
+  "contra": "clave_incorrecta"
+}
+
+
+### 4. Intentar autenticarse sin usuario
+# Se espera 401 Unauthorized
+POST {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+  "contra": "{{clavePrueba}}"
+}
+
+
+### 5. Intentar autenticarse sin contraseña
+# Se espera 401 Unauthorized
+POST {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+  "user": "{{usuarioPrueba}}"
+}
+
+
+### 6. Intentar autenticarse sin datos
+# Se espera 401 Unauthorized
+POST {{urlDefecto}}/auth
+Content-Type: application/json
+
+{}
+
+
+### 7. Intentar autenticarse con campos vacios
+# Se espera 401 Unauthorized
+POST {{urlDefecto}}/auth
+Content-Type: application/json
+
+{
+  "user": "",
+  "contra": ""
 }

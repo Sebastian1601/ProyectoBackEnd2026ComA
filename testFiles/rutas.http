@@ -1,72 +1,96 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//--------------------------------------------
+# Reemplazar por el ID generado al crear la ruta
+@rutaPruebaId = 6ad19f0dcb890b830ed25c1f
 
-// Obtener todas las rutas
+# ID valido de MongoDB que no corresponde a una ruta
+@rutaInexistente = 000000000000000000000000
+
+
+### 1. Obtener todas las rutas
 GET {{urlDefecto}}/rutas
 Content-Type: application/json
 
-###
 
-// Obtener una ruta por id
-GET {{urlDefecto}}/rutas/4
-Content-Type: application/json
-
-###
-
-//intentar obtener una ruta que no existe
-GET {{urlDefecto}}/rutas/999
-Content-Type: application/json
-
-###
-
-// Crear una nueva ruta
+### 2. Crear una ruta de prueba
 POST {{urlDefecto}}/rutas
 Content-Type: application/json
 
 {
-    "id": 11,
-    "nombre": "Ruta Belgrano - Zona Norte",
-    "origen": "Depósito Central, Villa Martelli",
-    "destino": "Belgrano, CABA",
-    "duracionEstimada": 35,
-    "distanciaEstimada": 16,
-    "idChoferAsignado": null
+  "nombre": "Ruta Belgrano - Prueba",
+  "origen": "Deposito Central, Villa Martelli",
+  "destino": "Belgrano, CABA",
+  "duracionEstimada": 35,
+  "distanciaEstimada": 16
 }
 
-###
 
-// Intentar crear una ruta con un id que ya existe (tiene que fallar)
+### 3. Obtener una ruta por ID
+GET {{urlDefecto}}/rutas/{{rutaPruebaId}}
+Content-Type: application/json
+
+
+### 4. Intentar obtener una ruta inexistente
+GET {{urlDefecto}}/rutas/{{rutaInexistente}}
+Content-Type: application/json
+
+
+### 5. Intentar crear una ruta sin nombre
 POST {{urlDefecto}}/rutas
 Content-Type: application/json
 
 {
-    "id": 1,
-    "nombre": "Ruta Duplicada",
-    "origen": "Depósito Central, Villa Martelli",
-    "destino": "CABA",
-    "duracionEstimada": 30,
-    "distanciaEstimada": 10,
-    "idChoferAsignado": null
+  "origen": "Deposito Central",
+  "destino": "Belgrano",
+  "duracionEstimada": 30,
+  "distanciaEstimada": 10
 }
 
-###
 
-// Modificar datos de una ruta por id
-PUT {{urlDefecto}}/rutas/11
+### 6. Modificar la ruta de prueba
+PUT {{urlDefecto}}/rutas/{{rutaPruebaId}}
 Content-Type: application/json
 
 {
-    "nombre": "Ruta Belgrano - Zona Norte (actualizada)",
-    "origen": "Depósito Central, Villa Martelli",
-    "destino": "Belgrano, CABA",
-    "duracionEstimada": 40,
-    "distanciaEstimada": 16,
-    "idChoferAsignado": null
+  "nombre": "Ruta Belgrano - Prueba Modificada",
+  "origen": "Deposito Central, Villa Martelli",
+  "destino": "Belgrano, CABA",
+  "duracionEstimada": 40,
+  "distanciaEstimada": 16
 }
 
-###
 
-// Eliminar una ruta por id
-DELETE {{urlDefecto}}/rutas/11
+### 7. Verificar la modificacion
+GET {{urlDefecto}}/rutas/{{rutaPruebaId}}
+Content-Type: application/json
+
+
+### 8. Intentar modificar con duracion negativa
+PUT {{urlDefecto}}/rutas/{{rutaPruebaId}}
+Content-Type: application/json
+
+{
+  "duracionEstimada": -10
+}
+
+
+### 9. Intentar modificar con distancia negativa
+PUT {{urlDefecto}}/rutas/{{rutaPruebaId}}
+Content-Type: application/json
+
+{
+  "distanciaEstimada": -5
+}
+
+
+### 10. Eliminar la ruta de prueba
+# NO ejecutar hasta terminar las asignaciones con choferes
+DELETE {{urlDefecto}}/rutas/{{rutaPruebaId}}
+Content-Type: application/json
+
+
+### 11. Comprobar que la ruta fue eliminada
+# Ejecutar solamente despues de DELETE
+GET {{urlDefecto}}/rutas/{{rutaPruebaId}}
 Content-Type: application/json

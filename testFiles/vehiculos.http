@@ -1,72 +1,89 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//--------------------------------------------
+# ID del vehiculo de prueba creado con POST
+# Reemplazar despues de crearlo
+@vehiculoPruebaId = 6ad19df8cb890b830ed25c1c
 
-// Obtener todos los vehículos
+# ID valido de MongoDB que no existe
+@vehiculoInexistente = 000000000000000000000000
+
+
+### 1. Obtener todos los vehiculos
 GET {{urlDefecto}}/vehiculos
 Content-Type: application/json
 
-###
 
-// Obtener un vehículo por id
-GET {{urlDefecto}}/vehiculos/6
-Content-Type: application/json
-
-###
-
-// Intentar obtener un vehículo que no existe
-GET {{urlDefecto}}/vehiculos/999
-Content-Type: application/json
-
-###
-
-// Crear un nuevo vehículo
+### 2. Crear un vehiculo de prueba
 POST {{urlDefecto}}/vehiculos
 Content-Type: application/json
 
 {
-    "id": 11,
-    "patente": "AL111ZZ",
-    "marca": "Ford",
-    "modelo": "Transit Refrigerado",
-    "capacidad": 950,
-    "estado": "Disponible",
-    "idChoferAsignado": null
+  "patente": "TEST123",
+  "marca": "Ford",
+  "modelo": "Transit Refrigerado",
+  "capacidad": "Grande"
 }
 
-###
 
-// Intentar crear un vehículo con una patente que ya existe (debe fallar)
+### 3. Obtener un vehiculo por ID
+GET {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
+Content-Type: application/json
+
+
+### 4. Intentar obtener un vehiculo inexistente
+GET {{urlDefecto}}/vehiculos/{{vehiculoInexistente}}
+Content-Type: application/json
+
+
+### 5. Intentar crear un vehiculo con patente duplicada
+# Ejecutar solo si ya se creo TEST123
 POST {{urlDefecto}}/vehiculos
 Content-Type: application/json
 
 {
-    "id": 12,
-    "patente": "AB123CD",
-    "marca": "Ford",
-    "modelo": "Transit Refrigerado",
-    "capacidad": 950,
-    "estado": "Disponible",
-    "idChoferAsignado": null
+  "patente": "TEST123",
+  "marca": "Mercedes-Benz",
+  "modelo": "Sprinter",
+  "capacidad": "Mediano"
 }
 
-###
 
-// Modificar datos de un vehículo por id
-PUT {{urlDefecto}}/vehiculos/11
+### 6. Modificar el vehiculo de prueba
+PUT {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
 Content-Type: application/json
 
 {
-    "patente": "AL111ZZ",
-    "marca": "Ford",
-    "modelo": "Transit Refrigerado",
-    "capacidad": 1000,
-    "estado": "En Mantenimiento",
-    "idChoferAsignado": null
+  "patente": "TEST123",
+  "marca": "Ford",
+  "modelo": "Transit Refrigerado",
+  "capacidad": "Mediano",
+  "estado": "Disponible"
 }
 
-###
 
-// Eliminar un vehículo por id
-DELETE {{urlDefecto}}/vehiculos/11
+### 7. Verificar la modificacion
+GET {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
 Content-Type: application/json
+
+
+### 8. Intentar modificar con una capacidad invalida
+PUT {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
+Content-Type: application/json
+
+{
+  "capacidad": 950
+}
+
+
+### 9. Eliminar el vehiculo de prueba
+# NO ejecutar hasta terminar las asignaciones con choferes
+DELETE {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
+Content-Type: application/json
+
+
+### 10. Comprobar que el vehiculo fue eliminado
+# Ejecutar despues de DELETE
+GET {{urlDefecto}}/vehiculos/{{vehiculoPruebaId}}
+Content-Type: application/json
+

@@ -1,135 +1,133 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//--------------------------------------------
+# Reemplazar por el ID real de un chofer existente
+@choferId = 6ad1992ecb890b830ed25c16
 
-// Obtener todos los choferes
+# Reemplazar por el ID del chofer creado con POST
+@choferPruebaId = 6ad1992ecb890b830ed25c16
+
+# IDs de vehiculo y ruta disponibles para pruebas
+# Utilizar solamente registros autorizados para pruebas
+@vehiculoPruebaId = 6ad19df8cb890b830ed25c1c
+@rutaPruebaId = 6ad19f0dcb890b830ed25c1f
+
+# ID valido pero inexistente
+@choferInexistente = 000000000000000000000000
+
+
+### 1. Obtener todos los choferes
 GET {{urlDefecto}}/choferes
 Content-Type: application/json
 
-###
 
-// Obtener un chofer por id
-GET {{urlDefecto}}/choferes/6
+### 2. Obtener un chofer por ID
+GET {{urlDefecto}}/choferes/{{choferId}}
 Content-Type: application/json
 
-###
 
-// Intentar obtener un chofer que no existe
-GET {{urlDefecto}}/choferes/999
+### 3. Intentar obtener un chofer inexistente
+GET {{urlDefecto}}/choferes/{{choferInexistente}}
 Content-Type: application/json
 
-###
 
-// Crear un nuevo chofer
+### 4. Crear un chofer de prueba
 POST {{urlDefecto}}/choferes
 Content-Type: application/json
 
 {
-    "id": 11,
-    "nombre": "Valentina",
-    "apellido": "Paz",
-    "dni": "34111555",
-    "numeroRegistro": "REG-1011",
-    "telefono": "1122009988",
-    "idVehiculoAsignado": null,
-    "idRutaActual": null,
-    "estado": "Disponible",
-    "fechaIngreso": "2024-01-15"
+  "nombre": "Valentina",
+  "apellido": "Prueba",
+  "dni": "99999123",
+  "numeroRegistro": "REG-PRUEBA-01",
+  "telefono": "1122009988",
+  "estado": "Disponible",
+  "fechaIngreso": "2024-01-15"
 }
 
-###
 
-// Intentar crear un chofer con un DNI que ya existe (tiene que fallar)
+### 5. Intentar crear un chofer con DNI duplicado
+# Ejecutar solo si ya se creo el chofer de prueba
 POST {{urlDefecto}}/choferes
 Content-Type: application/json
 
 {
-    "id": 12,
-    "nombre": "Otro",
-    "apellido": "Chofer",
-    "dni": "34111555",
-    "numeroRegistro": "REG-1012",
-    "telefono": "1122009999",
-    "idVehiculoAsignado": null,
-    "idRutaActual": null,
-    "estado": "Disponible",
-    "fechaIngreso": "2024-01-16"
+  "nombre": "pepe",
+  "apellido": "Chofer",
+  "dni": "99999123",
+  "numeroRegistro": "REG-PRUEBA-02",
+  "telefono": "1122009999",
+  "estado": "Disponible",
+  "fechaIngreso": "2024-01-16"
 }
 
-###
 
-// Modificar datos de un chofer por id
-PUT {{urlDefecto}}/choferes/11
+### 6. Modificar el chofer de prueba
+PUT {{urlDefecto}}/choferes/{{choferPruebaId}}
 Content-Type: application/json
 
 {
-    "nombre": "Valentina",
-    "apellido": "Paz",
-    "dni": "34111555",
-    "numeroRegistro": "REG-1011",
-    "telefono": "1122009988",
-    "idVehiculoAsignado": null,
-    "idRutaActual": null,
-    "estado": "Inactivo",
-    "fechaIngreso": "2024-01-15"
+  "nombre": "Valentina",
+  "apellido": "Prueba Modificada",
+  "dni": "99999123",
+  "numeroRegistro": "REG-PRUEBA-01",
+  "telefono": "1122009988",
+  "estado": "Disponible",
+  "fechaIngreso": "2024-01-15"
 }
 
-###
 
-// Eliminar un chofer por id
-DELETE {{urlDefecto}}/choferes/11
+### 7. Verificar la modificacion
+GET {{urlDefecto}}/choferes/{{choferPruebaId}}
 Content-Type: application/json
 
-###
-//--------------------------------------------
-// Asignaciones cruzadas Chofer <-> Vehículo <-> Ruta
-// Usamos al chofer 6 (Disponible, sin vehículo ni ruta)
-// y al vehículo 6 y la ruta 4 (ambos libres en data/)
-//--------------------------------------------
 
-// Asignar el vehículo 6 al chofer 6 (caso de éxito)
-POST {{urlDefecto}}/choferes/6/asignar-vehiculo/6
+### 8. Asignar un vehiculo al chofer de prueba
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/asignar-vehiculo/{{vehiculoPruebaId}}
 Content-Type: application/json
 
-###
 
-// Asignar la ruta 4 al chofer 6, ya con vehículo asignado (caso de éxito)
-//el chofer debe pasar a estado "Ocupado"
-POST {{urlDefecto}}/choferes/6/asignar-ruta/4
+### 9. Intentar asignar nuevamente el mismo vehiculo
+# Se espera un error porque ya tiene vehiculo
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/asignar-vehiculo/{{vehiculoPruebaId}}
 Content-Type: application/json
 
-###
 
-// Intentar liberar el vehículo mientras el chofer está en ruta (debe fallar)
-POST {{urlDefecto}}/choferes/6/liberar-vehiculo/6
+### 10. Asignar una ruta al chofer de prueba
+# El chofer debe tener vehiculo asignado
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/asignar-ruta/{{rutaPruebaId}}
 Content-Type: application/json
 
-###
 
-//intentar asignar un vehículo a un chofer que ya está ocupado en ruta (debe fallar)
-POST {{urlDefecto}}/choferes/1/asignar-vehiculo/7
+### 11. Intentar liberar vehiculo durante una ruta
+# Se espera error porque el chofer esta Ocupado
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/liberar-vehiculo/{{vehiculoPruebaId}}
 Content-Type: application/json
 
-###
 
-// Intentar asignar un vehículo a un chofer que ya tiene uno asignado (debe fallar)
-POST {{urlDefecto}}/choferes/3/asignar-vehiculo/7
+### 12. Finalizar la ruta del chofer
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/finalizar-ruta/{{rutaPruebaId}}
 Content-Type: application/json
 
-###
 
-// Finalizar la ruta del chofer 6 (caso de éxito, vuelve a estado "Disponible")
-POST {{urlDefecto}}/choferes/6/finalizar-ruta/4
+### 13. Liberar el vehiculo del chofer
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/liberar-vehiculo/{{vehiculoPruebaId}}
 Content-Type: application/json
 
-###
 
-// Liberar el vehículo del chofer 6 (caso de éxito)
-POST {{urlDefecto}}/choferes/6/liberar-vehiculo/6
+### 14. Intentar finalizar una ruta ya finalizada
+# Se espera un error
+POST {{urlDefecto}}/choferes/{{choferPruebaId}}/finalizar-ruta/{{rutaPruebaId}}
 Content-Type: application/json
 
-###
 
-// Intentar finalizar una ruta que el chofer ya no tiene activa (tiene que fallar)
-POST {{urlDefecto}}/choferes/6/finalizar-ruta/4
+### 15. Eliminar el chofer de prueba
+# Ejecutar solamente despues de liberar ruta y vehiculo
+DELETE {{urlDefecto}}/choferes/{{choferPruebaId}}
 Content-Type: application/json
+
+
+### 16. Comprobar que el chofer fue eliminado
+GET {{urlDefecto}}/choferes/{{choferPruebaId}}
+Content-Type: application/json
+

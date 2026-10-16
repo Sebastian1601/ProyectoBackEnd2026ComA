@@ -1,65 +1,189 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//-----------------------------------
-//-----------------------------------
+# Reemplazar con el _id de un cliente existente
+# Utilizar un cliente autorizado para pruebas
+@clientePruebaId = 6acf1b577203db4489e473e2
 
-//solicitud de toda la lista de pedidos
+# Reemplazar con el _id obtenido al crear el pedido
+@pedidoPruebaId = 6ad1a41bcb890b830ed25c25
+
+# ID valido en formato MongoDB, pero inexistente
+@pedidoInexistente = 000000000000000000000000
+
+
+### 1. Obtener todos los pedidos
 GET {{urlDefecto}}/pedidos
 Content-Type: application/json
 
-###
-//obtener un pedido por id
-GET {{urlDefecto}}/pedidos/10
-Content-Type: application/json
 
-###
-GET {{urlDefecto}}/pedidos/560
-Content-Type: application/json
-
-###
-//creación de un pedido nuevo
+### 2. Crear un pedido de prueba
 POST {{urlDefecto}}/pedidos
 Content-Type: application/json
 
 {
-    "cliente":"Cena Rusa S.r.l.",
-    "fecha":"2026-09-04",
-    "productos":[{
-        "id": 301,
-        "descripcion": "Sanghuches de miga triples variados x12",
-        "costo": 18000,
-        "cantidadAdquirida": 3
-      }]
+  "idCliente": "{{clientePruebaId}}",
+  "fecha": "2026-09-04",
+  "productos": [
+    "Sandwiches de miga triples variados x12",
+    "Sandwiches vegetarianos base queso x16"
+  ],
+  "estado": "Pendiente"
 }
 
-###
-//modificacion total de un pedido
-PUT {{urlDefecto}}/pedidos/22
+
+### 3. Obtener el pedido creado por ID
+GET {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 4. Intentar obtener un pedido inexistente
+GET {{urlDefecto}}/pedidos/{{pedidoInexistente}}
+Content-Type: application/json
+
+
+### 5. Intentar crear un pedido sin cliente
+POST {{urlDefecto}}/pedidos
 Content-Type: application/json
 
 {
-    "fecha":"2026-09-05",
-    "productos":[{
-        "id":310,
-        "descripcion":"Sanguches vegetarianos base queso x16",
-        "costo":160000,
-        "cantidadAdquirida":1
-    }]
+  "fecha": "2026-09-04",
+  "productos": [
+    "Sandwiches de miga triples variados x12"
+  ],
+  "estado": "Pendiente"
 }
 
-###
-//modificacion parcial de un pedido
-PUT {{urlDefecto}}/pedidos/5
+
+### 6. Intentar crear un pedido con ID de cliente invalido
+POST {{urlDefecto}}/pedidos
 Content-Type: application/json
 
 {
-   "estado":"cancelada"
+  "idCliente": "123",
+  "fecha": "2026-09-04",
+  "productos": [
+    "Sandwiches de miga triples variados x12"
+  ],
+  "estado": "Pendiente"
 }
 
-###
-PUT {{urlDefecto}}/pedidos/5
+
+### 7. Intentar crear un pedido sin productos
+POST {{urlDefecto}}/pedidos
 Content-Type: application/json
 
 {
-   "estado":"al toke roque"
+  "idCliente": "{{clientePruebaId}}",
+  "fecha": "2026-09-04",
+  "productos": [],
+  "estado": "Pendiente"
 }
+
+
+### 8. Intentar crear un pedido con estado invalido
+POST {{urlDefecto}}/pedidos
+Content-Type: application/json
+
+{
+  "idCliente": "{{clientePruebaId}}",
+  "fecha": "2026-09-04",
+  "productos": [
+    "Sandwiches de miga triples variados x12"
+  ],
+  "estado": "al toke roque"
+}
+
+
+### 9. Intentar crear un pedido con propiedad no permitida
+POST {{urlDefecto}}/pedidos
+Content-Type: application/json
+
+{
+  "idCliente": "{{clientePruebaId}}",
+  "fecha": "2026-09-04",
+  "productos": [
+    "Sandwiches de miga triples variados x12"
+  ],
+  "estado": "Pendiente",
+  "precioTotal": 54000
+}
+
+
+### 10. Modificar los datos del pedido de prueba
+PUT {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+{
+  "fecha": "2026-09-05",
+  "productos": [
+    "Sandwiches vegetarianos base queso x16",
+    "Sandwiches de jamon y queso x12"
+  ]
+}
+
+
+### 11. Verificar la modificacion
+GET {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 12. Modificar solamente el estado del pedido
+PUT {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+{
+  "estado": "En Proceso"
+}
+
+
+### 13. Verificar el cambio de estado
+GET {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 14. Intentar modificar con un estado invalido
+PUT {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+{
+  "estado": "al toke roque"
+}
+
+
+### 15. Modificar el estado a Completada
+PUT {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+{
+  "estado": "Completada"
+}
+
+
+### 16. Verificar el estado final del pedido
+GET {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 17. Intentar modificar un pedido inexistente
+PUT {{urlDefecto}}/pedidos/{{pedidoInexistente}}
+Content-Type: application/json
+
+{
+  "estado": "Cancelada"
+}
+
+
+### 18. Eliminar el pedido de prueba
+DELETE {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 19. Comprobar que el pedido fue eliminado
+GET {{urlDefecto}}/pedidos/{{pedidoPruebaId}}
+Content-Type: application/json
+
+
+### 20. Intentar eliminar un pedido inexistente
+DELETE {{urlDefecto}}/pedidos/{{pedidoInexistente}}
+Content-Type: application/json

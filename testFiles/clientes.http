@@ -1,66 +1,74 @@
+
 @urlDefecto = http://localhost:3000/apiV1
 
-//--------------------------------------------
+# ID de un cliente existente para consultas
+@clienteId = 6acf1b577203db4489e473e2
 
-//obtener todos los clientes
+# Reemplazar por el ID del cliente creado en la prueba POST
+@clientePruebaId = 6ad19500cb890b830ed25c15
+
+# ID válido de MongoDB que no corresponde a un cliente
+@clienteInexistente = 000000000000000000000000
+
+
+### 1. Obtener todos los clientes
 GET {{urlDefecto}}/clientes
 Content-Type: application/json
 
-###
 
-//obtener un cliente por id
-GET {{urlDefecto}}/clientes/7
+### 2. Obtener un cliente por ID
+GET {{urlDefecto}}/clientes/{{clienteId}}
 Content-Type: application/json
 
-###
 
-//intentar obtener un cliente no válido
-GET {{urlDefecto}}/clientes/15
+### 3. Intentar obtener un cliente inexistente
+GET {{urlDefecto}}/clientes/{{clienteInexistente}}
 Content-Type: application/json
 
-###
 
-//crear nuevo cliente
+### 4. Crear un cliente de prueba
 POST {{urlDefecto}}/clientes/
 Content-Type: application/json
 
 {
-    "nombre":"y uno mas",
-    "telefono":"11 3205 0648",
-    "direccion":"juan cruz varela 14"
+  "nombre": "Cliente de prueba",
+  "telefono": "1112345678",
+  "direccion": "Calle de prueba 123"
 }
 
-###
 
-//crear nuevo cliente con string invalida
+### 5. Intentar crear un cliente con datos invalidos
 POST {{urlDefecto}}/clientes/
 Content-Type: application/json
 
 {
-    "nombre":"cn",
-    "telefono":"8",
-    "direccion":"a14"
+  "nombre": "cn",
+  "telefono": "8",
+  "direccion": "a14"
 }
 
 
-###
-
-//modificar datos de un cliente por id
-//aqui se puede agregar nombre, telefono o direccion
-//para modificar los parámetros que se pasan en el body
-//de la request
-PUT {{urlDefecto}}/clientes/12
+### 6. Modificar el cliente de prueba
+PUT {{urlDefecto}}/clientes/{{clientePruebaId}}
 Content-Type: application/json
 
 {
-    "nombre": "nombre Modificado 2",
-    "direccion":"calle Falsa 123"
+  "nombre": "Cliente de prueba modificado",
+  "telefono": "1112345678",
+  "direccion": "Calle de prueba 456"
 }
 
-###
 
-//eliminar un cliente n este caso el id 12
-DELETE {{urlDefecto}}/clientes/12
+### 7. Consultar el cliente despues de modificarlo
+GET {{urlDefecto}}/clientes/{{clientePruebaId}}
 Content-Type: application/json
 
 
+### 8. Eliminar el cliente de prueba
+DELETE {{urlDefecto}}/clientes/{{clientePruebaId}}
+Content-Type: application/json
+
+
+### 9. Comprobar que el cliente fue eliminado
+GET {{urlDefecto}}/clientes/{{clientePruebaId}}
+Content-Type: application/json

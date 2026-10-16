@@ -70,4 +70,16 @@ export class ClienteController {
             mensaje: "Cliente eliminado correctamente"
         });
     };
+// Obtener todos los clientes para la API
+    static listarClientesAPI = async (req, res) => {
+        try {
+            const clientes = await Cliente.find().lean();
+            return res.status(200).json(clientes);
+        } catch (error) {
+            return res.status(500).json({
+                mensaje: "Error al obtener los clientes"
+            });
+        }
+    };
+
 };

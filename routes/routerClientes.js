@@ -5,7 +5,7 @@ import ValidarString from "../validation/clientes.js";
 
 const router = express.Router();
 
-router.get("/", ClienteController.obtenerClientes);
+router.get("/", ClienteController.listarClientesAPI);
 
 router.get("/:id", ClienteController.obtenerClientePorId);
 
