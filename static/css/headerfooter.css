@@ -3,11 +3,11 @@
 *::after {
     margin: 0;
     padding: 0;
-    box-sizing:border-box
+    box-sizing: border-box
 }
 
 html {
-    width:100vw;
+    width: 100vw;
 }
 
 header,
@@ -15,21 +15,32 @@ footer {
     width: inherit;
     padding: 0.5rem;
     background-color: #287c74;
-    color:#FFF;
+    color: #FFF;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     height: 13vh;
 }
 
 header {
-    position:fixed;
-    top:0
+    position: fixed;
+    text-shadow: 0 0 5px #a9a9a9;
+    top: 0;
+    display:flex;
+    align-items:center;
+    flex-direction: column;
 }
 
-footer{
-    position:fixed;
-    bottom:0
+footer {
+    position: fixed;
+    bottom: 0;
+    display:flex;
+    flex-flow:row;
+    gap:1rem;
+    justify-content: space-around;
+    font-size:small;
+    ul {
+       list-style:none; 
+    }    
 }
-
-

@@ -1,20 +1,24 @@
 body {
     font-family: sans-serif;
     width: inherit;
+    min-height:100vh;
     display: flex;
-    place-content: center;
+    align-items: center;
     flex-direction: column;
     background: #aac9a8;
 }
 
 main {
     display: flex;
+    width:100vw;
     flex:1;
     flex-flow: column nowrap;
-    place-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-box {
+    display:block;
     width: 300px;
     padding: 2rem;
     background: #fff;

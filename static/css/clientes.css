@@ -1,61 +1,73 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f7f6;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    background-color: #dbdbdb;
+    border: 2px solid red;
     width: 100vw;
-    flex: 1;
-    padding: 17vh 3rem;
+    margin-top: 13vh;
+    height: 74vh;
+    padding: 1rem 0;
 }
 
 .main-clientes {
+    position: relative;
+    border: 2px solid blueviolet;
+    padding: 1rem;
     width: 100%;
+    height: inherit;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2rem;
+    flex-direction: row;
+    gap: 1rem;
+}
 
-    p {
-        font-weight: 700;
-        font-size: 2rem;
-    }
+.ingreso-clientes {
+    flex: 1;
+    padding: 0px;
+    margin: 0px;
+    border: 2px solid cyan;
 }
 
 .ingreso-clientes #formIngresoClientes {
-    flex: 2;
-    width: 50%;
+    border: 2px solid rgb(240, 239, 239);
+    width: 100%;
     display: inline-block;
     flex-direction: column;
-    border: 2px solid rgb(113, 113, 113);
-    border-radius: 10px;
-    padding: 1rem;
+    padding: 0.5rem;
 
     .campo {
         width: 100%;
-        padding: 1rem;
-        background-color: #c1c1c1;
-        border-radius: 5px;
+        padding: 0.2rem;
     }
 
     label {
         position: relative;
         display: block;
         padding: 0.2rem;
-        font-size: larger
+        font-size: large
     }
 
     input {
+        width: 100%;
         display: block;
         padding: 0.2rem;
         border: none;
-        font-size: larger
     }
 
     button {
-        width: 5rem;
-        height: 1rem;
-        background-color: rgb(14, 74, 114);
+        width: 15rem;
+        display: block;
+        margin: 1rem auto;
+        background-color: #09f;
         border-radius: 4px;
         cursor: pointer;
         border: none;
+        padding: 0.3rem;
+        color: #fff;
+        justify-self: center;
+        box-shadow: 0 0 3px 1px #888a;
+        transition: background-color 1s;
 
         &:hover {
             background-color: rgb(140, 62, 241);
@@ -64,9 +76,41 @@ body {
 }
 
 .tabla-container {
-    flex: 1;
-    display: inline-block;
-    width: 50%;
+    flex: 2;
     padding: 1rem;
-    border: 2px solid orangered
+    border: 2px solid orangered;
+
+    table {
+        width: 100%;
+    }
+
+    caption {
+        font-size: 1.5rem;
+    }
+
+
+    tr {
+        width: inherit;
+        background-color: rgb(230, 230, 230);
+        border-radius: 5px;
+
+        td {
+            padding: 0.2rem;
+        }
+    }
+
+    button {
+        padding: 0.1rem 0.7rem;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+
+        &.editar {
+            background-color: rgb(100, 177, 177);
+        }
+
+        &.eliminar {
+            background-color: rgb(178, 32, 32);
+        }
+    }
 }
