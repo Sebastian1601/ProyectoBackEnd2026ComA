@@ -16,7 +16,7 @@ export class ClienteController {
 
     static obtenerClientePorId = async (req, res) => {
         const ID = req.params.id;
-  
+
         const cliente = await Cliente.findById(ID);
 
         if (!cliente) {
@@ -46,8 +46,10 @@ export class ClienteController {
     //actualizar cliente desde una lista en frontend que ya tiene la id asignada
     static actualizarCliente = async (req, res) => {
         const { nombre, telefono, direccion } = req.body;
+        const id = req.params.id;
+
         const clienteActualizado = await Cliente.findByIdAndUpdate(
-            req.params.id,
+            id,
             { nombre, telefono, direccion },
             {
                 returnDocument: 'after', // Devuelve el documento actualizado
@@ -73,7 +75,7 @@ export class ClienteController {
             mensaje: "Cliente eliminado correctamente"
         });
     };
-// Obtener todos los clientes para la API
+    // Obtener todos los clientes para la API
     static listarClientesAPI = async (req, res) => {
         try {
             const clientes = await Cliente.find().lean();

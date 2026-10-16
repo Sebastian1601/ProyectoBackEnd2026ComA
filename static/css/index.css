@@ -6,6 +6,13 @@ body {
     padding-top: 15vh;
 }
 
+a {
+    text-decoration: none;
+    &:visited{
+        color:inherit
+    }
+}
+
 .contenedor {
     max-width: 80%;
     display: flex;

@@ -9,14 +9,15 @@ html
         .main-clientes
             .ingreso-clientes
                 form#formIngresoClientes(action="")
+                    input(type="hidden" name="id")
                     .campo
-                        label(for="nombre" ) Nombre o Razón Social
+                        label(for="nombre") Nombre o Razón Social
                         input(type="text", name="nombre" required, id="nombre")
                     .campo
-                        label(for="telefono" ) Telefono
+                        label(for="telefono") Telefono
                         input(type="text", name="telefono" required, id="telefono")
                     .campo
-                        label(for="direccion" ) Dirección
+                        label(for="direccion") Dirección
                         input(type="text", name="direccion" required, id="direccion")
                     button(type="submit") Guardar Datos del Cliente
             .tabla-container

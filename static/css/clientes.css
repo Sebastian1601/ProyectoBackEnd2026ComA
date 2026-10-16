@@ -2,9 +2,8 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
     background-color: #dbdbdb;
-    border: 2px solid red;
+    align-items: center;
     width: 100vw;
     margin-top: 13vh;
     height: 74vh;
@@ -13,9 +12,9 @@ body {
 
 .main-clientes {
     position: relative;
-    border: 2px solid blueviolet;
     padding: 1rem;
-    width: 100%;
+    width: inherit;
+    max-width: 1200px;
     height: inherit;
     display: flex;
     flex-direction: row;
@@ -26,15 +25,19 @@ body {
     flex: 1;
     padding: 0px;
     margin: 0px;
-    border: 2px solid cyan;
+    max-width: 320px;
+    min-width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 1px #3334;
+    background-color: #c6c6c6;
 }
 
 .ingreso-clientes #formIngresoClientes {
-    border: 2px solid rgb(240, 239, 239);
     width: 100%;
     display: inline-block;
     flex-direction: column;
     padding: 0.5rem;
+    border-radius: 10px;
 
     .campo {
         width: 100%;
@@ -51,8 +54,13 @@ body {
     input {
         width: 100%;
         display: block;
-        padding: 0.2rem;
+        padding: 0.7rem 0.2rem;
         border: none;
+        font-size: 1.2rem;
+
+        &:focus {
+            outline-style: none;
+        }
     }
 
     button {
@@ -63,7 +71,7 @@ body {
         border-radius: 4px;
         cursor: pointer;
         border: none;
-        padding: 0.3rem;
+        padding: 1rem 0.3rem;
         color: #fff;
         justify-self: center;
         box-shadow: 0 0 3px 1px #888a;
@@ -78,10 +86,15 @@ body {
 .tabla-container {
     flex: 2;
     padding: 1rem;
-    border: 2px solid orangered;
+    max-width: 900px;
+    max-height: 60vh;
+    overflow-y: auto;
 
     table {
         width: 100%;
+        border-radius: 10px;
+        background-color: #17aa;
+        padding: 5px;
     }
 
     caption {
@@ -96,21 +109,35 @@ body {
 
         td {
             padding: 0.2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        td:nth-child(2),
+        td:nth-child(4) {
+            max-width: 270px;
+        }
+
+        td:nth-child(3) {
+            max-width: 130px;
         }
     }
 
+
+
     button {
-        padding: 0.1rem 0.7rem;
-        color: #fff;
+        padding: 0.2rem 1rem;
+        color: #fcfcfc;
         border: none;
         cursor: pointer;
 
         &.editar {
-            background-color: rgb(100, 177, 177);
+            background-color: rgb(67, 132, 100);
         }
 
         &.eliminar {
-            background-color: rgb(178, 32, 32);
+            background-color: rgb(203, 17, 17);
         }
     }
 }

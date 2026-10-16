@@ -19,20 +19,44 @@ const cuerpo = (datos, metodo) => {
 
 botonAgregarCliente.addEventListener("click", async (e) => {
     e.preventDefault();
-    console.log("guardando cliente en la base de datos MongoDB...");
-    let inputs = form.querySelectorAll("input");
-    const nuevoCliente = {
-        nombre: inputs[0].value,
-        telefono: inputs[1].value,
-        direccion: inputs[2].value
+    const formdata1 = new FormData(form);
+    const datosCliente = Object.fromEntries(formdata1);
+
+    let respuesta;
+    console.log("datos del cliente a evaluar para ver si hay que editar o guardar nuevo", datosCliente);
+    if (datosCliente.id !== "") {
+        console.log("guardando datos actualizados...");
+        try {
+            respuesta = await actualizarCliente(datosCliente);
+        } catch (e) {
+            console.log(e.message);
+        } finally {
+            form.reset();
+            form.elements["nombre"].focus();
+        }
+
+    } else {
+        console.log("guardando nuevo cliente en MongoDB...");
+        try {
+            respuesta = guardarNuevoCliente(datosCliente);
+        } catch (e) {
+            console.log(e.message);
+        } finally {
+            form.reset();
+            form.elements["nombre"].focus();
+        }
     };
 
-    const response = await fetch(ENDPOINT, cuerpo(nuevoCliente, "POST"));
-    console.log("codigo de respuesta: ", response.ok, "\nEstado de respuesta: ", response.status);
-    const data = await response.json();
     console.log("datos guardados correctamente. respuesta: ", data);
     location.reload();
 });
+
+async function guardarNuevoCliente(datosCliente) {
+    const response = await fetch(ENDPOINT, cuerpo(datosCliente, 'POST'));
+    if (!response.ok) { throw new Error("Existión un error con la petición al servidor.-") }
+    const data = await response.json();
+    return data;
+}
 
 
 tabla.addEventListener("click", async function (e) {
@@ -46,11 +70,12 @@ tabla.addEventListener("click", async function (e) {
     switch (accion) {
         case "editar":
             console.log("obteniendo cliente...");
-            await obtenerCliente(id);
+            const cliente = await obtenerCliente(id);
+            console.log(cliente);
+            cargarDatosAForm(cliente);
             break;
         case "eliminar":
             console.log("eliminando cliente");
-
             await eliminarCliente(id);
             break;
         default:
@@ -64,16 +89,21 @@ async function obtenerCliente(id) {
     const response = await fetch(`${ENDPOINT}${id}`);
     console.log("codigo de respuesta: ", response.ok, "\nEstado de respuesta: ", response.status);
 
+    if (!response.ok) {
+        throw new Error("Existe un error al obtener los datos del cliente.-");
+    };
+
     const datos = await response.json();
-    //falta implementar la carga de los datos en los inputs para editarlos.
+    return datos;
 };
 
-async function editarCliente(id, cliente) {
-    const response = await fetch(`${ENDPOINT}${id}`, cuerpo(cliente, "PUT"));
-    console.log("codigo de respuesta: ", response.ok, "\nEstado de respuesta: ", response.status);
-    const data = await response.json();
-    console.log(data);
+async function actualizarCliente(cliente) {
+
+    const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
+    if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
+    const datos = response.json();
     location.reload();
+    return datos;
 };
 
 async function eliminarCliente(id) {
@@ -87,5 +117,15 @@ async function eliminarCliente(id) {
     const data = await response.json();
     console.log(data);
     location.reload();
+};
+
+
+function cargarDatosAForm(cliente) {
+    console.log("datos antes de cargar form:", cliente)
+    form.elements["id"].value = cliente._id;
+    form.elements["nombre"].value = cliente.nombre;
+    form.elements["telefono"].value = cliente.telefono;
+    form.elements["direccion"].value = cliente.direccion;
+    form.elements["nombre"].focus();
 };
 
