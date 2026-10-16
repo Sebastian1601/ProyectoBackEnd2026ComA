@@ -4,8 +4,6 @@ import { ChoferController, AsignacionesController } from "../controllers/logicaC
 const router = Router();
  
 router.get("/", ChoferController.obtenerChoferes);
-
-router.get("/ver-choferes", ChoferController.verChoferes);
  
 router.get("/:id", ChoferController.obtenerChoferPorId);
  
