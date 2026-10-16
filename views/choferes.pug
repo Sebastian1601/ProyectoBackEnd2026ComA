@@ -1,22 +1,23 @@
 doctype html 
 html(lang="es")
-  include ./head 
-  link(rel="stylesheet" src="./css/clientes.css")
+    include ./head 
+    link(rel="stylesheet" href="css/clientes.css")
 
-body 
-  include ./header
-    .main-clientes 
-      button 
-        a(href="/") Volver
+    body 
+      include ./header
+      a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
+      .main-clientes 
+        button 
+          a(href="/") Volver
 
-      table
-        tr
-          th Nombre
-          th Estado
-          th Vehículo asignado
-        each chofer in choferes
+        table
           tr
-            td= chofer.nombre + ' ' + chofer.apellido
-            td= chofer.estado
-            td= chofer.idVehiculoAsignado || 'Sin asignar'
-  include ./footer
+            th Nombre
+            th Estado
+            th Vehículo asignado
+            each chofer in choferes
+              tr
+              td= chofer.nombre + ' ' + chofer.apellido
+              td= chofer.estado
+              td= chofer.idVehiculoAsignado || 'Sin asignar'
+      include ./footer

@@ -3,14 +3,13 @@ import { ValidationError } from "../ErrorControl/Errores.js";
 
 export default function ValidarString(req, res, next) {
     let valores = Object.values(req.body);
-    console.log(valores);
-    for (const value of valores) {
-        if(typeof value !== "string") throw new ValidationError("Un valor ingresado no es una cadena.", value);
+    console.log("validacion de valores desde middleware:", valores);
 
+    for (const value of valores) {
         let cadena = String(value).trim();
-        
-        if (cadena === "" || cadena.length < 3) throw new ValidationError("Un valor enviado tiene menos de 3 caracteres", value);
+        if (cadena === "" || cadena.length < 3) res.status(400).json({
+            message: "Un valor enviado tiene menos de 3 caracteres",
+            valor: value });
     };
-    
     next();
 }

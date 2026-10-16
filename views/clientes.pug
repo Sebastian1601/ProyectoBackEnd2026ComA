@@ -1,10 +1,11 @@
 doctype html
 html
     include ./head
-    link(rel="stylesheet" href="./css/clientes.css")
-    script(src="./js/clientes.js" defer)
+    link(rel="stylesheet" href="css/clientes.css")
+    script(src="js/clientes.js" defer)
     body
         include ./header
+        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
         h2 Gestión de clientes
         .main-clientes
             .ingreso-clientes
