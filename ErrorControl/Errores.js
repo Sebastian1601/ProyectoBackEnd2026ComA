@@ -11,12 +11,24 @@ export function manejadorDeErrores(err, req, res, next) {
     }
     // Validamos schemas de Mongoose
     if (err instanceof mongoose.Error.ValidationError) {
-        const detalles = Object.values(err.errors).map(e => ({campo: e.path, mensaje: e.message}));
+        const detalles = Object.values(err.errors).map(e => {
+            let mensaje = e.message;
+            if (e.name === 'CastError') {
+                if (e.kind === 'Number') {
+                    mensaje = 'El valor ingresado debe ser un número válido.';
+                } else if (e.kind === 'ObjectId') {
+                    mensaje = 'El identificador proporcionado no tiene un formato válido.';
+                } else {
+                    mensaje = 'El valor ingresado no tiene un formato válido.';
+                }
+            }
+            return { campo: e.path, mensaje };
+        });
         return res.status(400).json({ error: 'Error de validación', detalles });
     }
-    // Validamos IDs con formato inválido (CastError) de Mongoose
+    // Validamos IDs con formato inválido (CastError) de Mongoose en parámetros de ruta
     if (err instanceof mongoose.Error.CastError) {
-        return res.status(400).json({ error: `Valor inválido para ${err.path}`, campo: err.path });
+        return res.status(400).json({ error: `Valor o identificador inválido para el campo ${err.path}`, campo: err.path });
     }
     // Validamos índices duplicados (error de clave única) de Mongo
     if (err.code === 11000) {
