@@ -1,12 +1,35 @@
 doctype html 
-html 
+html(lang="es")
     include ./head 
     link(rel="stylesheet" href="css/clientes.css")
 
-body 
-    include ./header
-    a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
-    .main-clientes 
-        p Mis vehiculos 
-
-    include ./footer
+    body 
+      include ./header
+      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+      h2 Gestión de vehículos
+      .main-clientes 
+        .tabla-container
+          table#tablaClientes
+            caption Lista de vehículos
+            thead
+              tr
+                th N°
+                th Patente
+                th Marca y Modelo
+                th Capacidad (kg)
+                th Estado
+                th Chofer asignado
+            tbody
+              if vehiculos && vehiculos.length
+                each vehiculo, index in vehiculos
+                  tr
+                    td= index + 1
+                    td= vehiculo.patente
+                    td= vehiculo.marca + ' ' + vehiculo.modelo
+                    td= vehiculo.capacidad
+                    td= vehiculo.estado
+                    td= vehiculo.idChoferAsignado ? (vehiculo.idChoferAsignado.nombre + ' ' + vehiculo.idChoferAsignado.apellido) : 'Sin asignar'
+              else
+                tr
+                  td(colspan="6") No hay vehículos registrados
+      include ./footer

@@ -5,20 +5,29 @@ html(lang="es")
 
     body 
       include ./header
-      a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
+      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+      h2 Gestión de choferes
       .main-clientes 
         .tabla-container
           table#tablaClientes
             caption Lista de choferes
             thead
               tr
+                th N°
                 th Nombre
+                th DNI
                 th Estado
                 th Vehículo asignado
             tbody
-              each chofer in choferes
+              if choferes && choferes.length
+                each chofer, index in choferes
+                  tr
+                    td= index + 1
+                    td= chofer.nombre + ' ' + chofer.apellido
+                    td= chofer.dni || 'S/D'
+                    td= chofer.estado
+                    td= chofer.idVehiculoAsignado ? (chofer.idVehiculoAsignado.patente + ' (' + chofer.idVehiculoAsignado.marca + ' ' + chofer.idVehiculoAsignado.modelo + ')') : 'Sin asignar'
+              else
                 tr
-                  td= chofer.nombre + ' ' + chofer.apellido
-                  td= chofer.estado
-                  td= chofer.idVehiculoAsignado || 'Sin asignar'
+                  td(colspan="5") No hay choferes registrados
       include ./footer

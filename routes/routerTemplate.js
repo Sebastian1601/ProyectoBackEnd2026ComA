@@ -2,6 +2,8 @@ import { Router } from "express";
 import validarSesion from "../validation/sesionUsuario.js";
 import Chofer from "../models/Chofer.js";
 import Ruta from "../models/Ruta.js";
+import Vehiculo from "../models/Vehiculo.js";
+import Pedido from "../models/Pedidos.js";
 import { ClienteController } from "../controllers/clientesController.js";
 
 const router = Router();
@@ -31,32 +33,23 @@ router.get("/clientes", async (req, res) => {
     res.render("clientes", { listado: listaClientes });
 });
 
-router.get("/pedidos", (req, res) => {
-    const listaPedidos = [{
-        nro: 1,
-        cliente: 570,
-        pedido: [
-            {
-                nroitem: 1,
-                descripcion: "lechuga",
-                cantidad: 5
-            }
-        ]
-    }]
-    res.render("pedidos", { listaPedidos });
+router.get("/pedidos", async (req, res) => {
+    const pedidos = await Pedido.find().populate('idCliente').lean();
+    res.render("pedidos", { pedidos });
 });
 
-router.get("/vehiculos", (req, res) => {
-    res.render("vehiculos");
+router.get("/vehiculos", async (req, res) => {
+    const vehiculos = await Vehiculo.find().populate('idChoferAsignado').lean();
+    res.render("vehiculos", { vehiculos });
 });
 
 router.get("/choferes", async (req, res) => {
-    const choferes = await Chofer.find().lean();
+    const choferes = await Chofer.find().populate('idVehiculoAsignado').lean();
     res.render("choferes", { choferes });
 });
 
 router.get("/rutas", async (req, res) => {
-    const rutas = await Ruta.find().lean();
+    const rutas = await Ruta.find().populate('idChoferAsignado').lean();
     res.render("rutas", { rutas });
 });
 

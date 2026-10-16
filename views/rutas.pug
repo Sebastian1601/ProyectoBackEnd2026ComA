@@ -1,12 +1,37 @@
 doctype html 
-html 
+html(lang="es")
     include ./head 
     link(rel="stylesheet" href="css/clientes.css")
 
-body 
-    include ./header
-    a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
-    .main-clientes 
-        p Rutas
-
-    include ./footer
+    body 
+      include ./header
+      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+      h2 Gestión de rutas
+      .main-clientes 
+        .tabla-container
+          table#tablaClientes
+            caption Lista de rutas
+            thead
+              tr
+                th N°
+                th Nombre
+                th Origen
+                th Destino
+                th Duración (min)
+                th Distancia (km)
+                th Chofer asignado
+            tbody
+              if rutas && rutas.length
+                each ruta, index in rutas
+                  tr
+                    td= index + 1
+                    td= ruta.nombre
+                    td= ruta.origen || 'No especificado'
+                    td= ruta.destino || 'No especificado'
+                    td= ruta.duracionEstimada || 'S/D'
+                    td= ruta.distanciaEstimada || 'S/D'
+                    td= ruta.idChoferAsignado ? (ruta.idChoferAsignado.nombre + ' ' + ruta.idChoferAsignado.apellido) : 'Sin asignar'
+              else
+                tr
+                  td(colspan="7") No hay rutas registradas
+      include ./footer

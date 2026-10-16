@@ -1,12 +1,33 @@
 doctype html 
-html 
+html(lang="es")
     include ./head 
     link(rel="stylesheet" href="css/clientes.css")
 
-body
-    include ./header
-    a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
-    .main-clientes 
-        p nuestros pedidos 
-
-    include ./footer
+    body 
+      include ./header
+      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+      h2 Gestión de pedidos
+      .main-clientes 
+        .tabla-container
+          table#tablaClientes
+            caption Lista de pedidos
+            thead
+              tr
+                th N°
+                th Cliente
+                th Fecha
+                th Productos
+                th Estado
+            tbody
+              if pedidos && pedidos.length
+                each pedido, index in pedidos
+                  tr
+                    td= index + 1
+                    td= pedido.idCliente ? pedido.idCliente.nombre : 'Cliente no asignado'
+                    td= pedido.fecha ? new Date(pedido.fecha).toLocaleDateString('es-AR') : 'S/D'
+                    td= pedido.productos ? pedido.productos.join(', ') : 'Sin productos'
+                    td= pedido.estado
+              else
+                tr
+                  td(colspan="5") No hay pedidos registrados
+      include ./footer
