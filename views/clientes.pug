@@ -3,43 +3,41 @@ html
     include ./head
     link(rel="stylesheet" href="./css/clientes.css")
     script(src="./js/clientes.js" defer)
-body
-    include ./header
-    h2 Gestión de clientes
-    .main-clientes
-        .ingreso-clientes
-            form#formIngresoClientes(action="")
-                .campo
-                    label(for="nombre" ) Nombre
-                    input(type="text", name="nombre" required, id="nombre")
-                .campo
-                    label(for="telefono" ) Telefono
-                    input(type="text", name="telefono" required, id="telefono")
-                .campo
-                    label(for="direccion" ) Dirección
-                    input(type="text", name="direccion" required, id="direccion")
-                button(type="submit") Agregar Cliente
-        br
-
-        .tabla-container
-            table#tablaClientes
-                caption Lista de clientes
-                thead
-                    tr
-                        th nro
-                        th Nombre
-                        th Telefono
-                        th Dirección
-                tbody
-                    each cliente, index in listado
+    body
+        include ./header
+        h2 Gestión de clientes
+        .main-clientes
+            .ingreso-clientes
+                form#formIngresoClientes(action="")
+                    .campo
+                        label(for="nombre" ) Nombre o Razón Social
+                        input(type="text", name="nombre" required, id="nombre")
+                    .campo
+                        label(for="telefono" ) Telefono
+                        input(type="text", name="telefono" required, id="telefono")
+                    .campo
+                        label(for="direccion" ) Dirección
+                        input(type="text", name="direccion" required, id="direccion")
+                    button(type="submit") Guardar Datos del Cliente
+            .tabla-container
+                table#tablaClientes
+                    caption Lista de clientes
+                    thead
                         tr
-                            td=index + 1
-                            td=cliente.nombre
-                            td=cliente.telefono
-                            td=cliente.direccion
-                            td
-                                button(data-action="editar" data-id=cliente._id) editar
-                            td
-                                button(data-action="eliminar" data-id=cliente._id) eliminar
+                            th nro
+                            th Nombre/Razón social
+                            th Telefono
+                            th Dirección
+                    tbody
+                        each cliente, index in listado
+                            tr
+                                td=index + 1
+                                td=cliente.nombre
+                                td=cliente.telefono
+                                td=cliente.direccion
+                                td
+                                    button(class="editar", data-action="editar", data-id=cliente._id) editar
+                                td
+                                    button(class="eliminar", data-action="eliminar", data-id=cliente._id) eliminar
 
-    include ./footer
+        include ./footer

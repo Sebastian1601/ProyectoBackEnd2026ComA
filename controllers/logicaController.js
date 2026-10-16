@@ -1,45 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-
-
-const DIR = dirname(fileURLToPath(import.meta.url));
-
-// Todo lo que se repite tiene el mismo formato así debugueamos más fácil
 // Importar modelos
 import Vehiculo from '../models/Vehiculo.js';
 import Ruta from '../models/Ruta.js';
 import Chofer from '../models/Chofer.js';
-
-function devolverRuta(nombreArchivo) {
-    return path.join(DIR, "..", "data", nombreArchivo);
-}
-// unificando lectura
-//se crea clase para que si se agregan datos, simplemente se define en la propiedad la ruta del archivo, y luego se llama a los métodos 
-//del archivo que se desea leer 
-
-// Lo dejo hasta que pasemos pedidosController a Mongo
-export class RepositorioJson {
-    constructor() {
-        this.clientes = devolverRuta("clientes.json");
-        this.vehiculos = devolverRuta("vehiculos.json");
-        this.choferes = devolverRuta("choferes.json");
-        this.rutas = devolverRuta("rutas.json");
-        this.pedidos = devolverRuta("pedidos.json");
-    }
-
-    leerArchivo(nombre) {
-        const data = fs.readFileSync(this[nombre], 'utf-8');
-        const parsedData = JSON.parse(data);
-        return parsedData;
-    }
-
-    guardarArchivo(nombre, data) {
-        const stringData = JSON.stringify(data, null, 2);
-        fs.writeFileSync(this[nombre], stringData);
-    }
-}
 
 
 class VehiculoController {
