@@ -7,9 +7,12 @@ export default function ValidarString(req, res, next) {
 
     for (const value of valores) {
         let cadena = String(value).trim();
-        if (cadena === "" || cadena.length < 3) res.status(400).json({
-            message: "Un valor enviado tiene menos de 3 caracteres",
-            valor: value });
+        if (cadena === "" || cadena.length < 3) {
+            return res.status(400).json({
+                message: "Un valor enviado tiene menos de 3 caracteres",
+                valor: value
+            });
+        }
     };
     next();
 }

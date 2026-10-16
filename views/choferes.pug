@@ -7,17 +7,18 @@ html(lang="es")
       include ./header
       a(href="./index", class="boton-volverInicio", target='_self') Volver a inicio
       .main-clientes 
-        button 
-          a(href="/") Volver
-
-        table
-          tr
-            th Nombre
-            th Estado
-            th Vehículo asignado
-            each chofer in choferes
+        .tabla-container
+          table#tablaClientes
+            caption Lista de choferes
+            thead
               tr
-              td= chofer.nombre + ' ' + chofer.apellido
-              td= chofer.estado
-              td= chofer.idVehiculoAsignado || 'Sin asignar'
+                th Nombre
+                th Estado
+                th Vehículo asignado
+            tbody
+              each chofer in choferes
+                tr
+                  td= chofer.nombre + ' ' + chofer.apellido
+                  td= chofer.estado
+                  td= chofer.idVehiculoAsignado || 'Sin asignar'
       include ./footer

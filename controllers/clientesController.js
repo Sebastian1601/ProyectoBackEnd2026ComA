@@ -31,16 +31,15 @@ export class ClienteController {
         const nuevoCliente = new Cliente({ nombre, telefono, direccion });
         try {
             await nuevoCliente.save();
+            return res.status(201).json({
+                mensaje: "Cliente creado correctamente",
+                cliente: nuevoCliente
+            });
         } catch (error) {
-            res.status(500).json({
+            return res.status(500).json({
                 mensaje: "Error al crear nuevo cliente"
-            })
-        };
-
-        res.status(201).json({
-            mensaje: "Cliente creado correctamente",
-            cliente: nuevoCliente
-        });
+            });
+        }
     };
 
     //actualizar cliente desde una lista en frontend que ya tiene la id asignada
