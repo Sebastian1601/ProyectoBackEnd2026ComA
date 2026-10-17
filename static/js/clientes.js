@@ -19,41 +19,23 @@ const cuerpo = (datos, metodo) => {
 
 botonAgregarCliente.addEventListener("click", async (e) => {
     e.preventDefault();
-    const formdata1 = new FormData(form);
-    const datosCliente = Object.fromEntries(formdata1);
+    const { id, ...datosCliente } = Object.fromEntries(new FormData(form));
 
-    let respuesta;
-    console.log("datos del cliente a evaluar para ver si hay que editar o guardar nuevo", datosCliente);
-    if (datosCliente.id !== "") {
-        console.log("guardando datos actualizados...");
-        try {
-            respuesta = await actualizarCliente(datosCliente);
-        } catch (e) {
-            console.log(e.message);
-        } finally {
-            form.reset();
-            form.elements["nombre"].focus();
+    try {
+        if (id !== "") {
+            await actualizarCliente(id, datosCliente);
+        } else {
+            await guardarNuevoCliente(datosCliente);
         }
-
-    } else {
-        console.log("guardando nuevo cliente en MongoDB...");
-        try {
-            respuesta = guardarNuevoCliente(datosCliente);
-        } catch (e) {
-            console.log(e.message);
-        } finally {
-            form.reset();
-            form.elements["nombre"].focus();
-        }
-    };
-
-    console.log("datos guardados correctamente. respuesta: ", data);
-    location.reload();
+        location.reload(); 
+    } catch (error) {
+        console.log(error.message); // el formulario conserva lo que escribió el usuario
+    }
 });
 
 async function guardarNuevoCliente(datosCliente) {
     const response = await fetch(ENDPOINT, cuerpo(datosCliente, 'POST'));
-    if (!response.ok) { throw new Error("Existión un error con la petición al servidor.-") }
+    if (!response.ok) { throw new Error("Existió un error con la petición al servidor.-") }
     const data = await response.json();
     return data;
 }
@@ -97,13 +79,10 @@ async function obtenerCliente(id) {
     return datos;
 };
 
-async function actualizarCliente(cliente) {
-
-    const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
-    if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
-    const datos = response.json();
-    location.reload();
-    return datos;
+async function actualizarCliente(id, datosCliente) {
+    const response = await fetch(`${ENDPOINT}${id}`, cuerpo(datosCliente, "PUT"));
+    if (!response.ok) throw new Error("Existió un error con la petición al servidor.-");
+    return await response.json()
 };
 
 async function eliminarCliente(id) {
