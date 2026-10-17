@@ -9,9 +9,9 @@ router.get("/", ClienteController.listarClientesAPI);
 
 router.get("/:id", ClienteController.obtenerClientePorId);
 
-router.post("/", ValidarString, ClienteController.crearCliente);
+router.post("/", ClienteController.crearCliente);
 
-router.put("/:id", ValidarString, ClienteController.actualizarCliente);
+router.put("/:id", ClienteController.actualizarCliente);
 
 router.delete("/:id", ClienteController.borrarCliente);
 

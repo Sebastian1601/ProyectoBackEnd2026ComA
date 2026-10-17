@@ -21,6 +21,7 @@ botonAgregarCliente.addEventListener("click", async (e) => {
     e.preventDefault();
     const formdata1 = new FormData(form);
     const datosCliente = Object.fromEntries(formdata1);
+    console.log(datosCliente);
 
     let respuesta;
     console.log("datos del cliente a evaluar para ver si hay que editar o guardar nuevo", datosCliente);
@@ -38,7 +39,7 @@ botonAgregarCliente.addEventListener("click", async (e) => {
     } else {
         console.log("guardando nuevo cliente en MongoDB...");
         try {
-            respuesta = guardarNuevoCliente(datosCliente);
+            respuesta = await guardarNuevoCliente(datosCliente);
         } catch (e) {
             console.log(e.message);
         } finally {
@@ -47,13 +48,14 @@ botonAgregarCliente.addEventListener("click", async (e) => {
         }
     };
 
-    console.log("datos guardados correctamente. respuesta: ", data);
-    location.reload();
+    console.log("datos guardados correctamente. respuesta: ", respuesta);
+    setTimeout(()=>location.reload(), 1000);
 });
 
 async function guardarNuevoCliente(datosCliente) {
     const response = await fetch(ENDPOINT, cuerpo(datosCliente, 'POST'));
     if (!response.ok) { throw new Error("Existión un error con la petición al servidor.-") }
+    console.log(response.status);
     const data = await response.json();
     return data;
 }
