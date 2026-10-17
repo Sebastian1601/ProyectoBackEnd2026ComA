@@ -49,7 +49,7 @@ botonAgregarCliente.addEventListener("click", async (e) => {
     };
 
     console.log("datos guardados correctamente. respuesta: ", respuesta);
-    setTimeout(()=>location.reload(), 1000);
+    location.reload();
 });
 
 async function guardarNuevoCliente(datosCliente) {
