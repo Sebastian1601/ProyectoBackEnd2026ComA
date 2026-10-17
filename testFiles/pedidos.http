@@ -6,7 +6,7 @@
 @clientePruebaId = 6acf1b577203db4489e473e2
 
 # Reemplazar con el _id obtenido al crear el pedido
-@pedidoPruebaId = 6ad1a41bcb890b830ed25c25
+@pedidoPruebaId = 6ad3d98e07b308735036dc30
 
 # ID valido en formato MongoDB, pero inexistente
 @pedidoInexistente = 000000000000000000000000
