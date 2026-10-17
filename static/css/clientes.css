@@ -14,7 +14,7 @@ body {
     position: relative;
     padding: 1rem;
     width: inherit;
-    max-width: 1200px;
+    max-width: 1350px;
     height: inherit;
     display: flex;
     flex-direction: row;
@@ -87,7 +87,7 @@ body {
     flex: 2;
     padding: 1rem;
     width: 100%;
-    max-width: 1150px;
+    max-width: 1350px;
     margin: 0 auto;
     max-height: 65vh;
     overflow-y: auto;
@@ -123,6 +123,8 @@ body {
             font-size: 0.9rem;
             vertical-align: middle;
             word-break: break-word;
+            text-overflow: ellipsis;
+            text-wrap: nowrap;
         }
     }
 
@@ -133,6 +135,8 @@ body {
         border-radius: 3px;
         cursor: pointer;
         font-weight: 500;
+        text-wrap: nowrap;
+        min-width:4rem;
 
         &.editar {
             background-color: rgb(67, 132, 100);
