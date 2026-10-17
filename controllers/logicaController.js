@@ -169,16 +169,17 @@ class ChoferController {
 
         res.json(chofer);
     };
-
+/*
     static verChoferes = async (req, res) => {
         const choferes = await Chofer.find().lean();
         res.render('choferes', { choferes });
     }
-
+No estamos usandolo por ahora, lo dejo comentado para que nos quede para la entrega final
+    */
     static crearChofer = async (req, res) => {
         const { id, nombre, apellido, dni, numeroRegistro, telefono, estado, fechaIngreso } = req.body;
 
-        const nuevoChofer = new Chofer({ id, nombre, apellido, dni, numeroRegistro, telefono, estado, fechaIngreso,
+        const nuevoChofer = new Chofer({ id, nombre, apellido, dni, numeroRegistro, telefono, fechaIngreso,
             estado: estado ?? "Disponible" // Si no se proporciona estado, se establece como "Disponible"
         });
         await nuevoChofer.save();

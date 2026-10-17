@@ -2,17 +2,17 @@
 import { ValidationError } from "../ErrorControl/Errores.js";
 
 export default function ValidarString(req, res, next) {
-    let valores = Object.values(req.body);
-    console.log("validacion de valores desde middleware:", valores);
+    const { nombre, telefono, direccion } = req.body;
 
-    for (const value of valores) {
-        let cadena = String(value).trim();
-        if (cadena === "" || cadena.length < 3) {
-            return res.status(400).json({
-                message: "Un valor enviado tiene menos de 3 caracteres",
-                valor: value
-            });
-        }
-    };
+    if (!nombre || nombre.trim().length < 3) {
+        return res.status(400).json({ message: "El nombre es obligatorio y debe tener al menos 3 caracteres" });
+    }
+    if (!telefono || telefono.trim().length < 3) {
+        return res.status(400).json({ message: "El teléfono es obligatorio y debe tener al menos 3 caracteres" });
+    }
+    if (!direccion || direccion.trim().length < 3) {
+        return res.status(400).json({ message: "La dirección es obligatoria y debe tener al menos 3 caracteres" });
+    }
+
     next();
 }
