@@ -15,6 +15,6 @@ router.use('/pedidos', routerPedidos);
 router.use('/vehiculos', routerVehiculos);
 router.use('/rutas', routerRutas);
 router.use('/choferes', routerChoferes);
-router.use('/', routerProductos);
+router.use('/productos', routerProductos);
 
 export default router;

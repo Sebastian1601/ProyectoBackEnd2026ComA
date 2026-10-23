@@ -1,0 +1,31 @@
+@puerto = 3000
+@url = http://localhost:{{puerto}}/apiV1
+
+@nombre=lechuga
+
+@descripcion=lechugas frescas de la pampa
+
+@precio=1500
+
+@categoria=verduras
+
+
+
+###
+GET {{url}}/productos
+Content-Type: application/json
+
+###
+POST {{url}}/productos/
+Content-Type: application/json
+
+{
+    "producto":{
+        "nombre":"lechuga",
+        "descripcion":"lechugas francesas fresacas de la pampa",
+        "precio": 3900,
+        "categoria":"verduras"
+        }
+}
+
+###
