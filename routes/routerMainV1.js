@@ -5,6 +5,7 @@ import routerPedidos from "./routerPedidos.js";
 import routerVehiculos from "./routerVehiculos.js";
 import routerRutas from "./routerRutas.js";
 import routerChoferes from "./routerChoferes.js";
+import routerProductos from './routerProductos.js';
 import { autenticar, autorizarEscritura } from "../validation/autenticacion.js";
 
 const router = express.Router();
@@ -21,5 +22,6 @@ router.use("/pedidos", autorizarEscritura("admin", "pedidos"), routerPedidos);
 router.use("/vehiculos", autorizarEscritura("admin", "administracion"), routerVehiculos);
 router.use("/rutas", autorizarEscritura("admin", "administracion"), routerRutas);
 router.use("/choferes", autorizarEscritura("admin", "administracion"), routerChoferes);
+router.use('/productos', autorizarEscritura("admin", "administracion"), routerProductos);
 
 export default router;
