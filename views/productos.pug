@@ -1,0 +1,75 @@
+doctype html
+html
+    include ./head
+    link(rel="stylesheet" href="css/clientes.css")
+    script(src="js/productos.js" defer)
+    body
+        include ./header
+        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+        h2 Administración de productos
+        .main-productos 
+            .ingreso-productos  
+                form#form-Ingreso-Productos(action="")
+                    input(type="hidden" name="id")
+                    .campo 
+                        label(for="input-nombre") Nombre:
+                        input(type="text", name="nombre", required, id="input-nombre")
+                    .campo 
+                        label(for="input-descripcion") Descripción
+                        input(type="text", name="descripcion", id="input-descripcion")
+                    .campo 
+                        label(for="input-precio") Precio
+                        input(type="text", name="precio", required, id="input-precio")
+
+                    .campo-radio 
+                        label(for="input-verduras") Verduras
+                        input(type="radio", name="categoria", id="input-verduras" value="verduras")
+                    .campo-radio
+                        label(for="input-lacteos") Lacteos
+                        input(type="radio", name="categoria", id="input-lacteos" value="lacteos")
+                    .campo-radio
+                        label(for="input-carnes") Carnes
+                        input(type="radio", name="categoria", id="input-carnes" value="carnes")
+                    .campo-radio
+                        label(for="input-procesados") Procesados
+                        input(type="radio", name="categoria", id="input-procesados" value="procesados")
+                    .campo-radio
+                        label(for="input-noPerecederos") No perecederos
+                        input(type="radio", name="categoria", id="input-noPerecederos" value="no perecederos")
+                    .campo-radio
+                        label(for="input-sinCategoria") Sin categorizar
+                        input(type="radio", name="categoria", id="input-sinCategoria" value="sin categoria")
+                    .campo-boton 
+                        button(type="submit") Guardar nuevo producto
+                    .campo-boton 
+                        button(type="reset") Reiniciar formulario
+  
+            .listado-productos 
+                .header-listado-productos
+                    h2 Lista de productos
+                .busqueda-listado-productos 
+                    label(for="inputBusqueda") Ingrese producto a buscar
+                    input(type="text", name="nombre", id="inputBusqueda")
+                    button(type="submit") Buscar productos
+                .main-listado-productos
+                    table#tabla-productos 
+                        thead 
+                            tr 
+                                th Nro Item 
+                                th Nombre
+                                th Precio 
+                                th Descripcion
+                                th Categoria
+                        tbody 
+                            each producto, index in listado
+                                tr
+                                    td=index+1
+                                    td=producto.nombre
+                                    td=producto.precio
+                                    td=producto.descripcion
+                                    td=producto.categoria
+                                    td 
+                                        button(class="editar", data-action="editar", data-id=producto._id) Editar
+                                    td 
+                                        button(class="eliminar", data-action="eliminar", data-id=producto._id) Eliminar
+        include ./footer

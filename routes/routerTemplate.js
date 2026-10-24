@@ -1,15 +1,12 @@
 import { Router } from "express";
-import validarSesion from "../validation/sesionUsuario.js";
 import Chofer from "../models/Chofer.js";
 import Ruta from "../models/Ruta.js";
 import Vehiculo from "../models/Vehiculo.js";
 import Pedido from "../models/Pedidos.js";
+import { Producto } from "../models/Producto.js";
 import { ClienteController } from "../controllers/clientesController.js";
 
 const router = Router();
-
-//aca verifico si existe la sesión del usuario
-router.use("/", validarSesion);
 
 router.get("/", (req, res) => {
     res.render("login");
@@ -51,6 +48,11 @@ router.get("/choferes", async (req, res) => {
 router.get("/rutas", async (req, res) => {
     const rutas = await Ruta.find().populate('idChoferAsignado').lean();
     res.render("rutas", { rutas });
+});
+
+router.get("/productos", async (req, res) => {
+    const productos = await Producto.find().lean();
+    res.render('productos', { listado: productos });
 });
 
 export default router;

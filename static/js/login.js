@@ -1,5 +1,5 @@
 // Cambiá esta URL por la de tu endpoint real.
-const LOGIN_ENDPOINT = '/apiV1/auth';
+const LOGIN_ENDPOINT = '/apiV1/auth/';
 console.log("vinculado");
 
 const form = document.querySelector('#login-form');
@@ -23,25 +23,28 @@ form.addEventListener('submit', async (e) => {
             credentials: 'include', // enviá/recibí cookies de sesión si tu backend las usa
             body: JSON.stringify({ user, contra })
         });
-
         if (!res.ok) {
-            const data = await res.json().catch(() => ({}));
-            throw new Error('Usuario o contraseña incorrectos');
-        }
-
+            const data = await res.json();
+            console.error(data);
+            errorBox.textContent = data.message;
+            return;
+        };
         const data = await res.json();
-
+        errorBox.textContent = data.message;
         // Ajustá esto según lo que devuelva tu endpoint:
         // - si usás cookies de sesión, probablemente solo necesites redirigir
         // - si devuelve un token, guardalo antes de redirigir
         if (data.token) {
             localStorage.setItem('token', data.token);
         }
-
-        window.location.href = '/index';
+        setTimeout(() => {
+            window.location.href = '/index';
+        }, 1000);
 
     } catch (err) {
+        console.error(err);
         errorBox.textContent = err.message;
+
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Ingresar';

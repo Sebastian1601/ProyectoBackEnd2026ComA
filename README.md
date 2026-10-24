@@ -85,3 +85,18 @@ solo para manejar los cambios en el front más dinámicamente.
 En ese comando, se define la dirección del server, y luego bajo --files las carpetas a las
 que se le realizara el watch, para que cuando se noten cambios, se actualicen automaticamente 
 en la pestaña del navegador.
+
+
+---
+
+## notas particulares propias
+el modelo de usuario para acceder y verificar credenciales en sistema deberia tener
+
+model usuario{
+    user
+    pwd
+    rol
+    createdat
+    modifiedat
+}
+solamente los roles admin pueden modificar estos datos.

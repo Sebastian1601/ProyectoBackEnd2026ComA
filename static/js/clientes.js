@@ -2,7 +2,9 @@ console.log("vinculado js de clientes");
 
 const botonAgregarCliente = document.querySelector("#formIngresoClientes button");
 console.log(botonAgregarCliente ? "boton obtenido" : "no se ha encontrado boton");
+
 const form = document.querySelector("#formIngresoClientes");
+
 const tabla = document.querySelector("#tablaClientes");
 
 const ENDPOINT = '/apiV1/clientes/';
@@ -24,9 +26,9 @@ botonAgregarCliente.addEventListener("click", async (e) => {
     console.log(datosCliente);
 
     let respuesta;
-    console.log("datos del cliente a evaluar para ver si hay que editar o guardar nuevo", datosCliente);
+
     if (datosCliente.id !== "") {
-        console.log("guardando datos actualizados...");
+        console.log("actualizando datos del cliente...");
         try {
             respuesta = await actualizarCliente(datosCliente);
         } catch (e) {
@@ -58,7 +60,16 @@ async function guardarNuevoCliente(datosCliente) {
     console.log(response.status);
     const data = await response.json();
     return data;
-}
+};
+
+
+async function actualizarCliente(cliente) {
+    const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
+    if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
+    const datos = response.json();
+    location.reload();
+    return datos;
+};
 
 
 tabla.addEventListener("click", async function (e) {
@@ -96,15 +107,6 @@ async function obtenerCliente(id) {
     };
 
     const datos = await response.json();
-    return datos;
-};
-
-async function actualizarCliente(cliente) {
-
-    const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
-    if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
-    const datos = response.json();
-    location.reload();
     return datos;
 };
 

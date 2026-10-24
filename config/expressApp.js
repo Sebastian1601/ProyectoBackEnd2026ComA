@@ -5,6 +5,7 @@ import { manejadorDeErrores } from "../ErrorControl/Errores.js";
 import path from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from "node:url";
+import verificarRequest from "../validation/sesionUsuario.js";
 
 
 //configuracion de rutas
@@ -25,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas de la API
 app.use("/apiV1", routerV1);
-app.use("/", routerTemplate);
+app.use("/", verificarRequest, routerTemplate);
 app.use("", (req, res) => {
     res.status(404).sendFile(path.join(staticRuta, "html", "notFound.html"));
 })

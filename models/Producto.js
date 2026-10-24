@@ -23,10 +23,10 @@ const productoSchema = new Schema({
         required: true,
         trim: true,
         enum: {
-            values: ['verduras', 'lacteos', 'carnes', 'procesados', 'no perecederos', 'sin categorizar'],
+            values: ['verduras', 'lacteos', 'carnes', 'procesados', 'no perecederos', 'sin categoria'],
             message: '{VALUE} no es una categoría válida'
         },
-        default:'sin categorizar'
+        default: 'sin categorizar'
     }
 });
 
@@ -38,18 +38,38 @@ export const obtenerProductos = async () => {
 };
 
 export const obtenerUnProducto = async (id) => {
-    const idNumber = parseInt(id);
-    const producto = await Producto.findById(idNumber);
+    const producto = await Producto.findById(id);
     return producto;
 };
 
 export const crearProducto = async (producto) => {
     const { nombre, descripcion, precio, categoria } = producto;
-    const nuevoProducto = new Producto({ nombre, descripcion, precio, categoria });
+    let nuevoProducto;
+    try {
+        nuevoProducto = new Producto({ nombre, descripcion, precio, categoria });
+    } catch (error) {
+        console.error(error);
+        throw error;
+    };
     try {
         const productoCreado = await nuevoProducto.save();
         return productoCreado;
     } catch (error) {
-        return ({ message: "hubo un error al crear el producto" })
-    };
+        console.error(error.message);
+        throw error;
+    }
+};
+
+export const actualizarProducto = async (id, productoNuevo) => {
+    const nuevoProducto = new Producto({ ...productoNuevo })
+
+    const productoModificado = await nuevoProducto.findByIdAndUpdate(
+        id,
+        nuevoProducto,
+        {
+            runValidators: true,
+            returnDocument: "after"
+        });
+    if (productoModificado) return productoModificado;
+    return {};
 };
