@@ -11,6 +11,10 @@ const clienteSchema = new Schema({
         required: true,
         trim: true
     },
+    cuil:{
+        type:Number,
+        required:true,
+    },
     direccion: {
         type: String,
         required: true,
