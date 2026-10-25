@@ -1,0 +1,283 @@
+/* ===== Variables: paleta corta ===== */
+:root {
+    --fondo: #f4f5f7;
+    --superficie: #ffffff;
+    --borde: #dfe2e6;
+    --texto: #2b2f36;
+    --texto-suave: #6b7280;
+    --acento: #2f5d8a;
+    --acento-hover: #244a6e;
+    --peligro: #b3412f;
+    --radio: 8px;
+}
+
+body {
+    position:relative;
+    width: inherit;
+    margin: 0 auto;
+    display: block;
+    place-content: center;
+    padding-top: 13vh;
+    padding-bottom: 13vh;
+    overflow-x: hidden;
+
+    >h2 {
+        width: 80vw;
+        display: inline-block;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1.75rem;
+    }
+}
+
+/* ===== Contenedor principal: 100vh - header (10vh) - footer (10vh) ===== */
+.main-productos {
+    position:relative;
+    display: flex;
+    width: 90%;
+    height: 65vh;
+    gap: 1.25rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    background: var(--fondo);
+    border-radius:1rem;
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.95rem;
+}
+
+.main-productos * {
+    box-sizing: border-box;
+}
+
+/* ===== Columna izquierda: formulario ===== */
+.ingreso-productos {
+    flex: 0 0 340px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    overflow-y: auto;
+    /* por si la pantalla es baja */
+}
+
+#form-Ingreso-Productos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.campo label,
+.busqueda-listado-productos label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+input[type="text"] {
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    font: inherit;
+    color: var(--texto);
+    background: var(--superficie);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 3px rgba(47, 93, 138, 0.15);
+}
+
+/* Radios */
+.campo-radio {
+    display: flex;
+    flex-direction: row-reverse;
+    /* input a la izquierda del label */
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.campo-radio label {
+    cursor: pointer;
+}
+
+.campo-radio input[type="radio"] {
+    accent-color: var(--acento);
+    cursor: pointer;
+}
+
+/* Botones */
+button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.campo-boton button,
+.busqueda-listado-productos button {
+    width: 100%;
+    background: var(--acento);
+    color: #fff;
+}
+
+#form-Ingreso-Productos button.actualizando {
+    background:rgb(133, 186, 1);
+    color:#222;
+
+    &:hover {
+        background:rgb(160, 223, 0);
+    }
+}
+
+.campo-boton button:hover,
+.busqueda-listado-productos button:hover {
+    background: var(--acento-hover);
+}
+
+.campo-boton button[type="reset"] {
+    background: transparent;
+    color: var(--texto-suave);
+    border-color: var(--borde);
+}
+
+.campo-boton button[type="reset"]:hover {
+    background: var(--fondo);
+    color: var(--texto);
+}
+
+/* ===== Columna derecha: listado ===== */
+.listado-productos {
+    flex: 1;
+    min-width: 0;
+    /* evita que la tabla ensanche el flex */
+    min-height: 0;
+    /* necesario para que el scroll interno funcione */
+    display: flex;
+    flex-direction: column;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    gap: 1rem;
+}
+
+.header-listado-productos h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+/* Barra de búsqueda */
+.busqueda-listado-productos {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.busqueda-listado-productos input {
+    flex: 1;
+}
+
+.busqueda-listado-productos button {
+    width: auto;
+    white-space: nowrap;
+}
+
+/* ===== Contenedor de la tabla con scroll ===== */
+.main-listado-productos {
+    flex: 1;
+    /* ocupa todo el alto restante */
+    min-height: 0;
+    /* clave: permite que se encoja y active el scroll */
+    overflow-y: auto;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+}
+
+#tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabla-productos th,
+#tabla-productos td {
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--borde);
+}
+
+/* Encabezado fijo al hacer scroll */
+#tabla-productos thead th {
+    position: sticky;
+    top: 0;
+    background: var(--fondo);
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    z-index: 1;
+}
+
+#tabla-productos tbody tr:hover {
+    background: #f9fafb;
+}
+
+#tabla-productos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Botones de la tabla */
+#tabla-productos button {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    background: transparent;
+}
+
+#tabla-productos .editar {
+    color: var(--acento);
+    border-color: var(--acento);
+}
+
+#tabla-productos .editar:hover {
+    background: var(--acento);
+    color: #fff;
+}
+
+#tabla-productos .eliminar {
+    color: var(--peligro);
+    border-color: var(--peligro);
+}
+
+#tabla-productos .eliminar:hover {
+    background: var(--peligro);
+    color: #fff;
+}
+
+/* Scrollbar discreta */
+.main-listado-productos::-webkit-scrollbar,
+.ingreso-productos::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-listado-productos::-webkit-scrollbar-thumb,
+.ingreso-productos::-webkit-scrollbar-thumb {
+    background: #c5cad1;
+    border-radius: 4px;
+}
+
+.main-listado-productos::-webkit-scrollbar-thumb:hover {
+    background: #a9afb8;
+}

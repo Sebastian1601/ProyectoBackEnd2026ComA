@@ -1,6 +1,7 @@
 console.log("view productos vinculada a js");
 const $q = (query) => document.querySelector(query);
 const btnAgregarProducto = $q('#form-Ingreso-Productos button');
+const btnReset = $q("#form-Ingreso-Productos .btn-reset")
 const tablaProductos = $q('#tabla-productos');
 const formulario = $q("#form-Ingreso-Productos");
 const ENDPOINT = `/apiV1/productos/`;
@@ -15,6 +16,11 @@ const cuerpo = (datos, metodo) => {
     }
 };
 
+btnReset.addEventListener("click", function () {
+    btnAgregarProducto.textContent = "Guardar nuevo producto";
+    btnAgregarProducto.classList.remove("actualizando");
+});
+
 btnAgregarProducto.addEventListener('click', async (e) => {
     e.preventDefault();
     const formdata1 = new FormData(formulario);
@@ -22,47 +28,46 @@ btnAgregarProducto.addEventListener('click', async (e) => {
         producto: Object.fromEntries(formdata1)
     };
 
-    let respuesta;
     if (datosProducto.producto.id !== "") {
         console.log("actualizando producto...");
-        try {
-            respuesta = await actualizarProducto(datosProducto);
-        } catch (e) {
-            console.log(e.message);
-        } finally {
-            formulario.reset();
-            formulario.elements["nombre"].focus();
-        };
+        await actualizarProducto(datosProducto);
+        location.reload();
     } else {
-        console.log("guardando nuevo producto...")
+        console.log("guardando nuevo producto...");
         await guardarProducto(datosProducto);
-        formulario.reset();
-        formulario.elements["nombre"].focus();
-
     };
-    location.reload();
 });
 
 async function guardarProducto(datosProd) {
     try {
         const response = await fetch(ENDPOINT, cuerpo(datosProd, 'POST'));
         if (!response.ok) {
-            throw new Error("Error en el fetch de datos.-");
+            const data = await response.json();
+            console.log("mensaje de error de respuesta: \n", data.message);
+            console.log(data.rawMessage);
+            throw new Error("Hubo un error al guardar los datos. Verifiquelos");
         };
         const data = await response.json();
-        console.log(data);
+        console.log(data.message);
     } catch (error) {
-        console.error(error.message);
+        console.log("Existió un error al contactar al servidor.-");
     };
-    console.log("guardar datos finalizado.");
 };
 
 async function actualizarProducto(producto) {
-    const response = await fetch(`${ENDPOINT}${producto.id}`, cuerpo(producto, 'PUT'));
-    if (!response.ok) { throw new Error("Existe algun error con la petición de actualizacion al servidor") };
-    console.log(response.status);
-    const data = await response.json();
-    return data;
+    const { id } = producto.producto;
+    try {
+        const response = await fetch(`${ENDPOINT}${id}`, cuerpo(producto, 'PUT'));
+        if (!response.ok) {
+            const data = await response.json();
+            console.log(data.message);
+            console.log(data.rawMessage);
+            return data;
+        };
+    } catch (error) {
+        console.log("Existió un error al contactar al servidor.-");
+    };
+
 };
 
 tablaProductos.addEventListener("click", async function (e) {
@@ -70,15 +75,15 @@ tablaProductos.addEventListener("click", async function (e) {
     const boton = e.target.closest('button[data-action]');
     if (!boton) return;
 
-    console.log(boton);
     const accion = boton.dataset.action;
     const id = boton.dataset.id;
     switch (accion) {
         case "editar":
             console.log("obteniendo producto...");
             const producto = await obtenerProducto(id);
-            console.log(producto);
             cargarDatosAForm(producto);
+            btnAgregarProducto.textContent = "- Actualizar Producto -";
+            btnAgregarProducto.classList.add("actualizando");
             break;
         case "eliminar":
             console.log("eliminando cliente");
@@ -89,7 +94,6 @@ tablaProductos.addEventListener("click", async function (e) {
             break;
     };
 })
-
 
 async function obtenerProducto(id) {
     console.log(`${ENDPOINT}${id}`);
@@ -103,9 +107,7 @@ async function obtenerProducto(id) {
     return producto
 };
 
-
 async function cargarDatosAForm(producto) {
-    console.log("datos antes de cargar form: ", producto);
     formulario.elements["id"].value = producto._id;
     formulario.elements["nombre"].value = producto.nombre;
     formulario.elements["descripcion"].value = producto.descripcion;

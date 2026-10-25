@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rutas de la API
 app.use("/apiV1", routerV1);
-app.use("/", verificarRequest, routerTemplate);
+app.use("/", routerTemplate);
 app.use("", (req, res) => {
     res.status(404).sendFile(path.join(staticRuta, "html", "notFound.html"));
 })
