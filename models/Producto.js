@@ -60,12 +60,12 @@ export const crearProducto = async (producto) => {
     }
 };
 
-export const actualizarProducto = async (id, productoNuevo) => {
-    const nuevoProducto = new Producto({ ...productoNuevo })
+export const actualizarProducto = async (productoNuevo) => {
+    const { id, ...datosActualizados } = productoNuevo;
 
-    const productoModificado = await nuevoProducto.findByIdAndUpdate(
+    const productoModificado = await Producto.findByIdAndUpdate(
         id,
-        nuevoProducto,
+        datosActualizados,
         {
             runValidators: true,
             returnDocument: "after"

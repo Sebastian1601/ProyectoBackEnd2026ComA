@@ -28,18 +28,28 @@ export const crearProducto = async (req, res) => {
             producto: respuesta
         });
     } catch (error) {
-        return res.status(400).json({ message: "Los datos del producto no son corretos o faltan datos. verifique" });
-    }
+        return res.status(400).json({ message: "Los datos del producto no son corretos o faltan datos. verifique", rawMessage: error.message });
+    };
 };
 
 export const actualizarProducto = async (req, res) => {
     const { id } = req.params;
+
     const productoActual = await pm.obtenerUnProducto(id);
+
     if (!productoActual) return res.status(404).json({
         message: "No se encontró el producto a modificar",
         campo: id
     });
     const { producto } = req.body;
-    const productoActualizado = await pm.actualizarProducto(id, producto);
-    if (productoActualizado) return res.status(200).json({ message: 'producto actualizado correctamente', productoActualizado });
+    try {
+        const productoActualizado = await pm.actualizarProducto(producto);
+        if (productoActualizado) return res.status(200).json({ message: 'producto actualizado correctamente', productoActualizado });
+    } catch (error) {
+        console.log("Actualizar producto: fallo en controlador.");
+        return res.status(400).json({
+            message: "error al actualizar producto.-",
+            rawMessage: error.message
+        });
+    };
 };

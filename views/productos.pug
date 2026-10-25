@@ -1,7 +1,7 @@
 doctype html
 html
     include ./head
-    link(rel="stylesheet" href="css/clientes.css")
+    link(rel="stylesheet" href="css/productos.css")
     script(src="js/productos.js" defer)
     body
         include ./header
@@ -42,7 +42,7 @@ html
                     .campo-boton 
                         button(type="submit") Guardar nuevo producto
                     .campo-boton 
-                        button(type="reset") Reiniciar formulario
+                        button(type="reset", class="btn-reset") Reiniciar formulario
   
             .listado-productos 
                 .header-listado-productos
@@ -60,6 +60,7 @@ html
                                 th Precio 
                                 th Descripcion
                                 th Categoria
+                                th(colspan="2") Acciones
                         tbody 
                             each producto, index in listado
                                 tr
