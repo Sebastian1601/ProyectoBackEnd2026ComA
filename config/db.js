@@ -5,7 +5,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) throw new DBConnectionError("Falta configurar mongo_uri en el entorno");
 
-const esLocal = MONGO_URI.includes("127.0.0.1");
+const esLocal = ["127.0.0.1", "localhost"].some(valor => MONGO_URI.includes(valor));
 
 // Cambié la conexión a Mongo para que haga el async/await pedido para que no arranque el server si no se conecta a la base de datos
 // en vez de tirar un timeout genérico.
