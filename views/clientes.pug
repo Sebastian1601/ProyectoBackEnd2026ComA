@@ -21,25 +21,28 @@ html
                         label(for="direccion") Dirección
                         input(type="text", name="direccion" required, id="direccion")
                     button(type="submit") Guardar Datos del Cliente
-            .tabla-container
-                table#tablaClientes
-                    caption Lista de clientes
-                    thead
-                        tr
-                            th N°
-                            th Nombre/Razón social
-                            th Telefono
-                            th Dirección
-                    tbody
-                        each cliente, index in listado
-                            tr
-                                td=index + 1
-                                td=cliente.nombre
-                                td=cliente.telefono
-                                td=cliente.direccion
-                                td
-                                    button(class="editar", data-action="editar", data-id=cliente._id) editar
-                                td
-                                    button(class="eliminar", data-action="eliminar", data-id=cliente._id) eliminar
+            .listado-clientes
+                .header-listado-clientes    
+                    h2 Listado de clientes
 
+                .main-listado-clientes
+                    table#tabla-clientes
+                        thead
+                            tr
+                                th N°
+                                th Nombre/Razón social
+                                th Telefono
+                                th Dirección
+                                th(colspan="2") Acciones
+                        tbody
+                            each cliente, index in listado
+                                tr
+                                    td=index + 1
+                                    td=cliente.nombre
+                                    td=cliente.telefono
+                                    td=cliente.direccion
+                                    td
+                                        button(class="editar", data-action="editar", data-id=cliente._id) editar
+                                    td
+                                        button(class="eliminar", data-action="eliminar", data-id=cliente._id) eliminar
         include ./footer
