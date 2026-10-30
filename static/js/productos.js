@@ -24,89 +24,79 @@ btnReset.addEventListener("click", function () {
 btnAgregarProducto.addEventListener('click', async (e) => {
     e.preventDefault();
     const formdata1 = new FormData(formulario);
-    const datosProducto = {
-        producto: Object.fromEntries(formdata1)
-    };
+    const datosProducto = Object.fromEntries(formdata1)
 
-    if (datosProducto.producto.id !== "") {
-        console.log("actualizando producto...");
+    if (datosProducto.id !== "") {
         await actualizarProducto(datosProducto);
         location.reload();
-    } else {
-        console.log("guardando nuevo producto...");
-        await guardarProducto(datosProducto);
+        return;
     };
+
+    console.log("guardando nuevo producto...");
+    await guardarProducto(datosProducto);
+    location.reload();
 });
 
-async function guardarProducto(datosProd) {
-    try {
-        const response = await fetch(ENDPOINT, cuerpo(datosProd, 'POST'));
-        if (!response.ok) {
-            const data = await response.json();
-            console.log("mensaje de error de respuesta: \n", data.message);
-            console.log(data.rawMessage);
-            throw new Error("Hubo un error al guardar los datos. Verifiquelos");
-        };
-        const data = await response.json();
-        console.log(data.message);
-        location.reload()
-    } catch (error) {
-        console.log("Existió un error al contactar al servidor.-");
-    };
+async function guardarProducto(datosProducto) {
+    const response = await fetch(ENDPOINT, cuerpo(datosProducto, 'POST'));
+    if (!response.ok) {
+        console.error("Existió un error al guardar nuevo producto.-");
+    }
 };
 
 async function actualizarProducto(producto) {
-    const { id } = producto.producto;
-    try {
-        const response = await fetch(`${ENDPOINT}${id}`, cuerpo(producto, 'PUT'));
-        if (!response.ok) {
-            const data = await response.json();
-            console.log(data.message);
-            console.log(data.rawMessage);
-            return data;
-        };
-        location.reload()
-    } catch (error) {
-        console.log("Existió un error al contactar al servidor.-");
+    const { id } = producto;
+    const response = await fetch(`${ENDPOINT}${id}`, cuerpo(producto, 'PUT'));
+    if (!response.ok) {
+        console.error("Existió un error al actualizar producto.-");
     };
-
 };
 
 tablaProductos.addEventListener("click", async function (e) {
     e.stopPropagation();
     const boton = e.target.closest('button[data-action]');
     if (!boton) return;
-
     const accion = boton.dataset.action;
     const id = boton.dataset.id;
+
     switch (accion) {
         case "editar":
-            console.log("obteniendo producto...");
+
             const producto = await obtenerProducto(id);
-            cargarDatosAForm(producto);
+            cargarDatosAForm(producto.data);
             btnAgregarProducto.textContent = "- Actualizar Producto -";
             btnAgregarProducto.classList.add("actualizando");
             break;
         case "eliminar":
-            console.log("eliminando cliente");
+
             await eliminarProducto(id);
+            location.reload();
             break;
         default:
+
             console.log("accion no válida seleccionada a través del botón");
             break;
     };
 })
 
 async function obtenerProducto(id) {
-    console.log(`${ENDPOINT}${id}`);
     const response = await fetch(`${ENDPOINT}${id}`);
-    console.log("respuesta al obtener producto del backend ", response.status);
     if (!response.ok) {
-        throw new Error("Existe un error al obtener el producto seleccionado.-");
+        console.error("Existe un error al obtener el producto seleccionado.-");
     };
-
     const producto = await response.json();
-    return producto
+    return producto;
+};
+
+async function eliminarProducto(id) {
+    const response = await fetch(`${ENDPOINT}${id}`);
+    let mensaje;
+    if (!response.ok) {
+        mensaje = "Existe un error al eliminar producto.-";
+    };
+    mensaje = "Producto eliminado con éxito.-"
+
+    console.log(mensaje, response);
 };
 
 async function cargarDatosAForm(producto) {

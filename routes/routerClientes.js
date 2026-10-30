@@ -1,12 +1,12 @@
 import express from "express";
-import { ClienteController } from "../controllers/clientesController.js";
+import * as cc from "../controllers/clientesController.js";
 
 const router = express.Router();
 
-router.get("/", ClienteController.listarClientesAPI);
-router.get("/:id", ClienteController.obtenerClientePorId);
-router.post("/", ClienteController.crearCliente);
-router.put("/:id", ClienteController.actualizarCliente);
-router.delete("/:id", ClienteController.borrarCliente);
+router.get("/", cc.obtenerClientes);
+router.get("/:id", cc.obtenerUnCliente);
+router.post("/", cc.crearCliente);
+router.put("/:id", cc.actualizarCliente);
+router.delete("/:id", cc.borrarCliente);
 
 export default router;

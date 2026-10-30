@@ -123,9 +123,9 @@ button[type="reset"] {
     }
 }
 
-.tabla-container {
+.listado-clientes {
     flex: 1;
-    min-width: 0;
+    width: 100%;
     /* evita que la tabla ensanche el flex */
     min-height: 0;
     /* necesario para que el scroll interno funcione */
@@ -155,7 +155,7 @@ button[type="reset"] {
 }
 
 #tabla-clientes {
-    width: 100%;
+    min-width: 100%;
     border-collapse: collapse;
 }
 
@@ -190,7 +190,8 @@ button[type="reset"] {
 #tabla-clientes button {
     padding: 0.3rem 0.7rem;
     font-size: 0.8rem;
-    background: transparent;
+    border-radius:8px;
+    background-color: transparent;
 }
 
 #tabla-clientes .editar {
@@ -199,7 +200,7 @@ button[type="reset"] {
 }
 
 #tabla-clientes .editar:hover {
-    background: var(--acento);
+    background-color: var(--acento);
     color: #fff;
 }
 
@@ -209,7 +210,7 @@ button[type="reset"] {
 }
 
 #tabla-clientes .eliminar:hover {
-    background: var(--peligro);
+    background-color: var(--peligro);
     color: #fff;
 }
 

@@ -28,48 +28,48 @@ const productoSchema = new Schema({
         },
         default: 'sin categorizar'
     }
-});
+}, { timestamps: true });
 
 export const Producto = model('Producto', productoSchema);
 
 export const obtenerProductos = async () => {
-    const productos = await Producto.find().lean();
+    const productos = await Producto
+        .find()
+        .sort({ createdAt: "desc" })
+        .lean();
     return productos;
 };
 
 export const obtenerUnProducto = async (id) => {
-    const producto = await Producto.findById(id);
+    const producto = await Producto.findById(id).lean();
     return producto;
 };
 
 export const crearProducto = async (producto) => {
     const { nombre, descripcion, precio, categoria } = producto;
-    let nuevoProducto;
-    try {
-        nuevoProducto = new Producto({ nombre, descripcion, precio, categoria });
-    } catch (error) {
-        console.error(error);
-        throw error;
-    };
-    try {
-        const productoCreado = await nuevoProducto.save();
-        return productoCreado;
-    } catch (error) {
-        console.error(error.message);
-        throw error;
-    }
+    const nuevoProducto = new Producto({ nombre, descripcion, precio, categoria });
+    const productoCreado = await nuevoProducto.save();
+    return productoCreado;
 };
 
-export const actualizarProducto = async (productoNuevo) => {
-    const { id, ...datosActualizados } = productoNuevo;
+
+export const actualizarProducto = async (id, productoNuevo) => {
 
     const productoModificado = await Producto.findByIdAndUpdate(
         id,
-        datosActualizados,
+        productoNuevo,
         {
             runValidators: true,
             returnDocument: "after"
-        });
-    if (productoModificado) return productoModificado;
-    return {};
+        }).lean();
+    productoModificado === null
+        ? false
+        : true;
 };
+
+export const eliminarProducto = async (id) => {
+    const exitoAlEliminar = await Producto.findByIdAndDelete(id);
+    exitoAlEliminar === null
+        ? false
+        : true;
+}

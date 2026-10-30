@@ -3,53 +3,52 @@ import * as pm from '../models/Producto.js';
 
 export const obtenerProductos = async (req, res) => {
     const listaProductos = await pm.obtenerProductos();
-    if (listaProductos.length < 1) return res.status(200).json({ message: "No existen productos a mostrar" });
-    return res.status(200).json({ productos: listaProductos });
+    listaProductos.length < 1
+        ? res.status(200).json({ data: {}, mensaje: "No existen productos a mostrar.-" })
+        : res.status(200).json({ data: listaProductos, mensaje: "Listado emitido.-" });
 };
 
 export const obtenerUnProducto = async (req, res) => {
     const { id } = req.params;
     const productoEncontrado = await pm.obtenerUnProducto(id);
 
-    if (!productoEncontrado) return res.status(404).json({
-        message: "No se encontró producto con la id indicada",
-        campo: id
-    });
-
-    return res.status(200).json(productoEncontrado);
+    !productoEncontrado
+        ? res.status(404).json({ message: "No se encontró producto.-", data: {} })
+        : res.status(200).json({ mensaje: "Producto encontrado", data: productoEncontrado });
 };
 
 export const crearProducto = async (req, res) => {
-    const { producto } = req.body;
-    try {
-        const respuesta = await pm.crearProducto(producto);
-        return res.status(200).json({
-            message: 'producto creado correctamente',
-            producto: respuesta
+    const producto  = req.body;
+    const productoCreado = await pm.crearProducto(producto);
+    !productoCreado
+        ? res.status(400).json({
+            mensaje: "Los datos del producto no son corretos o faltan datos. verifique",
+            data: {}
+        })
+        : res.status(200).json({
+            mensaje: 'Producto creado exitosamente',
+            data: productoCreado
         });
-    } catch (error) {
-        return res.status(400).json({ message: "Los datos del producto no son corretos o faltan datos. verifique", rawMessage: error.message });
-    };
 };
 
 export const actualizarProducto = async (req, res) => {
     const { id } = req.params;
-
-    const productoActual = await pm.obtenerUnProducto(id);
-
-    if (!productoActual) return res.status(404).json({
-        message: "No se encontró el producto a modificar",
-        campo: id
-    });
-    const { producto } = req.body;
-    try {
-        const productoActualizado = await pm.actualizarProducto(producto);
-        if (productoActualizado) return res.status(200).json({ message: 'producto actualizado correctamente', productoActualizado });
-    } catch (error) {
-        console.log("Actualizar producto: fallo en controlador.");
-        return res.status(400).json({
-            message: "error al actualizar producto.-",
-            rawMessage: error.message
+    const productoActualizado = await pm.actualizarProducto(id, req.body);
+    !productoActualizado
+        ? res.status(400).json({
+            mensaje: "error al actualizar producto.-",
+            data: {}
+        })
+        : res.status(200).json({
+            mensaje: 'producto actualizado correctamente',
+            data: productoActualizado
         });
-    };
 };
+
+export const eliminarProducto = async (req, res) => {
+    const { id } = req.params;
+    const exitoAlEliminar = await pm.eliminarProducto(id);
+    exitoAlEliminar
+        ? res.status(200).end()
+        : res.status(500).json({ mensaje: "No se pudo eliminar el producto seleccionado" });
+}
