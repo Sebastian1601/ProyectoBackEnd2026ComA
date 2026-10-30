@@ -49,6 +49,7 @@ async function guardarProducto(datosProd) {
         };
         const data = await response.json();
         console.log(data.message);
+        location.reload()
     } catch (error) {
         console.log("Existió un error al contactar al servidor.-");
     };
@@ -64,6 +65,7 @@ async function actualizarProducto(producto) {
             console.log(data.rawMessage);
             return data;
         };
+        location.reload()
     } catch (error) {
         console.log("Existió un error al contactar al servidor.-");
     };

@@ -4,8 +4,9 @@ const botonAgregarCliente = document.querySelector("#formIngresoClientes button"
 console.log(botonAgregarCliente ? "boton obtenido" : "no se ha encontrado boton");
 
 const form = document.querySelector("#formIngresoClientes");
+form.elements["nombre"].focus();
 
-const tabla = document.querySelector("#tablaClientes");
+const tabla = document.querySelector("#tabla-clientes");
 
 const ENDPOINT = '/apiV1/clientes/';
 const cuerpo = (datos, metodo) => {
@@ -31,27 +32,19 @@ botonAgregarCliente.addEventListener("click", async (e) => {
         console.log("actualizando datos del cliente...");
         try {
             respuesta = await actualizarCliente(datosCliente);
+            location.reload();
         } catch (e) {
             console.log(e.message);
-        } finally {
-            form.reset();
-            form.elements["nombre"].focus();
         }
-
     } else {
         console.log("guardando nuevo cliente en MongoDB...");
         try {
             respuesta = await guardarNuevoCliente(datosCliente);
         } catch (e) {
             console.log(e.message);
-        } finally {
-            form.reset();
-            form.elements["nombre"].focus();
         }
     };
-
-    console.log("datos guardados correctamente. respuesta: ", respuesta);
-    location.reload();
+    console.log("Respuesta desde servidor", respuesta);
 });
 
 async function guardarNuevoCliente(datosCliente) {
@@ -67,7 +60,6 @@ async function actualizarCliente(cliente) {
     const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
     if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
     const datos = response.json();
-    location.reload();
     return datos;
 };
 
