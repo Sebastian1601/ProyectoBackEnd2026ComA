@@ -35,7 +35,6 @@ async function obtenerClientes() {
 async function obtenerClientePorId(id) {
     const ID = id.toString().trim();
     const clienteUnico = await Cliente.findById(ID).lean();
-    console.log(clienteUnico);
     return clienteUnico;
 };
 
