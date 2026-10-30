@@ -40,11 +40,11 @@ botonAgregarCliente.addEventListener("click", async (e) => {
         console.log("guardando nuevo cliente en MongoDB...");
         try {
             respuesta = await guardarNuevoCliente(datosCliente);
+            location.reload();
         } catch (e) {
             console.log(e.message);
         }
     };
-    console.log("Respuesta desde servidor", respuesta);
 });
 
 async function guardarNuevoCliente(datosCliente) {
@@ -59,13 +59,12 @@ async function guardarNuevoCliente(datosCliente) {
 async function actualizarCliente(cliente) {
     const response = await fetch(`${ENDPOINT}${cliente.id}`, cuerpo(cliente, "PUT"));
     if (!response.ok) throw new Error("Existión un error con la petición al servidor.-");
-    const datos = response.json();
-    return datos;
+    const data = response.json();
+    return data;
 };
 
 
 tabla.addEventListener("click", async function (e) {
-    console.log(e.target);
     const boton = e.target.closest('button[data-action]');
     if (!boton) return;
 
@@ -80,7 +79,6 @@ tabla.addEventListener("click", async function (e) {
             cargarDatosAForm(cliente);
             break;
         case "eliminar":
-            console.log("eliminando cliente");
             await eliminarCliente(id);
             break;
         default:
@@ -90,14 +88,10 @@ tabla.addEventListener("click", async function (e) {
 });
 
 async function obtenerCliente(id) {
-    console.log(`${ENDPOINT}${id}`);
     const response = await fetch(`${ENDPOINT}${id}`);
-    console.log("codigo de respuesta: ", response.ok, "\nEstado de respuesta: ", response.status);
-
     if (!response.ok) {
         throw new Error("Existe un error al obtener los datos del cliente.-");
     };
-
     const datos = await response.json();
     return datos;
 };
@@ -109,7 +103,6 @@ async function eliminarCliente(id) {
             'Content-Type': 'application/json'
         }
     });
-    console.log("codigo de respuesta: ", response.ok, "\nEstado de respuesta: ", response.status);
     const data = await response.json();
     console.log(data);
     location.reload();
