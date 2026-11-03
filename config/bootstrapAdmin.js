@@ -1,5 +1,6 @@
 import Usuario from '../models/Usuario.js';
 import { AuthenticationError } from '../ErrorControl/Errores.js';
+import { hashearClave } from './claves.js';
 
 async function CrearAdminInicial() {
     //verifica si existe algún documento en la coleccion usuarios
@@ -18,7 +19,7 @@ async function CrearAdminInicial() {
 
     await Usuario.create({
         usuario: ADMIN_USER,
-        claveHash: ADMIN_PASS,
+        claveHash: await hashearClave(ADMIN_PASS),
         rol: 'admin'
     })
         .then(() => {
@@ -30,3 +31,4 @@ async function CrearAdminInicial() {
 }
 
 export default CrearAdminInicial;
+
