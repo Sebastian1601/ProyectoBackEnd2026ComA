@@ -1,28 +1,7 @@
-/*import Usuario from '../models/Usuario.js';
-
-export class Autenticacion {
-
-    static async validarUsuario(req, res) {
-        const { user, contra } = req.body;
-
-        const userExiste = await Usuario
-            .findOne({ usuario: user });
-
-        if (!userExiste || userExiste.claveHash !== contra) {
-            return res.status(401).json({
-                message: "Credenciales incorrectas"
-            });
-        };
-
-        return res.status(200).json({
-            message: "Usuario Autorizado"
-        });
-    }
-}*/
-
 import Usuario from '../models/Usuario.js';
 import { verificarClave } from '../config/claves.js';
- 
+import { crearToken, NOMBRE_COOKIE, opcionesCookie, opcionesCookieBase } from '../config/tokens.js';
+
 export class Autenticacion {
  
     static async validarUsuario(req, res) {
@@ -39,9 +18,18 @@ export class Autenticacion {
         if (!usuario || !usuario.activo || !(await verificarClave(contra, usuario.claveHash))) {
             return res.status(401).json({ message: "Credenciales incorrectas" });
         }
+
+        res.cookie(NOMBRE_COOKIE, crearToken(usuario), opcionesCookie);
  
         return res.status(200).json({
-            message: "Usuario Autorizado"
+            message: "Usuario Autorizado",
+            usuario: usuario.usuario,
+            rol: usuario.rol
         });
+    }
+
+    static cerrarSesion(req, res) {
+        res.clearCookie(NOMBRE_COOKIE, opcionesCookieBase);
+        res.status(200).json({ message: "Sesión cerrada" });
     }
 }

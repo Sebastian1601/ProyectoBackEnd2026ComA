@@ -6,8 +6,9 @@ Server basado en Node.JS que sirve una API Rest para datos sobre la logística
 de la empresa de distribución de pedidos "Fresh Route"
 
 ### Características
-- Persistencia de datos: archivos .Json
+- Persistencia de datos: archivos .Json -> Migrados a Mongo DB/Atlas
 - Validación de datos: verificación manual
+- Protección de cuentas: claves hasheadas con diferenciación por tipo de usuario y protección contra ataques noSQL
 
 ### Requisitos previos
 

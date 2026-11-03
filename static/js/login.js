@@ -25,19 +25,10 @@ form.addEventListener('submit', async (e) => {
         });
 
         if (!res.ok) {
-            const data = await res.json().catch(() => ({}));
             throw new Error('Usuario o contraseña incorrectos');
         }
 
-        const data = await res.json();
-
-        // Ajustá esto según lo que devuelva tu endpoint:
-        // - si usás cookies de sesión, probablemente solo necesites redirigir
-        // - si devuelve un token, guardalo antes de redirigir
-        if (data.token) {
-            localStorage.setItem('token', data.token);
-        }
-
+        // El token viaja en una cookie httpOnly que el navegador guarda y reenvía solo: acá solo se redirige
         window.location.href = '/index';
 
     } catch (err) {

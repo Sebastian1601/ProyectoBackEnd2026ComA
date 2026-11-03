@@ -5,6 +5,7 @@ import { manejadorDeErrores } from "../ErrorControl/Errores.js";
 import path from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from "node:url";
+import cookieParser from "cookie-parser";
 
 
 //configuracion de rutas
@@ -22,6 +23,9 @@ app.use(express.static(staticRuta));
 // Middleware para recibir JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Lee las cookies de la petición y las pone en req.cookies. Se necesita para leer el token de sesión.
+app.use(cookieParser());
 
 // Rutas de la API
 app.use("/apiV1", routerV1);
