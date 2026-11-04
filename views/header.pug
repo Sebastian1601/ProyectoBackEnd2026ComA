@@ -1,4 +1,8 @@
 header
+      script(src="/js/logout.js" defer)
       h1 FreshRoute B2B
-      p Sistema de Gestión Logística ver. 1.01
+      p Sistema de Gestión Logística ver. 1.03
+      if mostrarBotonLogout
+            .boton-logout
+                  button(type="button" id="logout") Cerrar sesión
 
