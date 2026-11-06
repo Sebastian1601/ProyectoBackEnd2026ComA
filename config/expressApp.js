@@ -6,13 +6,10 @@ import path from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from "node:url";
 import cookieParser from "cookie-parser";
-import verificarRequest from "../validation/sesionUsuario.js";
-
 
 //configuracion de rutas
 const viewsRuta = path.join(dirname(fileURLToPath(import.meta.url)), "..", "views");
 const staticRuta = path.join(dirname(fileURLToPath(import.meta.url)), "..", "static");
-
 
 const app = express();
 
