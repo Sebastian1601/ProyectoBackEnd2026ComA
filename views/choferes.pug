@@ -1,3 +1,4 @@
+
 doctype html
 html
     include ./head
@@ -6,7 +7,7 @@ html
     script(src="js/choferes.js" defer)
     body
         include ./header
-        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+        a(href="./index", class="boton-volverInicio", target="_self") *>* Volver a inicio
         h2 Gestión de choferes
         .main-clientes
             .ingreso-clientes
@@ -27,7 +28,12 @@ html
                     .campo
                         label(for="numeroRegistro") N° de Registro
                         input(type="text", name="numeroRegistro" required, id="numeroRegistro")
-                    
+
+                    .campo
+                        label(for="idVehiculoAsignado") Asignar vehículo
+                        select(name="idVehiculoAsignado", id="idVehiculoAsignado")
+                            option(value="") Sin vehículo asignado
+
                     label(style="font-weight: 600; font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.5rem; display: block;") Estado
                     .campo-radio
                         label(for="estado-disponible") Disponible
@@ -38,7 +44,7 @@ html
                     .campo-radio
                         label(for="estado-inactivo") Inactivo
                         input(type="radio", name="estado", id="estado-inactivo" value="Inactivo")
-                    
+
                     button(type="submit", style="margin-top: 1rem;") Guardar Datos del Chofer
             .listado-clientes
                 .header-listado-clientes

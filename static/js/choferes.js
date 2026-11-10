@@ -1,72 +1,233 @@
+
 console.log("vinculado js de choferes");
 
 const botonGuardar = document.querySelector("#formIngresoClientes button[type='submit']");
 const form = document.querySelector("#formIngresoClientes");
+const tabla = document.querySelector("#tabla-clientes");
+const selectorVehiculo = document.querySelector("#idVehiculoAsignado");
+
+const ENDPOINT = "/apiV1/choferes/";
+const ENDPOINT_VEHICULOS = "/apiV1/vehiculos/";
+
+let vehiculos = [];
+let vehiculoAnterior = "";
+
 if (form && form.elements["nombre"]) {
     form.elements["nombre"].focus();
 }
 
-const tabla = document.querySelector("#tabla-clientes");
-const ENDPOINT = '/apiV1/choferes/';
+const cuerpo = (datos, metodo) => ({
+    method: metodo,
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+});
 
-const cuerpo = (datos, metodo) => {
-    return {
-        method: metodo,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datos)
-    };
-};
+async function solicitarJSON(url, opciones = {}) {
+    const response = await fetch(url, opciones);
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.mensaje ||
+            data.message ||
+            data.error ||
+            "Error al procesar la solicitud"
+        );
+    }
+
+    return data;
+}
+
+// Cargar los vehículos registrados en MongoDB.
+async function cargarVehiculos(idVehiculoActual = "") {
+    if (!selectorVehiculo) return;
+
+    selectorVehiculo.disabled = true;
+    selectorVehiculo.innerHTML = "";
+
+    const opcionInicial = document.createElement("option");
+    opcionInicial.value = "";
+    opcionInicial.textContent = "Sin vehículo asignado";
+    selectorVehiculo.appendChild(opcionInicial);
+
+    try {
+        vehiculos = await solicitarJSON(ENDPOINT_VEHICULOS);
+
+        if (!Array.isArray(vehiculos)) {
+            throw new Error("No se pudo obtener el listado de vehículos");
+        }
+
+        vehiculos.forEach((vehiculo) => {
+            const opcion = document.createElement("option");
+
+            opcion.value = vehiculo._id;
+
+            const descripcion =
+                `${vehiculo.patente} - ${vehiculo.marca} ${vehiculo.modelo}`;
+
+            const esActual =
+                String(vehiculo._id) === String(idVehiculoActual);
+
+            const disponible =
+                vehiculo.estado === "Disponible" &&
+                !vehiculo.idChoferAsignado;
+
+            if (esActual) {
+                opcion.textContent = `${descripcion} (Asignado actualmente)`;
+            } else if (disponible) {
+                opcion.textContent = descripcion;
+            } else {
+                opcion.textContent =
+                    `${descripcion} (${vehiculo.estado === "Asignado" || vehiculo.idChoferAsignado ? "Ya asignado" : vehiculo.estado})`;
+                opcion.disabled = true;
+            }
+
+            selectorVehiculo.appendChild(opcion);
+        });
+
+        selectorVehiculo.value = idVehiculoActual || "";
+        selectorVehiculo.disabled = false;
+
+    } catch (error) {
+        console.error("Error al cargar vehículos:", error);
+        selectorVehiculo.disabled = true;
+        throw error;
+    }
+}
+
+async function asignarVehiculo(idChofer, idVehiculo) {
+    return solicitarJSON(
+        `${ENDPOINT}${idChofer}/asignar-vehiculo/${idVehiculo}`,
+        { method: "POST" }
+    );
+}
+
+async function liberarVehiculo(idChofer, idVehiculo) {
+    return solicitarJSON(
+        `${ENDPOINT}${idChofer}/liberar-vehiculo/${idVehiculo}`,
+        { method: "POST" }
+    );
+}
+
+async function guardarNuevoChofer(datosChofer) {
+    return solicitarJSON(
+        ENDPOINT,
+        cuerpo(datosChofer, "POST")
+    );
+}
+
+async function actualizarChofer(chofer) {
+    return solicitarJSON(
+        `${ENDPOINT}${chofer.id}`,
+        cuerpo(chofer, "PUT")
+    );
+}
+
+async function guardarAsignacion(idChofer, idAnterior, idNuevo) {
+    if (idAnterior === idNuevo) return;
+
+    if (idAnterior) {
+        await liberarVehiculo(idChofer, idAnterior);
+    }
+
+    if (idNuevo) {
+        try {
+            await asignarVehiculo(idChofer, idNuevo);
+        } catch (error) {
+            // Si falló el cambio, intentar restaurar el anterior.
+            if (idAnterior) {
+                try {
+                    await asignarVehiculo(idChofer, idAnterior);
+                } catch (restauracionError) {
+                    console.error(
+                        "No se pudo restaurar el vehículo anterior:",
+                        restauracionError
+                    );
+                    throw new Error(
+                        `${error.message}. Además, no se pudo restaurar el vehículo anterior. Revisá las asignaciones.`
+                    );
+                }
+            }
+
+            throw error;
+        }
+    }
+}
 
 if (form) {
+    cargarVehiculos().catch((error) => {
+        alert(error.message);
+    });
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        if (selectorVehiculo && selectorVehiculo.disabled) {
+            alert("No se pudo cargar el listado de vehículos.");
+            return;
+        }
+
         const formData = new FormData(form);
         const datosChofer = Object.fromEntries(formData);
+
+        const idVehiculoNuevo = datosChofer.idVehiculoAsignado || "";
+
+        // Las asignaciones se realizan mediante sus rutas específicas.
+        delete datosChofer.idVehiculoAsignado;
 
         if (!datosChofer.fechaIngreso) {
             datosChofer.fechaIngreso = new Date().toISOString();
         }
 
+        botonGuardar.disabled = true;
+
         try {
-            if (datosChofer.id && datosChofer.id !== "") {
-                console.log("Actualizando chofer...");
+            if (datosChofer.id) {
+                const idChofer = datosChofer.id;
+
                 await actualizarChofer(datosChofer);
+
+                await guardarAsignacion(
+                    idChofer,
+                    vehiculoAnterior,
+                    idVehiculoNuevo
+                );
+
             } else {
-                console.log("Guardando nuevo chofer...");
                 delete datosChofer.id;
-                await guardarNuevoChofer(datosChofer);
+
+                const resultado = await guardarNuevoChofer(datosChofer);
+                const idChofer = resultado.chofer?._id;
+
+                if (idVehiculoNuevo) {
+                    if (!idChofer) {
+                        throw new Error(
+                            "El chofer se creó, pero no se recibió su identificador para asignar el vehículo."
+                        );
+                    }
+
+                    await asignarVehiculo(idChofer, idVehiculoNuevo);
+                }
             }
+
             location.reload();
-        } catch (err) {
-            alert(err.message || "Error al procesar la solicitud");
-            console.error(err);
+
+        } catch (error) {
+            console.error(error);
+            alert(
+                `${error.message}\n\nRevisá el listado antes de volver a guardar, porque algunos cambios podrían haberse realizado.`
+            );
+        } finally {
+            botonGuardar.disabled = false;
         }
     });
 }
 
-async function guardarNuevoChofer(datosChofer) {
-    const response = await fetch(ENDPOINT, cuerpo(datosChofer, 'POST'));
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al guardar chofer");
-    }
-    return data;
-}
-
-async function actualizarChofer(chofer) {
-    const response = await fetch(`${ENDPOINT}${chofer.id}`, cuerpo(chofer, 'PUT'));
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al actualizar chofer");
-    }
-    return data;
-}
-
 if (tabla) {
-    tabla.addEventListener("click", async function (e) {
-        const boton = e.target.closest('button[data-action]');
+    tabla.addEventListener("click", async (e) => {
+        const boton = e.target.closest("button[data-action]");
         if (!boton) return;
 
         const accion = boton.dataset.action;
@@ -76,62 +237,69 @@ if (tabla) {
             case "editar":
                 try {
                     const chofer = await obtenerChofer(id);
-                    cargarDatosAForm(chofer);
-                } catch (err) {
-                    alert(err.message);
+                    await cargarDatosAForm(chofer);
+                } catch (error) {
+                    alert(error.message);
                 }
                 break;
+
             case "eliminar":
                 if (confirm("¿Estás seguro de que querés eliminar este chofer?")) {
                     try {
                         await eliminarChofer(id);
                         location.reload();
-                    } catch (err) {
-                        alert(err.message);
+                    } catch (error) {
+                        alert(error.message);
                     }
                 }
-                break;
-            default:
                 break;
         }
     });
 }
 
 async function obtenerChofer(id) {
-    const response = await fetch(`${ENDPOINT}${id}`);
-    const datos = await response.json();
-    if (!response.ok) {
-        throw new Error(datos.mensaje || datos.message || "Error al obtener los datos del chofer");
-    }
-    return datos;
+    return solicitarJSON(`${ENDPOINT}${id}`);
 }
 
 async function eliminarChofer(id) {
-    const response = await fetch(`${ENDPOINT}${id}`, {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json'
-        }
+    return solicitarJSON(`${ENDPOINT}${id}`, {
+        method: "DELETE"
     });
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al eliminar el chofer");
-    }
-    return data;
 }
 
-function cargarDatosAForm(chofer) {
+async function cargarDatosAForm(chofer) {
     form.elements["id"].value = chofer._id;
-    form.elements["nombre"].value = chofer.nombre || '';
-    form.elements["apellido"].value = chofer.apellido || '';
-    form.elements["dni"].value = chofer.dni || '';
-    form.elements["telefono"].value = chofer.telefono || '';
-    form.elements["numeroRegistro"].value = chofer.numeroRegistro || '';
-    
-    const estado = chofer.estado || 'Disponible';
-    const radioEstado = form.querySelector(`input[name="estado"][value="${estado}"]`);
+    form.elements["nombre"].value = chofer.nombre || "";
+    form.elements["apellido"].value = chofer.apellido || "";
+    form.elements["dni"].value = chofer.dni || "";
+    form.elements["telefono"].value = chofer.telefono || "";
+    form.elements["numeroRegistro"].value = chofer.numeroRegistro || "";
+
+    const estado = chofer.estado || "Disponible";
+
+    const radioEstado = form.querySelector(
+        `input[name="estado"][value="${estado}"]`
+    );
+
     if (radioEstado) {
         radioEstado.checked = true;
+    }
+
+    vehiculoAnterior = chofer.idVehiculoAsignado
+        ? String(
+            chofer.idVehiculoAsignado._id ||
+            chofer.idVehiculoAsignado
+        )
+        : "";
+
+    await cargarVehiculos(vehiculoAnterior);
+
+    // No permitir cambiar el vehículo si tiene una ruta activa.
+    if (chofer.idRutaActual) {
+        selectorVehiculo.disabled = true;
+        selectorVehiculo.dataset.rutaActiva = "true";
+    } else {
+        selectorVehiculo.dataset.rutaActiva = "false";
     }
 
     botonGuardar.textContent = "Actualizar Datos del Chofer";
