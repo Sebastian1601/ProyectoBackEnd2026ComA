@@ -1,35 +1,90 @@
-doctype html 
-html(lang="es")
-    include ./head 
+doctype html
+html
+    include ./head
     link(rel="stylesheet" href="css/clientes.css")
+    link(rel="stylesheet" href="css/productos.css")
+    script(src="js/vehiculos.js" defer)
+    body
+        include ./header
+        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+        h2 Gestión de vehículos
+        .main-clientes
+            .ingreso-clientes
+                form#formIngresoClientes(action="")
+                    input(type="hidden" name="id")
+                    .campo
+                        label(for="patente") Patente
+                        input(type="text", name="patente" required, id="patente", placeholder="Ej: AA123BB")
+                    .campo
+                        label(for="marca") Marca
+                        input(type="text", name="marca" required, id="marca", placeholder="Ej: Mercedes-Benz")
+                    .campo
+                        label(for="modelo") Modelo
+                        input(type="text", name="modelo" required, id="modelo", placeholder="Ej: Sprinter")
 
-    body 
-      include ./header
-      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
-      h2 Gestión de vehículos
-      .main-clientes 
-        .tabla-container
-          table#tablaClientes
-            caption Lista de vehículos
-            thead
-              tr
-                th N°
-                th Patente
-                th Marca y Modelo
-                th Capacidad (kg)
-                th Estado
-                th Chofer asignado
-            tbody
-              if vehiculos && vehiculos.length
-                each vehiculo, index in vehiculos
-                  tr
-                    td= index + 1
-                    td= vehiculo.patente
-                    td= vehiculo.marca + ' ' + vehiculo.modelo
-                    td= vehiculo.capacidad
-                    td= vehiculo.estado
-                    td= vehiculo.idChoferAsignado ? (vehiculo.idChoferAsignado.nombre + ' ' + vehiculo.idChoferAsignado.apellido) : 'Sin asignar'
-              else
-                tr
-                  td(colspan="6") No hay vehículos registrados
-      include ./footer
+                    label(style="font-weight: 600; font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.5rem; display: block;") Capacidad
+                    .campo-radio
+                        label(for="capacidad-pequeno") Pequeño
+                        input(type="radio", name="capacidad", id="capacidad-pequeno" value="Pequeño" checked)
+                    .campo-radio
+                        label(for="capacidad-mediano") Mediano
+                        input(type="radio", name="capacidad", id="capacidad-mediano" value="Mediano")
+                    .campo-radio
+                        label(for="capacidad-grande") Grande
+                        input(type="radio", name="capacidad", id="capacidad-grande" value="Grande")
+
+                    label(style="font-weight: 600; font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.5rem; display: block;") Estado
+                    .campo-radio
+                        label(for="estado-disponible") Disponible
+                        input(type="radio", name="estado", id="estado-disponible" value="Disponible" checked)
+                    .campo-radio
+                        label(for="estado-mantenimiento") En mantenimiento
+                        input(type="radio", name="estado", id="estado-mantenimiento" value="En mantenimiento")
+                    .campo-radio
+                        label(for="estado-fuera") Fuera de servicio
+                        input(type="radio", name="estado", id="estado-fuera" value="Fuera de servicio")
+
+                    .campo(style="margin-top: 0.5rem;")
+                        label(for="idChoferAsignado") Asignar Chofer
+                        select(name="idChoferAsignado" id="idChoferAsignado")
+                            option(value="") -- Sin asignar --
+                            if choferes && choferes.length
+                                each chofer in choferes
+                                    option(value=chofer._id)= chofer.nombre + ' ' + chofer.apellido + (chofer.idVehiculoAsignado ? ' (Ya asignado)' : '')
+
+                    button(type="submit", style="margin-top: 1rem;") Guardar Datos del Vehículo
+            .listado-clientes
+                .header-listado-clientes
+                    h2 Listado de vehículos
+                .main-listado-clientes
+                    table#tabla-clientes
+                        thead
+                            tr
+                                th N°
+                                th Patente
+                                th Marca y Modelo
+                                th Capacidad
+                                th Estado
+                                th Chofer asignado
+                                th(colspan="3") Acciones
+                        tbody
+                            if vehiculos && vehiculos.length
+                                each vehiculo, index in vehiculos
+                                    tr
+                                        td= index + 1
+                                        td= vehiculo.patente
+                                        td= vehiculo.marca + ' ' + vehiculo.modelo
+                                        td= vehiculo.capacidad
+                                        td= vehiculo.estado
+                                        td= vehiculo.idChoferAsignado ? (vehiculo.idChoferAsignado.nombre + ' ' + vehiculo.idChoferAsignado.apellido) : 'Sin asignar'
+                                        td
+                                            button(class="editar", data-action="editar", data-id=vehiculo._id) editar
+                                        td
+                                            button(class="eliminar", data-action="eliminar", data-id=vehiculo._id) eliminar
+                                        td
+                                            if vehiculo.idChoferAsignado
+                                                button(class="eliminar", style="color: #d97706; border-color: #d97706;", data-action="liberar", data-id-vehiculo=vehiculo._id, data-id-chofer=vehiculo.idChoferAsignado._id) liberar
+                            else
+                                tr
+                                    td(colspan="9") No hay vehículos registrados
+        include ./footer

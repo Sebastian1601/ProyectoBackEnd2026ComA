@@ -1,37 +1,76 @@
-doctype html 
-html(lang="es")
-    include ./head 
+doctype html
+html
+    include ./head
     link(rel="stylesheet" href="css/clientes.css")
+    link(rel="stylesheet" href="css/productos.css")
+    script(src="js/rutas.js" defer)
+    body
+        include ./header
+        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+        h2 Gestión de rutas
+        .main-clientes
+            .ingreso-clientes
+                form#formIngresoClientes(action="")
+                    input(type="hidden" name="id")
+                    .campo
+                        label(for="nombre") Nombre de la Ruta
+                        input(type="text", name="nombre" required, id="nombre", placeholder="Ej: Ruta Norte - CABA")
+                    .campo
+                        label(for="origen") Origen
+                        input(type="text", name="origen" required, id="origen", placeholder="Ej: Depósito Central")
+                    .campo
+                        label(for="destino") Destino
+                        input(type="text", name="destino" required, id="destino", placeholder="Ej: Sucursal Belgrano")
+                    .campo
+                        label(for="duracionEstimada") Duración estimada (minutos)
+                        input(type="number", name="duracionEstimada", id="duracionEstimada", placeholder="Ej: 45", min="0")
+                    .campo
+                        label(for="distanciaEstimada") Distancia estimada (km)
+                        input(type="number", name="distanciaEstimada", id="distanciaEstimada", placeholder="Ej: 20", min="0", step="any")
 
-    body 
-      include ./header
-      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
-      h2 Gestión de rutas
-      .main-clientes 
-        .tabla-container
-          table#tablaClientes
-            caption Lista de rutas
-            thead
-              tr
-                th N°
-                th Nombre
-                th Origen
-                th Destino
-                th Duración (min)
-                th Distancia (km)
-                th Chofer asignado
-            tbody
-              if rutas && rutas.length
-                each ruta, index in rutas
-                  tr
-                    td= index + 1
-                    td= ruta.nombre
-                    td= ruta.origen || 'No especificado'
-                    td= ruta.destino || 'No especificado'
-                    td= ruta.duracionEstimada || 'S/D'
-                    td= ruta.distanciaEstimada || 'S/D'
-                    td= ruta.idChoferAsignado ? (ruta.idChoferAsignado.nombre + ' ' + ruta.idChoferAsignado.apellido) : 'Sin asignar'
-              else
-                tr
-                  td(colspan="7") No hay rutas registradas
-      include ./footer
+                    .campo(style="margin-top: 0.5rem;")
+                        label(for="idChoferAsignado") Asignar Chofer
+                        select(name="idChoferAsignado" id="idChoferAsignado")
+                            option(value="") -- Sin asignar --
+                            if choferes && choferes.length
+                                each chofer in choferes
+                                    option(value=chofer._id)= chofer.nombre + ' ' + chofer.apellido + (chofer.idRutaActual ? ' (En otra ruta)' : '')
+
+                    button(type="submit", style="margin-top: 1rem;") Guardar Datos de la Ruta
+            .listado-clientes
+                .header-listado-clientes
+                    h2 Listado de rutas
+                .main-listado-clientes
+                    table#tabla-clientes
+                        thead
+                            tr
+                                th N°
+                                th Nombre
+                                th Origen
+                                th Destino
+                                th Duración (min)
+                                th Distancia (km)
+                                th Chofer asignado
+                                th(colspan="3") Acciones
+                        tbody
+                            if rutas && rutas.length
+                                each ruta, index in rutas
+                                    tr
+                                        td= index + 1
+                                        td= ruta.nombre
+                                        td= ruta.origen || 'No especificado'
+                                        td= ruta.destino || 'No especificado'
+                                        td= ruta.duracionEstimada || 'S/D'
+                                        td= ruta.distanciaEstimada || 'S/D'
+                                        td= ruta.idChoferAsignado ? (ruta.idChoferAsignado.nombre + ' ' + ruta.idChoferAsignado.apellido) : 'Sin asignar'
+                                        td
+                                            button(class="editar", data-action="editar", data-id=ruta._id) editar
+                                        td
+                                            button(class="eliminar", data-action="eliminar", data-id=ruta._id) eliminar
+                                        td
+                                            if ruta.idChoferAsignado
+                                                button(class="eliminar", style="color: #d97706; border-color: #d97706;", data-action="liberar", data-id-ruta=ruta._id, data-id-chofer=ruta.idChoferAsignado._id) liberar
+                            else
+                                tr
+                                    td(colspan="10") No hay rutas registradas
+        include ./footer

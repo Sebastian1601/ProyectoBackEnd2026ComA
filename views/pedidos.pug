@@ -2,6 +2,7 @@ doctype html
 html(lang="es")
   include ./head
   link(rel="stylesheet" href="css/clientes.css")
+  link(rel="stylesheet" href="css/productos.css")
 
   body
     include ./header
@@ -11,168 +12,89 @@ html(lang="es")
     h2 Gestión de pedidos
 
     style.
-      .gestion-pedidos {
-        display: grid;
-        grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
-        gap: 24px;
-        max-width: 1250px;
-        margin: 20px auto;
-        padding: 20px;
-        box-sizing: border-box;
-      }
-
-      .panel-pedidos {
-        background: #f3f4f6;
-        border-radius: 14px;
-        padding: 24px;
-        min-width: 0;
-      }
-
-      .panel-pedidos h3 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: #287c74;
-      }
-
-      .campo-pedido {
-        margin-bottom: 16px;
-      }
-
-      .campo-pedido label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: bold;
-      }
-
-      .campo-pedido select {
-        width: 100%;
-        padding: 11px;
-        border: 1px solid #ccc;
-        border-radius: 7px;
-        background: white;
-        box-sizing: border-box;
-      }
-
-      .boton-pedido {
-        background: #287c74;
-        color: white;
-        border: none;
-        border-radius: 7px;
-        padding: 12px 16px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-
-      .boton-pedido:hover {
-        background: #20665f;
-      }
-
-      .boton-pedido:disabled,
-      .boton-eliminar:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      .boton-agregar {
-        margin-bottom: 15px;
-      }
-
       .producto-seleccionado {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 10px;
-        padding: 9px;
-        margin-bottom: 7px;
-        background: white;
+        padding: 6px 10px;
+        margin-bottom: 6px;
+        background: var(--fondo);
+        border: 1px solid var(--borde);
         border-radius: 6px;
+        font-size: 0.9rem;
       }
 
-      .boton-quitar,
-      .boton-eliminar {
-        background: #c0392b;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 7px 11px;
+      .boton-quitar {
+        background: transparent;
+        color: var(--peligro);
+        border: 1px solid var(--peligro);
+        border-radius: 4px;
+        padding: 2px 8px;
         cursor: pointer;
+        font-size: 0.8rem;
       }
 
-      .boton-quitar:hover,
-      .boton-eliminar:hover {
-        background: #922b21;
-      }
-
-      .tabla-pedidos {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-      }
-
-      .tabla-pedidos th,
-      .tabla-pedidos td {
-        padding: 11px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-      }
-
-      .tabla-pedidos th {
-        background: #287c74;
+      .boton-quitar:hover {
+        background: var(--peligro);
         color: white;
       }
 
-      .tabla-scroll {
-        overflow-x: auto;
+      .boton-agregar {
+        margin-bottom: 12px;
+        background: var(--fondo) !important;
+        color: var(--acento) !important;
+        border: 1px solid var(--acento) !important;
+      }
+
+      .boton-agregar:hover {
+        background: var(--acento) !important;
+        color: white !important;
       }
 
       .mensaje-pedido {
-        margin-top: 12px;
+        margin-top: 10px;
+        font-size: 0.85rem;
         font-weight: bold;
       }
 
-      @media (max-width: 850px) {
-        .gestion-pedidos {
-          grid-template-columns: 1fr;
-        }
-      }
-
-    .gestion-pedidos
-
+    .main-clientes
       // PANEL IZQUIERDO
-      .panel-pedidos
-        h3 Realizar pedido
+      .ingreso-clientes
+        h3(style="margin-top: 0; margin-bottom: 1rem; font-size: 1.15rem; font-weight: 600; color: var(--texto);") Realizar pedido
 
         form#formPedido
-          .campo-pedido
+          .campo
             label(for="clientePedido") Cliente
             select#clientePedido(required)
               option(value="") Seleccionar cliente
               each cliente in clientes
                 option(value=cliente._id)= cliente.nombre
 
-          .campo-pedido
+          .campo(style="margin-top: 0.85rem;")
             label(for="productoPedido") Producto
             select#productoPedido
               option(value="") Seleccionar producto
               each producto in productos
                 option(value=producto.nombre)= producto.nombre
 
-          button#agregarProducto.boton-pedido.boton-agregar(type="button") + Agregar producto
+          button#agregarProducto.boton-agregar(type="button" style="margin-top: 0.85rem; width: 100%;") + Agregar producto
 
-          h4 Productos seleccionados
-          #listaProductos
-            p Todavía no agregaste productos.
+          label(style="font-weight: 600; font-size: 0.85rem; color: var(--texto-suave); display: block; margin-bottom: 0.3rem;") Productos seleccionados
+          #listaProductos(style="min-height: 40px; margin-bottom: 0.85rem;")
+            p(style="font-size: 0.85rem; color: var(--texto-suave); margin: 0.3rem 0;") Todavía no agregaste productos.
 
-          button#guardarPedido.boton-pedido(type="submit") Guardar pedido
+          button#guardarPedido(type="submit" style="width: 100%;") Guardar pedido
 
           p#mensajePedido.mensaje-pedido(role="status" aria-live="polite")
 
       // PANEL DERECHO
-      .panel-pedidos
-        h3 Pedidos realizados
+      .listado-clientes
+        .header-listado-clientes
+          h2 Pedidos realizados
 
-        .tabla-scroll
-          table#tablaClientes.tabla-pedidos
+        .main-listado-clientes
+          table#tabla-clientes
             thead
               tr
                 th N°
@@ -192,7 +114,7 @@ html(lang="es")
                     td= pedido.productos ? pedido.productos.join(', ') : 'Sin productos'
                     td= pedido.estado
                     td
-                      button.boton-eliminar(
+                      button.eliminar(
                         type="button"
                         data-id=pedido._id.toString()
                       ) Eliminar
@@ -216,6 +138,9 @@ html(lang="es")
 
         if (productosSeleccionados.length === 0) {
           const texto = document.createElement("p");
+          texto.style.fontSize = "0.85rem";
+          texto.style.color = "var(--texto-suave)";
+          texto.style.margin = "0.3rem 0";
           texto.textContent = "Todavía no agregaste productos.";
           listaProductos.appendChild(texto);
           return;
@@ -305,12 +230,12 @@ html(lang="es")
       });
 
       // ELIMINAR PEDIDOS
-      document.querySelectorAll(".boton-eliminar").forEach((boton) => {
+      document.querySelectorAll(".eliminar").forEach((boton) => {
         boton.addEventListener("click", async () => {
           const idPedido = boton.dataset.id;
 
           const confirmar = window.confirm(
-            "¿Estás segura de que querés eliminar este pedido? Esta acción no se puede deshacer."
+            "¿Estás seguro de que querés eliminar este pedido? Esta acción no se puede deshacer."
           );
 
           if (!confirmar) {

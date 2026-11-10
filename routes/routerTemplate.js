@@ -1,4 +1,3 @@
-
 import { Router } from "express";
 import { autenticarPagina } from "../validation/autenticacion.js";
 import Chofer from "../models/Chofer.js";
@@ -16,7 +15,7 @@ router.get("/", (req, res) => {
     });
 });
 
-// Desde acá, todas las páginas exigen sesión iniciada
+// Desde acá, todas las páginas exigen sesión iniciada (si no, redirige al login)
 router.use(autenticarPagina);
 
 router.get("/index", (req, res) => {
@@ -49,28 +48,37 @@ router.get("/pedidos", async (req, res) => {
 });
 
 router.get("/vehiculos", async (req, res) => {
-    const vehiculos = await Vehiculo.find()
-        .populate('idChoferAsignado').lean();
+    const [vehiculos, choferes] = await Promise.all([
+        Vehiculo.find().populate('idChoferAsignado').lean(),
+        Chofer.find().lean()
+    ]);
     res.render("vehiculos", {
         vehiculos,
-        mostrarBotonLogout: true
-    });
-});
-
-router.get("/choferes", async (req, res) => {
-    const choferes = await Chofer.find()
-        .populate('idVehiculoAsignado').lean();
-    res.render("choferes", {
         choferes,
         mostrarBotonLogout: true
     });
 });
 
+router.get("/choferes", async (req, res) => {
+    const [choferes, vehiculos] = await Promise.all([
+        Chofer.find().populate('idVehiculoAsignado').lean(),
+        Vehiculo.find().lean()
+    ]);
+    res.render("choferes", {
+        choferes,
+        vehiculos,
+        mostrarBotonLogout: true
+    });
+});
+
 router.get("/rutas", async (req, res) => {
-    const rutas = await Ruta.find()
-        .populate('idChoferAsignado').lean();
+    const [rutas, choferes] = await Promise.all([
+        Ruta.find().populate('idChoferAsignado').lean(),
+        Chofer.find().lean()
+    ]);
     res.render("rutas", {
         rutas,
+        choferes,
         mostrarBotonLogout: true
     });
 });

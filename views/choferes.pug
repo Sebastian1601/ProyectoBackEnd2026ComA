@@ -1,33 +1,74 @@
-doctype html 
-html(lang="es")
-    include ./head 
+doctype html
+html
+    include ./head
     link(rel="stylesheet" href="css/clientes.css")
-
-    body 
-      include ./header
-      a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
-      h2 Gestión de choferes
-      .main-clientes 
-        .tabla-container
-          table#tablaClientes
-            caption Lista de choferes
-            thead
-              tr
-                th N°
-                th Nombre
-                th DNI
-                th Estado
-                th Vehículo asignado
-            tbody
-              if choferes && choferes.length
-                each chofer, index in choferes
-                  tr
-                    td= index + 1
-                    td= chofer.nombre + ' ' + chofer.apellido
-                    td= chofer.dni || 'S/D'
-                    td= chofer.estado
-                    td= chofer.idVehiculoAsignado ? (chofer.idVehiculoAsignado.patente + ' (' + chofer.idVehiculoAsignado.marca + ' ' + chofer.idVehiculoAsignado.modelo + ')') : 'Sin asignar'
-              else
-                tr
-                  td(colspan="5") No hay choferes registrados
-      include ./footer
+    link(rel="stylesheet" href="css/productos.css")
+    script(src="js/choferes.js" defer)
+    body
+        include ./header
+        a(href="./index", class="boton-volverInicio", target='_self') > Volver a inicio
+        h2 Gestión de choferes
+        .main-clientes
+            .ingreso-clientes
+                form#formIngresoClientes(action="")
+                    input(type="hidden" name="id")
+                    .campo
+                        label(for="nombre") Nombre
+                        input(type="text", name="nombre" required, id="nombre")
+                    .campo
+                        label(for="apellido") Apellido
+                        input(type="text", name="apellido" required, id="apellido")
+                    .campo
+                        label(for="dni") DNI
+                        input(type="text", name="dni" required, id="dni")
+                    .campo
+                        label(for="telefono") Teléfono
+                        input(type="text", name="telefono" required, id="telefono")
+                    .campo
+                        label(for="numeroRegistro") N° de Registro
+                        input(type="text", name="numeroRegistro" required, id="numeroRegistro")
+                    
+                    label(style="font-weight: 600; font-size: 0.85rem; color: var(--texto-suave); margin-top: 0.5rem; display: block;") Estado
+                    .campo-radio
+                        label(for="estado-disponible") Disponible
+                        input(type="radio", name="estado", id="estado-disponible" value="Disponible" checked)
+                    .campo-radio
+                        label(for="estado-ocupado") Ocupado
+                        input(type="radio", name="estado", id="estado-ocupado" value="Ocupado")
+                    .campo-radio
+                        label(for="estado-inactivo") Inactivo
+                        input(type="radio", name="estado", id="estado-inactivo" value="Inactivo")
+                    
+                    button(type="submit", style="margin-top: 1rem;") Guardar Datos del Chofer
+            .listado-clientes
+                .header-listado-clientes
+                    h2 Listado de choferes
+                .main-listado-clientes
+                    table#tabla-clientes
+                        thead
+                            tr
+                                th N°
+                                th Nombre y Apellido
+                                th DNI
+                                th Teléfono
+                                th Estado
+                                th Vehículo
+                                th(colspan="2") Acciones
+                        tbody
+                            if choferes && choferes.length
+                                each chofer, index in choferes
+                                    tr
+                                        td= index + 1
+                                        td= chofer.nombre + ' ' + chofer.apellido
+                                        td= chofer.dni || 'S/D'
+                                        td= chofer.telefono || 'S/D'
+                                        td= chofer.estado
+                                        td= chofer.idVehiculoAsignado ? (chofer.idVehiculoAsignado.patente + ' (' + chofer.idVehiculoAsignado.marca + ' ' + chofer.idVehiculoAsignado.modelo + ')') : 'Sin asignar'
+                                        td
+                                            button(class="editar", data-action="editar", data-id=chofer._id) editar
+                                        td
+                                            button(class="eliminar", data-action="eliminar", data-id=chofer._id) eliminar
+                            else
+                                tr
+                                    td(colspan="8") No hay choferes registrados
+        include ./footer
