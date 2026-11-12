@@ -4,7 +4,8 @@
   "description": "Repositorio del proyecto de BackEnd Comisión A 2026 2do Cuatrimestre",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/*.test.js",
+    "lint": "eslint .",
     "dev": "nodemon --env-file=.env index.js",
     "start": "node --env-file=.env index.js",
     "sync": "browser-sync start --proxy 127.0.0.1:3000 --files \"static/**/*,views/**/*\""
@@ -22,7 +23,9 @@
   },
   "homepage": "https://github.com/Sebastian1601/ProyectoBackEnd2026ComA#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "browser-sync": "^3.0.4",
+    "eslint": "^10.14.0",
     "nodemon": "3.1.14"
   },
   "dependencies": {

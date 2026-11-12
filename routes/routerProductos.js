@@ -1,11 +1,13 @@
 import { Router } from 'express';
-import * as pc from '../controllers/productoController.js';
+import { ProductoController } from '../controllers/productoController.js';
+import validarProducto from '../validation/productos.js';
 
 const router = Router();
 
-router.get('/',pc.obtenerProductos);
-router.get('/:id',pc.obtenerUnProducto);
-router.post('/', pc.crearProducto);
-router.put('/:id', pc.actualizarProducto);
+router.get('/', ProductoController.obtenerProductos);
+router.get('/:id', ProductoController.obtenerUnProducto);
+router.post('/', validarProducto, ProductoController.crearProducto);
+router.put('/:id', validarProducto, ProductoController.actualizarProducto);
+router.delete('/:id', ProductoController.eliminarProducto);
 
 export default router;

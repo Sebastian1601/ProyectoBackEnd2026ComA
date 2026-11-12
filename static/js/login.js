@@ -24,19 +24,15 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify({ user, contra })
         });
         if (!res.ok) {
-            const data = await res.json();
+            const data = await res.json().catch(() => ({}));
             console.error(data);
-            errorBox.textContent = data.message;
+            errorBox.textContent = data.error || data.mensaje || "No se pudo iniciar sesión.";
             return;
         };
         const data = await res.json();
-        errorBox.textContent = data.message;
-        // Ajustá esto según lo que devuelva tu endpoint:
-        // - si usás cookies de sesión, probablemente solo necesites redirigir
-        // - si devuelve un token, guardalo antes de redirigir
-        if (data.token) {
-            localStorage.setItem('token', data.token);
-        }
+        errorBox.textContent = data.mensaje || "Usuario autorizado.";
+        // La sesión se guarda en una cookie (se envía con credentials: 'include'),
+        // así que solo queda redirigir al index.
         setTimeout(() => {
             window.location.href = '/index';
         }, 1000);

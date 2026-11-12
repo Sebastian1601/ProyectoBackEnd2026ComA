@@ -16,6 +16,15 @@ const cuerpo = (datos, metodo) => {
     }
 };
 
+// Lee la respuesta del servidor y lanza un Error si la petición falló.
+async function leerRespuesta(response, mensajePorDefecto) {
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.error || data.mensaje || mensajePorDefecto);
+    }
+    return data;
+};
+
 btnReset.addEventListener("click", function () {
     btnAgregarProducto.textContent = "Guardar nuevo producto";
     btnAgregarProducto.classList.remove("actualizando");
@@ -26,30 +35,29 @@ btnAgregarProducto.addEventListener('click', async (e) => {
     const formdata1 = new FormData(formulario);
     const datosProducto = Object.fromEntries(formdata1)
 
-    if (datosProducto.id !== "") {
-        await actualizarProducto(datosProducto);
+    try {
+        if (datosProducto.id !== "") {
+            await actualizarProducto(datosProducto);
+        } else {
+            console.log("guardando nuevo producto...");
+            await guardarProducto(datosProducto);
+        }
         location.reload();
-        return;
-    };
-
-    console.log("guardando nuevo producto...");
-    await guardarProducto(datosProducto);
-    location.reload();
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
 });
 
 async function guardarProducto(datosProducto) {
     const response = await fetch(ENDPOINT, cuerpo(datosProducto, 'POST'));
-    if (!response.ok) {
-        console.error("Existió un error al guardar nuevo producto.-");
-    }
+    return leerRespuesta(response, "Existió un error al guardar nuevo producto.-");
 };
 
 async function actualizarProducto(producto) {
     const { id } = producto;
     const response = await fetch(`${ENDPOINT}${id}`, cuerpo(producto, 'PUT'));
-    if (!response.ok) {
-        console.error("Existió un error al actualizar producto.-");
-    };
+    return leerRespuesta(response, "Existió un error al actualizar producto.-");
 };
 
 tablaProductos.addEventListener("click", async function (e) {
@@ -59,44 +67,42 @@ tablaProductos.addEventListener("click", async function (e) {
     const accion = boton.dataset.action;
     const id = boton.dataset.id;
 
-    switch (accion) {
-        case "editar":
-
-            const producto = await obtenerProducto(id);
-            cargarDatosAForm(producto.data);
-            btnAgregarProducto.textContent = "- Actualizar Producto -";
-            btnAgregarProducto.classList.add("actualizando");
-            break;
-        case "eliminar":
-
-            await eliminarProducto(id);
-            location.reload();
-            break;
-        default:
-
-            console.log("accion no válida seleccionada a través del botón");
-            break;
-    };
+    try {
+        switch (accion) {
+            case "editar": {
+                const producto = await obtenerProducto(id);
+                cargarDatosAForm(producto.data);
+                btnAgregarProducto.textContent = "- Actualizar Producto -";
+                btnAgregarProducto.classList.add("actualizando");
+                break;
+            }
+            case "eliminar":
+                await eliminarProducto(id);
+                location.reload();
+                break;
+            default:
+                console.log("accion no válida seleccionada a través del botón");
+                break;
+        };
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
 })
 
 async function obtenerProducto(id) {
     const response = await fetch(`${ENDPOINT}${id}`);
-    if (!response.ok) {
-        console.error("Existe un error al obtener el producto seleccionado.-");
-    };
-    const producto = await response.json();
-    return producto;
+    return leerRespuesta(response, "Existe un error al obtener el producto seleccionado.-");
 };
 
 async function eliminarProducto(id) {
-    const response = await fetch(`${ENDPOINT}${id}`);
-    let mensaje;
-    if (!response.ok) {
-        mensaje = "Existe un error al eliminar producto.-";
-    };
-    mensaje = "Producto eliminado con éxito.-"
-
-    console.log(mensaje, response);
+    const response = await fetch(`${ENDPOINT}${id}`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return leerRespuesta(response, "Existe un error al eliminar producto.-");
 };
 
 async function cargarDatosAForm(producto) {

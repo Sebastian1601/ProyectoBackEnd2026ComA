@@ -1,31 +1,100 @@
 @puerto = 3000
 @url = http://localhost:{{puerto}}/apiV1
 
-@nombre=lechuga
+# ID del producto creado con el POST de abajo
+# Reemplazar despues de crearlo
+@productoPruebaId = 000000000000000000000000
 
-@descripcion=lechugas frescas de la pampa
-
-@precio=1500
-
-@categoria=verduras
-
+# ID valido de MongoDB que no corresponde a un producto
+@productoInexistente = 111111111111111111111111
 
 
-###
+### 1. Obtener todos los productos
 GET {{url}}/productos
 Content-Type: application/json
 
-###
-POST {{url}}/productos/
+### 2. Crear un producto de prueba
+# Responde 201 con { mensaje, data }
+POST {{url}}/productos
 Content-Type: application/json
 
 {
-    "producto":{
-        "nombre":"lechuga",
-        "descripcion":"lechugas francesas fresacas de la pampa",
-        "precio": 3900,
-        "categoria":"verduras"
-        }
+    "nombre": "Lechuga",
+    "descripcion": "lechugas francesas frescas de la pampa",
+    "precio": 3900,
+    "categoria": "verduras"
 }
 
-###
+### 3. Obtener un producto por ID
+# Responde 200 con { mensaje, data }
+GET {{url}}/productos/{{productoPruebaId}}
+Content-Type: application/json
+
+### 4. Intentar obtener un producto inexistente
+# Se espera 404 { error }
+GET {{url}}/productos/{{productoInexistente}}
+Content-Type: application/json
+
+### 5. Intentar crear un producto sin nombre
+# Se espera 400 { error, campo }
+POST {{url}}/productos
+Content-Type: application/json
+
+{
+    "descripcion": "sin nombre",
+    "precio": 100,
+    "categoria": "verduras"
+}
+
+### 6. Intentar crear un producto con categoria invalida
+# Se espera 400 { error, campo: "categoria" }
+POST {{url}}/productos
+Content-Type: application/json
+
+{
+    "nombre": "Auriculares",
+    "precio": 100,
+    "categoria": "electronica"
+}
+
+### 7. Intentar crear un producto con precio negativo
+# Se espera 400 { error, campo: "precio" }
+POST {{url}}/productos
+Content-Type: application/json
+
+{
+    "nombre": "Tomate",
+    "precio": -10,
+    "categoria": "verduras"
+}
+
+### 8. Modificar el producto de prueba
+# Responde 200 con { mensaje, data }
+PUT {{url}}/productos/{{productoPruebaId}}
+Content-Type: application/json
+
+{
+    "nombre": "Lechuga",
+    "descripcion": "lechugas frescas de la pampa",
+    "precio": 4200,
+    "categoria": "verduras"
+}
+
+### 9. Verificar la modificacion
+GET {{url}}/productos/{{productoPruebaId}}
+Content-Type: application/json
+
+### 10. Eliminar el producto de prueba
+# Responde 200 con { mensaje, data }
+DELETE {{url}}/productos/{{productoPruebaId}}
+Content-Type: application/json
+
+### 11. Comprobar que el producto fue eliminado
+# Se espera 404 { error }
+GET {{url}}/productos/{{productoPruebaId}}
+Content-Type: application/json
+
+### 12. Intentar eliminar un producto inexistente
+# Se espera 404 { error }
+DELETE {{url}}/productos/{{productoInexistente}}
+Content-Type: application/json

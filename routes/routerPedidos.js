@@ -1,6 +1,6 @@
 import express from "express";
 import { PedidosController } from "../controllers/pedidosController.js";
-import validarDatosPedido from "../validation/pedidos.js";
+import validarPedido from "../validation/pedidos.js";
 
 const router = express.Router();
 
@@ -8,9 +8,9 @@ router.get("/", PedidosController.obtenerPedidos);
 
 router.get("/:id", PedidosController.obtenerPedido);
 
-router.post("/", validarDatosPedido, PedidosController.crearPedido);
+router.post("/", validarPedido, PedidosController.crearPedido);
 
-router.put("/:id", PedidosController.modificarPedido);
+router.put("/:id", validarPedido, PedidosController.modificarPedido);
 
 router.delete("/:id", PedidosController.borrarPedido);
 

@@ -30,9 +30,9 @@ async function solicitarJSON(url, opciones = {}) {
 
     if (!response.ok) {
         throw new Error(
+            data.error ||
             data.mensaje ||
             data.message ||
-            data.error ||
             "Error al procesar la solicitud"
         );
     }
@@ -53,7 +53,8 @@ async function cargarVehiculos(idVehiculoActual = "") {
     selectorVehiculo.appendChild(opcionInicial);
 
     try {
-        vehiculos = await solicitarJSON(ENDPOINT_VEHICULOS);
+        const listado = await solicitarJSON(ENDPOINT_VEHICULOS);
+        vehiculos = listado.data;
 
         if (!Array.isArray(vehiculos)) {
             throw new Error("No se pudo obtener el listado de vehículos");
@@ -146,7 +147,8 @@ async function guardarAsignacion(idChofer, idAnterior, idNuevo) {
                         restauracionError
                     );
                     throw new Error(
-                        `${error.message}. Además, no se pudo restaurar el vehículo anterior. Revisá las asignaciones.`
+                        `${error.message}. Además, no se pudo restaurar el vehículo anterior. Revisá las asignaciones.`,
+                        { cause: restauracionError }
                     );
                 }
             }
@@ -199,7 +201,7 @@ if (form) {
                 delete datosChofer.id;
 
                 const resultado = await guardarNuevoChofer(datosChofer);
-                const idChofer = resultado.chofer?._id;
+                const idChofer = resultado.data?._id;
 
                 if (idVehiculoNuevo) {
                     if (!idChofer) {
@@ -258,7 +260,8 @@ if (tabla) {
 }
 
 async function obtenerChofer(id) {
-    return solicitarJSON(`${ENDPOINT}${id}`);
+    const datos = await solicitarJSON(`${ENDPOINT}${id}`);
+    return datos.data;
 }
 
 async function eliminarChofer(id) {

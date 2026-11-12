@@ -1,18 +1,18 @@
-//generar la validacion de datos, como nombre, direccion, y demas
-import { ValidationError } from "../ErrorControl/Errores.js";
+// Validación de los datos de un cliente (alta y modificación).
+// Se aplica en routes/routerClientes.js antes de crear y actualizar.
 
-export default function ValidarString(req, res, next) {
-    const { nombre, telefono, direccion } = req.body;
+import { validarTexto } from "./helpers.js";
 
-    if (!nombre || nombre.trim().length < 3) {
-        return res.status(400).json({ message: "El nombre es obligatorio y debe tener al menos 3 caracteres" });
-    }
-    if (!telefono || telefono.trim().length < 3) {
-        return res.status(400).json({ message: "El teléfono es obligatorio y debe tener al menos 3 caracteres" });
-    }
-    if (!direccion || direccion.trim().length < 3) {
-        return res.status(400).json({ message: "La dirección es obligatoria y debe tener al menos 3 caracteres" });
-    }
+export default function validarCliente(req, res, next) {
+    const { nombre, telefono, direccion } = req.body ?? {};
+
+    // En el alta todos los campos son obligatorios; en la modificación
+    // solo se validan los campos que efectivamente vengan en el body.
+    const esAlta = req.method === "POST";
+
+    validarTexto("nombre", nombre, { requerido: esAlta, min: 3 });
+    validarTexto("telefono", telefono, { requerido: esAlta, min: 3 });
+    validarTexto("direccion", direccion, { requerido: esAlta, min: 3 });
 
     next();
 }

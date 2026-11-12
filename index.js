@@ -26,7 +26,7 @@ let dbClient;
                 try {
                     await dbClient.close();
                     console.log("conexión con MongoDB cerrada.-");
-                } catch (e) {
+                } catch {
                     console.log("existió un error al intentar cerrar la conexión con MongoDB.-")
                 }
             });

@@ -50,7 +50,7 @@ if (form) {
                 console.log("Guardando nueva ruta...");
                 delete datosRuta.id;
                 const nueva = await guardarNuevaRuta(datosRuta);
-                idRutaResult = nueva.ruta ? nueva.ruta._id : null;
+                idRutaResult = nueva.data ? nueva.data._id : null;
             }
 
             // Si se seleccionó chofer para asignar a la ruta
@@ -70,7 +70,7 @@ async function guardarNuevaRuta(datosRuta) {
     const response = await fetch(ENDPOINT, cuerpo(datosRuta, 'POST'));
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al guardar ruta");
+        throw new Error(data.error || data.mensaje || "Error al guardar ruta");
     }
     return data;
 }
@@ -79,7 +79,7 @@ async function actualizarRuta(ruta) {
     const response = await fetch(`${ENDPOINT}${ruta.id}`, cuerpo(ruta, 'PUT'));
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al actualizar ruta");
+        throw new Error(data.error || data.mensaje || "Error al actualizar ruta");
     }
     return data;
 }
@@ -91,7 +91,7 @@ async function asignarRutaAChofer(idChofer, idRuta) {
     });
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.mensaje || "Error al asignar ruta al chofer");
+        throw new Error(data.error || data.mensaje || "Error al asignar ruta al chofer");
     }
     return data;
 }
@@ -103,7 +103,7 @@ async function liberarRuta(idChofer, idRuta) {
     });
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.mensaje || "Error al finalizar ruta del chofer");
+        throw new Error(data.error || data.mensaje || "Error al finalizar ruta del chofer");
     }
     return data;
 }
@@ -158,9 +158,9 @@ async function obtenerRuta(id) {
     const response = await fetch(`${ENDPOINT}${id}`);
     const datos = await response.json();
     if (!response.ok) {
-        throw new Error(datos.mensaje || datos.message || "Error al obtener los datos de la ruta");
+        throw new Error(datos.error || datos.mensaje || "Error al obtener los datos de la ruta");
     }
-    return datos;
+    return datos.data;
 }
 
 async function eliminarRuta(id) {
@@ -172,7 +172,7 @@ async function eliminarRuta(id) {
     });
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al eliminar la ruta");
+        throw new Error(data.error || data.mensaje || "Error al eliminar la ruta");
     }
     return data;
 }

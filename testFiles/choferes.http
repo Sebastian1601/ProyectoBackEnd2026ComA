@@ -45,6 +45,35 @@ Content-Type: application/json
   "fechaIngreso": "2024-01-15"
 }
 
+### crear chofer no existente
+POST {{urlDefecto}}/choferes
+Content-Type: application/json
+
+{
+  "nombre": "Jorge",
+  "apellido": "Ricardo",
+  "dni": "99958553",
+  "numeroRegistro": "REG-PRUEBA-78",
+  "telefono": "1156005688",
+  "estado": "Disponible",
+  "fechaIngreso": "2025-08-19"
+}
+
+### crear chofer - error de validacion
+POST {{urlDefecto}}/choferes
+Content-Type: application/json
+
+{
+  "nombre": "Pepito",
+  "apellido": "Ramirez",
+  "dni": "",
+  "numeroRegistro": "REG-PRUEBA-82",
+  "telefono": "1122005665",
+  "estado": "Disponible",
+  "fechaIngreso": "2025-06-25"
+}
+
+
 
 ### 5. Intentar crear un chofer con DNI duplicado
 # Ejecutar solo si ya se creo el chofer de prueba

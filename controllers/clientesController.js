@@ -1,63 +1,105 @@
-//aca hay que importar los schemas para crear clientes y eso
-//const rutaArchivoClientes = path.join(__dirname, '../data/clientes.json');
+import Cliente from '../models/Cliente.js';
+import { NotFoundError } from '../ErrorControl/Errores.js';
 
-//importo el modelo cliente de mongoose
-import * as cm from '../models/Cliente.js';
+// Todas las respuestas exitosas siguen el mismo formato: { mensaje, data }.
+// Los errores se propagan con next(err) hacia el manejador central de errores.
+export class ClientesController {
 
-async function obtenerClientes(req, res) {
-    const listado = await cm.obtenerClientes();
-    !listado
-        ? res.status(404).json({ data: {}, mensaje: "No existen clientes para listar.-" })
-        : res.status(200).json({ data: listado, mensaje: "Listado de clientes obtenido.-" })
-};
+    static async obtenerClientes(req, res, next) {
+        try {
+            const listadoClientes = await Cliente
+                .find()
+                .sort({ createdAt: "desc" })
+                .lean();
 
-async function obtenerUnCliente(req, res) {
-    const { id } = req.params;
-    const clienteObtenido = await cm.obtenerClientePorId(id);
-    !clienteObtenido
-        ? res.status(404).json({ data: {}, mensaje: "Cliente no encontrado.-" })
-        : res.status(201).json({ data: clienteObtenido, mensaje: "Cliente encontrado.-" })
-};
+            res.status(200).json({
+                mensaje: "Listado de clientes obtenido correctamente",
+                data: listadoClientes
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 
-async function crearCliente(req, res) {
-    const clienteCreado = await cm.crearCliente(req.body);
-    !clienteCreado
-        ? res.status(500).json({ data: {}, mensaje: "Error al crear nuevo cliente.-" })
-        : res.status(201).json({ data: clienteCreado, mensaje: "Exito al crear nuevo cliente.-" })
-};
+    static async obtenerUnCliente(req, res, next) {
+        try {
+            const clienteUnico = await Cliente.findById(req.params.id).lean();
 
-async function actualizarCliente(req, res) {
-    const { id } = req.params;
-    const clienteActualizado = await cm.actualizarCliente(id, req.body);
-    !clienteActualizado
-        ? res.status(404).json({
-            data: {},
-            mensaje: "Cliente no encontrado"
-        })
-        : res.status(201).json({
-            data: clienteActualizado,
-            mensaje: "Cliente actualizado correctamente",
-        });
-};
+            if (!clienteUnico) {
+                throw new NotFoundError("Cliente no encontrado");
+            }
 
-async function borrarCliente(req, res) {
-    const { id } = req.params;
-    const clienteEliminado = await cm.borrarCliente(id);
-    !clienteEliminado
-        ? res.status(404).json({
-            data: {},
-            mensaje: "Cliente no encontrado"
-        })
-        : res.status(200).json({
-            data: clienteEliminado,
-            mensaje: "Cliente eliminado correctamente"
-        })
-};
+            res.status(200).json({
+                mensaje: "Cliente obtenido correctamente",
+                data: clienteUnico
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 
-export {
-    obtenerClientes,
-    obtenerUnCliente,
-    crearCliente,
-    actualizarCliente,
-    borrarCliente
-};
+    static async crearCliente(req, res, next) {
+        try {
+            const { nombre, telefono, direccion } = req.body;
+            const nuevoCliente = new Cliente({ nombre, telefono, direccion });
+            const clienteCreado = await nuevoCliente.save();
+
+            res.status(201).json({
+                mensaje: "Cliente creado correctamente",
+                data: clienteCreado
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static async actualizarCliente(req, res, next) {
+        try {
+            // Solo se actualizan los campos que vienen en el body (modificación parcial).
+            const campos = {};
+            for (const campo of ["nombre", "telefono", "direccion"]) {
+                if (req.body[campo] !== undefined) {
+                    campos[campo] = req.body[campo];
+                }
+            }
+
+            const clienteActualizado = await Cliente.findByIdAndUpdate(
+                req.params.id,
+                campos,
+                {
+                    returnDocument: 'after',
+                    runValidators: true,
+                    new: true
+                }
+            );
+
+            if (!clienteActualizado) {
+                throw new NotFoundError("Cliente no encontrado");
+            }
+
+            res.status(200).json({
+                mensaje: "Cliente actualizado correctamente",
+                data: clienteActualizado
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static async borrarCliente(req, res, next) {
+        try {
+            const clienteEliminado = await Cliente.findByIdAndDelete(req.params.id);
+
+            if (!clienteEliminado) {
+                throw new NotFoundError("Cliente no encontrado");
+            }
+
+            res.status(200).json({
+                mensaje: "Cliente eliminado correctamente",
+                data: clienteEliminado
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+}

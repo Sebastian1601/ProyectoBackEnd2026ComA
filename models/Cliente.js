@@ -1,79 +1,26 @@
 import { Schema, model } from 'mongoose';
 
+// Esquema de Cliente: solo define la forma de los datos.
+// El acceso a datos (consultas y escrituras) vive en controllers/clientesController.js.
 const clienteSchema = new Schema({
     nombre: {
         type: String,
-        required: true,
+        required: [true, 'El nombre es obligatorio'],
+        minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
         trim: true
     },
     telefono: {
         type: String,
-        required: true,
+        required: [true, 'El teléfono es obligatorio'],
+        minlength: [3, 'El teléfono debe tener al menos 3 caracteres'],
         trim: true
     },
-    // cuil: {
-    //     type: Number,
-    //     required: true,
-    // },
     direccion: {
         type: String,
-        required: true,
+        required: [true, 'La dirección es obligatoria'],
+        minlength: [3, 'La dirección debe tener al menos 3 caracteres'],
         trim: true
     }
 }, { timestamps: true });
 
-const Cliente = model('Cliente', clienteSchema);
-
-async function obtenerClientes() {
-    const listadoClientes = await Cliente
-        .find()
-        .sort({ createdAt: "desc" })
-        .lean();
-    return listadoClientes;
-};
-
-async function obtenerClientePorId(id) {
-    const ID = id.toString().trim();
-    const clienteUnico = await Cliente.findById(ID).lean();
-    return clienteUnico;
-};
-
-async function crearCliente(data) {
-    const { nombre, telefono, direccion } = data;
-    const nuevoCliente = new Cliente({ nombre, telefono, direccion });
-    const clienteCreado = await nuevoCliente.save();
-    return clienteCreado;
-};
-
-async function actualizarCliente(id, data) {
-    const { nombre, telefono, direccion } = data;
-    const ID = id.toString().trim();
-
-    if (!ID || !nombre || !telefono || !direccion) {
-        throw new Error("existen campos vacíos al actualizar cliente.-");
-    };
-    const clienteActualizado = await Cliente.findByIdAndUpdate(
-        ID,
-        { nombre, telefono, direccion },
-        {
-            returnDocument: true,
-            runValidators: true
-        }
-    );
-    return clienteActualizado;
-};
-
-async function borrarCliente(id) {
-    const ID = id.toString().trim();
-    const clienteEliminado = await Cliente.findByIdAndDelete(id);
-    return clienteEliminado;
-};
-
-export default Cliente;
-export {
-    borrarCliente,
-    actualizarCliente,
-    crearCliente,
-    obtenerClientePorId,
-    obtenerClientes
-}
+export default model('Cliente', clienteSchema);

@@ -213,8 +213,8 @@ html(lang="es")
 
           if (!respuesta.ok) {
             throw new Error(
+              resultado.error ||
               resultado.mensaje ||
-              resultado.message ||
               "No se pudo guardar el pedido."
             );
           }
@@ -258,8 +258,8 @@ html(lang="es")
 
             if (!respuesta.ok) {
               throw new Error(
+                resultado.error ||
                 resultado.mensaje ||
-                resultado.message ||
                 "No se pudo eliminar el pedido."
               );
             }

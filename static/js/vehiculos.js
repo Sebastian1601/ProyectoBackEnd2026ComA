@@ -38,7 +38,7 @@ if (form) {
                 console.log("Guardando nuevo vehículo...");
                 delete datosVehiculo.id;
                 const nuevo = await guardarNuevoVehiculo(datosVehiculo);
-                idVehiculoResult = nuevo.vehiculo ? nuevo.vehiculo._id : null;
+                idVehiculoResult = nuevo.data ? nuevo.data._id : null;
             }
 
             // Si se seleccionó un chofer para asignar
@@ -58,7 +58,7 @@ async function guardarNuevoVehiculo(datosVehiculo) {
     const response = await fetch(ENDPOINT, cuerpo(datosVehiculo, 'POST'));
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al guardar vehículo");
+        throw new Error(data.error || data.mensaje || "Error al guardar vehículo");
     }
     return data;
 }
@@ -67,7 +67,7 @@ async function actualizarVehiculo(vehiculo) {
     const response = await fetch(`${ENDPOINT}${vehiculo.id}`, cuerpo(vehiculo, 'PUT'));
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al actualizar vehículo");
+        throw new Error(data.error || data.mensaje || "Error al actualizar vehículo");
     }
     return data;
 }
@@ -79,7 +79,7 @@ async function asignarChofer(idChofer, idVehiculo) {
     });
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.mensaje || "Error al asignar chofer");
+        throw new Error(data.error || data.mensaje || "Error al asignar chofer");
     }
     return data;
 }
@@ -91,7 +91,7 @@ async function liberarChofer(idChofer, idVehiculo) {
     });
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.mensaje || "Error al liberar chofer");
+        throw new Error(data.error || data.mensaje || "Error al liberar chofer");
     }
     return data;
 }
@@ -146,9 +146,9 @@ async function obtenerVehiculo(id) {
     const response = await fetch(`${ENDPOINT}${id}`);
     const datos = await response.json();
     if (!response.ok) {
-        throw new Error(datos.mensaje || datos.message || "Error al obtener los datos del vehículo");
+        throw new Error(datos.error || datos.mensaje || "Error al obtener los datos del vehículo");
     }
-    return datos;
+    return datos.data;
 }
 
 async function eliminarVehiculo(id) {
@@ -160,7 +160,7 @@ async function eliminarVehiculo(id) {
     });
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.mensaje || data.message || "Error al eliminar el vehículo");
+        throw new Error(data.error || data.mensaje || "Error al eliminar el vehículo");
     }
     return data;
 }
