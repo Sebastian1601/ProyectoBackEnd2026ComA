@@ -4,6 +4,8 @@ const btnAgregarProducto = $q('#form-Ingreso-Productos button');
 const btnReset = $q("#form-Ingreso-Productos .btn-reset")
 const tablaProductos = $q('#tabla-productos');
 const formulario = $q("#form-Ingreso-Productos");
+const inputBusqueda = $q('#inputBusqueda');
+const btnBuscar = $q('#btnBuscar');
 const ENDPOINT = `/apiV1/productos/`;
 
 const cuerpo = (datos, metodo) => {
@@ -113,3 +115,23 @@ async function cargarDatosAForm(producto) {
     formulario.elements["categoria"].value = producto.categoria;
     formulario.elements["nombre"].focus();
 };
+
+// Buscador
+const normalizar = (texto) => texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+function filtrarProductos() {
+    const buscado = normalizar(inputBusqueda.value);
+    let numeroItem = 0;
+
+    tablaProductos.querySelectorAll('tbody tr').forEach((fila) => {
+        const coincide = normalizar(fila.children[1].textContent).includes(buscado);
+        fila.style.display = coincide ? '' : 'none';
+        if (coincide) fila.children[0].textContent = ++numeroItem; // renumera solo las filas visibles
+    });
+};
+
+btnBuscar.addEventListener('click', filtrarProductos);
+inputBusqueda.addEventListener('input', filtrarProductos); // filtra mientras se escribe
+inputBusqueda.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') filtrarProductos();
+});
